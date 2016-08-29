@@ -107,4 +107,22 @@
 		window.getSelection().removeAllRanges();
 		$(this).blur();
 	});
+
+	// Make the solutions toggle-able.
+	var solutionStarts = $(".solution-start")
+	solutionStarts
+		.each(function() {
+			var $this = $(this);
+			var contents = $this.nextUntil(".solution-end");
+			var solutionLink = $("<a href='#'>Show solution</a>");
+
+			contents.hide();
+			$this.before(solutionLink);
+			solutionLink.on("click", function() {
+				contents.toggle();
+				solutionLink.text(solutionLink.text().match(/Show/) ? "Hide solution" : "Show solution");
+				return false;
+			});
+			solutionLink.wrap("<p>");
+		});
 }());
