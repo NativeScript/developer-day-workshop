@@ -1,3 +1,9 @@
-## User interface deep dive (1:00–2:00)
+## Beyond the basics
 
-Users! And interfaces!
+### Creating Angular services
+
+### Dealing with data
+
+### Setting up routing and navigation
+
+### Accessing native iOS and Android APIs

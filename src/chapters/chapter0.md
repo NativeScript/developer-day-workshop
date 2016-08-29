@@ -1,4 +1,4 @@
-## NativeScript Developer Day Workshop
+## Introductions
 
 Welcome! The following is your home for the [NativeScript Developer Day](http://developerday.nativescript.org/) workshop, being held on September 19th, 2016, in Boston, Massachusetts. Below you’ll find all slides and instructions for the hands-on activities being held throughout the day. The site will remain up well after the event so you can refer back to the material at any time.
 
