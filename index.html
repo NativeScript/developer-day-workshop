@@ -73,7 +73,62 @@
 			<hr>
 			<div class="chapter">
 				<h2 id="beyond-the-basics">Beyond the basics</h2>
+<p>You now know how to start NativeScript apps, and how to scaffold out a basic user interface. Now let’s dig deeper. In this workshop you’ll learn how to create Angular services, how to deal with data, how to setup routing, and how to access native code. Let’s start by building an Angular service.</p>
 <h3 id="creating-angular-services">Creating Angular services</h3>
+<p>In this workshop you’ll be building a master/detail view for a simple grocery-management application. Let’s dive right in.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Start up a new app
+</h4>
+
+<p>Go ahead and start up a new NativeScript app for this workshop:</p>
+<pre><code>tns create WorkshopThree --ng
+</code></pre><p>Next, change directories into your new project:</p>
+<pre><code>cd WorkshopThree
+</code></pre><div class="exercise-end"></div>
+
+<p>Open this new project up in Visual Studio Code and let’s start working with Angular services.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Your first service
+</h4>
+
+<p>Replace the contents of <code>app.component.ts</code> with the code below, which creates a simple grocery list:</p>
+<pre><code class="lang-TypeScript">import { Component, OnInit } from &quot;@angular/core&quot;;
+
+@Component({
+  selector: &quot;my-app&quot;,
+  templateUrl: &quot;app.component.html&quot;,
+})
+export class AppComponent {
+  groceries = [];
+  ngOnInit() {
+    this.groceries.push({ name: &quot;Bananas&quot; });
+    this.groceries.push({ name: &quot;Apples&quot; });
+    this.groceries.push({ name: &quot;Grapes&quot; });
+  }
+}
+</code></pre>
+<p>And then replace the contents of <code>app.component.html</code> with the code below, which shows the groceries on the screen:</p>
+<pre><code class="lang-XML">&lt;GridLayout&gt;
+  &lt;ListView [items]=&quot;groceries&quot;&gt;
+    &lt;template let-item=&quot;item&quot;&gt;
+      &lt;Label [text]=&quot;item.name&quot;&gt;&lt;/Label&gt;
+    &lt;/template&gt;
+  &lt;/ListView&gt;
+&lt;/GridLayout&gt;
+</code></pre>
+<p>Next, create a file in the <code>app</code> folder named <code>grocery.service.ts</code>, and paste in the following code:</p>
+<pre><code class="lang-TypeScript">
+</code></pre>
+<div class="exercise-end"></div>
+
+
+
+<p>Reference:</p>
+<ul>
+<li><a href="https://angular.io/docs/ts/latest/tutorial/toh-pt4.html">Angular services</a></li>
+<li><a href="https://angular.io/docs/ts/latest/guide/dependency-injection.html">Angular dependency injection</a></li>
+<li><a href="https://docs.nativescript.org/angular/ui/list-view.html">Using NativeScript ListViews</a></li>
+</ul>
 <h3 id="dealing-with-data">Dealing with data</h3>
 <h3 id="setting-up-routing-and-navigation">Setting up routing and navigation</h3>
 <h3 id="accessing-native-ios-and-android-apis">Accessing native iOS and Android APIs</h3>
@@ -95,6 +150,9 @@
 			<hr>
 			<div class="chapter">
 				<h2 id="user-interface-deep-dive">User interface deep dive</h2>
+<h3 id="creating-and-styling-action-bars">Creating and styling action bars</h3>
+<h3 id="implementing-navigation-patterns">Implementing navigation patterns</h3>
+<h3 id="building-with-non-trivial-layouts">Building with non-trivial layouts</h3>
 
 			</div>
 			<hr>
