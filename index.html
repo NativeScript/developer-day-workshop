@@ -136,7 +136,10 @@ export class GroceryService {
 </code></pre>
 <p>Finally, create another file in the <code>app</code> folder named <code>grocery.ts</code>, and paste in the following code:</p>
 <pre><code class="lang-TypeScript">export class Grocery {
-  constructor(private name: string) {}
+  name: string;
+  constructor(name) {
+    this.name = name;
+  }
 }
 </code></pre>
 <div class="exercise-end"></div>
@@ -232,6 +235,112 @@ export class AppComponent {
 <li><a href="https://docs.nativescript.org/angular/ui/list-view.html">Using NativeScript ListViews</a></li>
 </ul>
 <h3 id="dealing-with-data">Dealing with data</h3>
+<p>In this next section of the workshop you’ll enhance the small grocery list to allow users to add items to the list, and also to persist grocery lists to their devices.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Allow users to add data
+</h4>
+
+<p>First, replace the contents of <code>grocery.service.ts</code> with the code below. The changes include removing the hardcoded list, as well as a new <code>add()</code> method.</p>
+<pre><code class="lang-TypeScript">import { Injectable } from &quot;@angular/core&quot;;
+import { Grocery } from &quot;./grocery&quot;;
+
+@Injectable()
+export class GroceryService {
+  private groceries: Array&lt;Grocery&gt;;
+
+  constructor() {
+    this.groceries = [];
+  }
+
+  get() {
+    return this.groceries;
+  }
+
+  add(name) {
+    this.groceries.unshift(new Grocery(name));
+  }
+}
+</code></pre>
+<p>Next, replace the contents of <code>app.component.ts</code> with the code below:</p>
+<pre><code class="lang-TypeScript">import { Component, OnInit } from &quot;@angular/core&quot;;
+import { GroceryService } from &quot;./grocery.service&quot;;
+import { Grocery } from &quot;./grocery&quot;;
+
+@Component({
+  selector: &quot;my-app&quot;,
+  templateUrl: &quot;app.component.html&quot;,
+  providers: [GroceryService]
+})
+export class AppComponent {
+  grocery: String;
+  groceries: Array&lt;Grocery&gt;;
+
+  constructor(private groceryService: GroceryService) {}
+
+  ngOnInit() {
+    this.groceries = this.groceryService.get();
+  }
+
+  add() {
+    this.groceryService.add(this.grocery);
+    this.grocery = &quot;&quot;;
+  }
+}
+</code></pre>
+<div class="exercise-end"></div>
+
+<p>You now have a very basic list, but there’s a big problem: this list isn’t persisted. Let’s look at how to change that.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Persisting data
+</h4>
+
+<p>Start by adding the import below to the top of your <code>grocery.service.ts</code> file:</p>
+<pre><code class="lang-TypeScript">import { getString, setString } from &quot;application-settings&quot;;
+</code></pre>
+<p>Next, in the same file, replace the existing <code>add()</code> function with the code below, which saves the grocery list using the application settings module you just imported.</p>
+<pre><code class="lang-TypeScript">add(name) {
+  this.groceries.unshift(new Grocery(name));
+  let names = this.groceries.map((item: Grocery) =&gt; {
+    return item.name;
+  });
+  setString(&quot;groceries&quot;, names.toString());
+}
+</code></pre>
+<p>Your data is now being saved, but it’s up to you to determine how load this data when the application loads. A challenge!</p>
+<div class="exercise-end"></div>
+
+<h4 class="exercise-start">
+    <b>Challenge</b>: Loading saved data
+</h4>
+
+<p>Your challenge is to change <code>grocery.service.ts</code> to automatically load any data previously stored by the user. As a tip, you’ll want to use the <code>getString()</code> method you imported in the previous exercise.</p>
+<blockquote>
+<p><strong>NOTE</strong>: A convenient way to restart the app is to add or remove a new line from the TypeScript file you’re currently working on.</p>
+</blockquote>
+<div class="solution-start"></div>
+
+<p>Replace the constructor in <code>grocery.service.ts</code> with the code below:</p>
+<pre><code class="lang-TypeScript">constructor() {
+  this.groceries = [];
+  let savedGroceriesString = getString(&quot;groceries&quot;); 
+  if (savedGroceriesString) {
+    savedGroceriesString.split(&quot;,&quot;).forEach((grocery) =&gt; {
+      this.groceries.push(new Grocery(grocery));
+    });
+  }
+}
+</code></pre>
+<div class="solution-end"></div>
+<div class="exercise-end"></div>
+
+<p>There are many ways to store data in NativeScript apps, in addition to using the application settings module, you may wish to use one of the options listed below.</p>
+<p>Reference:</p>
+<ul>
+<li><a href="https://github.com/EddyVerbruggen/nativescript-plugin-firebase">NativeScript Firebase plugin</a></li>
+<li><a href="https://github.com/couchbaselabs/nativescript-couchbase">NativeScript Couchbase plugin</a></li>
+<li><a href="https://github.com/NathanaelA/nativescript-sqlite">NativeScript SQLLite plugin</a></li>
+<li><a href="http://docs.nativescript.org/angular/tutorial/ng-chapter-3#34-services">Accessing RESTful HTTP APIs</a></li>
+</ul>
 <h3 id="setting-up-routing-and-navigation">Setting up routing and navigation</h3>
 <h3 id="accessing-native-ios-and-android-apis">Accessing native iOS and Android APIs</h3>
 

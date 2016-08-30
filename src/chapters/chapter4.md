@@ -87,7 +87,10 @@ Finally, create another file in the `app` folder named `grocery.ts`, and paste i
 
 ``` TypeScript
 export class Grocery {
-  constructor(private name: string) {}
+  name: string;
+  constructor(name) {
+    this.name = name;
+  }
 }
 ```
 
@@ -200,6 +203,131 @@ Reference:
 - [Using NativeScript ListViews](https://docs.nativescript.org/angular/ui/list-view.html)
 
 ### Dealing with data
+
+In this next section of the workshop you’ll enhance the small grocery list to allow users to add items to the list, and also to persist grocery lists to their devices.
+
+<h4 class="exercise-start">
+    <b>Exercise</b>: Allow users to add data
+</h4>
+
+First, replace the contents of `grocery.service.ts` with the code below. The changes include removing the hardcoded list, as well as a new `add()` method.
+
+``` TypeScript
+import { Injectable } from "@angular/core";
+import { Grocery } from "./grocery";
+
+@Injectable()
+export class GroceryService {
+  private groceries: Array<Grocery>;
+
+  constructor() {
+    this.groceries = [];
+  }
+
+  get() {
+    return this.groceries;
+  }
+
+  add(name) {
+    this.groceries.unshift(new Grocery(name));
+  }
+}
+```
+
+Next, replace the contents of `app.component.ts` with the code below:
+
+``` TypeScript
+import { Component, OnInit } from "@angular/core";
+import { GroceryService } from "./grocery.service";
+import { Grocery } from "./grocery";
+
+@Component({
+  selector: "my-app",
+  templateUrl: "app.component.html",
+  providers: [GroceryService]
+})
+export class AppComponent {
+  grocery: String;
+  groceries: Array<Grocery>;
+
+  constructor(private groceryService: GroceryService) {}
+
+  ngOnInit() {
+    this.groceries = this.groceryService.get();
+  }
+
+  add() {
+    this.groceryService.add(this.grocery);
+    this.grocery = "";
+  }
+}
+```
+
+<div class="exercise-end"></div>
+
+You now have a very basic list, but there’s a big problem: this list isn’t persisted. Let’s look at how to change that.
+
+<h4 class="exercise-start">
+    <b>Exercise</b>: Persisting data
+</h4>
+
+Start by adding the import below to the top of your `grocery.service.ts` file:
+
+``` TypeScript
+import { getString, setString } from "application-settings";
+```
+
+Next, in the same file, replace the existing `add()` function with the code below, which saves the grocery list using the application settings module you just imported.
+
+``` TypeScript
+add(name) {
+  this.groceries.unshift(new Grocery(name));
+  let names = this.groceries.map((item: Grocery) => {
+    return item.name;
+  });
+  setString("groceries", names.toString());
+}
+```
+
+Your data is now being saved, but it’s up to you to determine how load this data when the application loads. A challenge!
+
+<div class="exercise-end"></div>
+
+<h4 class="exercise-start">
+    <b>Challenge</b>: Loading saved data
+</h4>
+
+Your challenge is to change `grocery.service.ts` to automatically load any data previously stored by the user. As a tip, you’ll want to use the `getString()` method you imported in the previous exercise.
+
+> **NOTE**: A convenient way to restart the app is to add or remove a new line from the TypeScript file you’re currently working on.
+
+<div class="solution-start"></div>
+
+Replace the constructor in `grocery.service.ts` with the code below:
+
+``` TypeScript
+constructor() {
+  this.groceries = [];
+  let savedGroceriesString = getString("groceries"); 
+  if (savedGroceriesString) {
+    savedGroceriesString.split(",").forEach((grocery) => {
+      this.groceries.push(new Grocery(grocery));
+    });
+  }
+}
+```
+
+<div class="solution-end"></div>
+<div class="exercise-end"></div>
+
+There are many ways to store data in NativeScript apps, in addition to using the application settings module, you may wish to use one of the options listed below.
+
+Reference:
+
+- [NativeScript Firebase plugin](https://github.com/EddyVerbruggen/nativescript-plugin-firebase)
+- [NativeScript Couchbase plugin](https://github.com/couchbaselabs/nativescript-couchbase)
+- [NativeScript SQLLite plugin](https://github.com/NathanaelA/nativescript-sqlite)
+- [Accessing RESTful HTTP APIs](http://docs.nativescript.org/angular/tutorial/ng-chapter-3#34-services)
 
 ### Setting up routing and navigation
 
