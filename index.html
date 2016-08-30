@@ -74,7 +74,7 @@
 			<div class="chapter">
 				<h2 id="beyond-the-basics">Beyond the basics</h2>
 <p>You now know how to start NativeScript apps, and how to scaffold out a basic user interface. Now let’s dig deeper. In this workshop you’ll learn how to create Angular services, how to deal with data, how to setup routing, and how to access native code. Let’s start by building an Angular service.</p>
-<h3 id="creating-angular-services">Creating Angular services</h3>
+<h3 id="learning-angular-2-data-binding-events-and-servicess">Learning Angular 2 data binding, events, and servicess</h3>
 <p>In this workshop you’ll be building a master/detail view for a simple grocery-management application. Let’s dive right in.</p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Start up a new app
@@ -93,17 +93,20 @@
 
 <p>Replace the contents of <code>app.component.ts</code> with the code below, which creates a simple grocery list:</p>
 <pre><code class="lang-TypeScript">import { Component, OnInit } from &quot;@angular/core&quot;;
+import { GroceryService } from &quot;./grocery.service&quot;;
+import { Grocery } from &quot;./grocery&quot;;
 
 @Component({
   selector: &quot;my-app&quot;,
   templateUrl: &quot;app.component.html&quot;,
+  providers: [GroceryService]
 })
 export class AppComponent {
-  groceries = [];
+  groceries: Array&lt;Grocery&gt;;
+
+  constructor(private groceryService: GroceryService) {}
   ngOnInit() {
-    this.groceries.push({ name: &quot;Bananas&quot; });
-    this.groceries.push({ name: &quot;Apples&quot; });
-    this.groceries.push({ name: &quot;Grapes&quot; });
+    this.groceries = this.groceryService.get();
   }
 }
 </code></pre>
@@ -117,11 +120,110 @@ export class AppComponent {
 &lt;/GridLayout&gt;
 </code></pre>
 <p>Next, create a file in the <code>app</code> folder named <code>grocery.service.ts</code>, and paste in the following code:</p>
-<pre><code class="lang-TypeScript">
+<pre><code class="lang-TypeScript">import { Injectable } from &quot;@angular/core&quot;;
+import { Grocery } from &quot;./grocery&quot;;
+
+@Injectable()
+export class GroceryService {
+  get() {
+    let groceries = [];
+    groceries.push(new Grocery(&quot;Bananas&quot;));
+    groceries.push(new Grocery(&quot;Apples&quot;));
+    groceries.push(new Grocery(&quot;Grapes&quot;));
+    return groceries;
+  }
+}
+</code></pre>
+<p>Finally, create another file in the <code>app</code> folder named <code>grocery.ts</code>, and paste in the following code:</p>
+<pre><code class="lang-TypeScript">export class Grocery {
+  constructor(private name: string) {}
+}
 </code></pre>
 <div class="exercise-end"></div>
 
+<p>At this point you should see a hardcoded list of data. Let’s refactor this app so that the data isn’t hardcoded.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Allow users to add groceries
+</h4>
 
+<p>Update you <code>app.css</code> with the code below, which will add a bit of spacing to the app you’re building.</p>
+<pre><code class="lang-CSS">TextField, Button, Label {
+    padding: 15;
+}
+</code></pre>
+<p>Next, change your <code>app.component.html</code> file to use the code below, which sets up a UI that allows users to add data to the list.</p>
+<pre><code class="lang-XML">&lt;GridLayout&gt;
+  &lt;GridLayout rows=&quot;auto, *&quot;&gt;
+
+    &lt;GridLayout row=&quot;0&quot; columns=&quot;*, auto&quot;&gt;
+      &lt;TextField col=&quot;0&quot; hint=&quot;Enter a grocery&quot;&gt;&lt;/TextField&gt;
+      &lt;Button col=&quot;1&quot; text=&quot;Add&quot;&gt;&lt;/Button&gt;
+    &lt;/GridLayout&gt;
+
+    &lt;ListView row=&quot;1&quot; [items]=&quot;groceries&quot;&gt;
+      &lt;template let-item=&quot;item&quot;&gt;
+        &lt;Label [text]=&quot;item.name&quot;&gt;&lt;/Label&gt;
+      &lt;/template&gt;
+    &lt;/ListView&gt;
+  &lt;/GridLayout&gt;
+&lt;/GridLayout&gt;
+</code></pre>
+<p>With that setup out of the way, let’s try a quick challenge.</p>
+<div class="exercise-end"></div>
+
+<h4 class="exercise-start">
+    <b>Challenge</b>: Adding a tap handler
+</h4>
+
+<p>NativeScript button elements have a <code>tap</code> event that you can subscribe to using <code>&lt;Button (tap)=&quot;functionName()&quot;&gt;</code>. Angular 2 lets you implement two-way data binding between a text field and a component property using the <code>[(ngModel)]</code> styntax, for instance <code>&lt;TextField [(ngModel)]=&quot;grocery&quot;&gt;</code>.</p>
+<p>Your challenge is to combine the two, so that when the user taps the “Add” button they see the value they typed in the text field.</p>
+<div class="solution-start"></div>
+
+<p>Use the following code for your <code>app.component.html</code>:</p>
+<pre><code class="lang-XML">&lt;GridLayout&gt;
+  &lt;GridLayout rows=&quot;auto, *&quot;&gt;
+
+    &lt;GridLayout row=&quot;0&quot; columns=&quot;*, auto&quot;&gt;
+      &lt;TextField col=&quot;0&quot; hint=&quot;Enter a grocery&quot; [(ngModel)]=&quot;grocery&quot;&gt;&lt;/TextField&gt;
+      &lt;Button col=&quot;1&quot; text=&quot;Add&quot; (tap)=&quot;add()&quot;&gt;&lt;/Button&gt;
+    &lt;/GridLayout&gt;
+
+    &lt;ListView row=&quot;1&quot; [items]=&quot;groceries&quot;&gt;
+      &lt;template let-item=&quot;item&quot;&gt;
+        &lt;Label [text]=&quot;item.name&quot;&gt;&lt;/Label&gt;
+      &lt;/template&gt;
+    &lt;/ListView&gt;
+  &lt;/GridLayout&gt;
+&lt;/GridLayout&gt;
+</code></pre>
+<p>And the following code for your <code>app.component.ts</code>:</p>
+<pre><code class="lang-TypeScript">import { Component, OnInit } from &quot;@angular/core&quot;;
+import { GroceryService } from &quot;./grocery.service&quot;;
+import { Grocery } from &quot;./grocery&quot;;
+
+@Component({
+  selector: &quot;my-app&quot;,
+  templateUrl: &quot;app.component.html&quot;,
+  providers: [GroceryService]
+})
+export class AppComponent {
+  grocery: String;
+  groceries: Array&lt;Grocery&gt;;
+
+  constructor(private groceryService: GroceryService) {}
+
+  ngOnInit() {
+    this.groceries = this.groceryService.get();
+  }
+
+  add() {
+    alert(&quot;You typed &quot; + this.grocery);
+  }
+}
+</code></pre>
+<div class="solution-end"></div>
+
+<div class="exercise-end"></div>
 
 <p>Reference:</p>
 <ul>
@@ -132,19 +234,6 @@ export class AppComponent {
 <h3 id="dealing-with-data">Dealing with data</h3>
 <h3 id="setting-up-routing-and-navigation">Setting up routing and navigation</h3>
 <h3 id="accessing-native-ios-and-android-apis">Accessing native iOS and Android APIs</h3>
-<h4 class="exercise-start">
-    <b>Challenge</b>: Change the placeholder text color
-</h4>
-
-<p>NativeScript currently does not support styling a text field’s hint color through CSS, but iOS and Android both do. Pick either iOS or Android, and try to change the text field’s hint color to red.</p>
-<div class="solution-start"></div>
-
-<p>Add the following code to your <code>foo.ts</code> file:</p>
-<pre><code class="lang-TypeScript">let foo = &quot;bar&quot;;
-</code></pre>
-<div class="solution-end"></div>
-
-<div class="exercise-end"></div>
 
 			</div>
 			<hr>
