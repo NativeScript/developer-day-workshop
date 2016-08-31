@@ -75,7 +75,7 @@
 				<h2 id="beyond-the-basics">Beyond the basics</h2>
 <p>You now know how to start NativeScript apps, and how to scaffold out a basic user interface. Now let’s dig deeper. In this workshop you’ll learn how to create Angular services, how to deal with data, how to setup routing, and how to access native code. Let’s start by building an Angular service.</p>
 <h3 id="learning-angular-2-data-binding-events-and-servicess">Learning Angular 2 data binding, events, and servicess</h3>
-<p>In this workshop you’ll be building a master/detail view for a simple grocery-management application. Let’s dive right in.</p>
+<p>In this workshop you’ll be building a simple grocery-management application. Let’s dive right in.</p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Start up a new app
 </h4>
@@ -342,6 +342,185 @@ export class AppComponent {
 <li><a href="http://docs.nativescript.org/angular/tutorial/ng-chapter-3#34-services">Accessing RESTful HTTP APIs</a></li>
 </ul>
 <h3 id="setting-up-routing-and-navigation">Setting up routing and navigation</h3>
+<p>Routing in a NativeScript app with Angular 2 works very similarly to how it works on the web. In order to get things up and running we have to create a few files.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Set up the routing infrastructure
+</h4>
+
+<ul>
+<li>Create a new <code>groceries</code> folder in your app.</li>
+<li>Move the <code>grocery.ts</code> and <code>grocery.service.ts</code> files into the new <code>groceries</code> folder.</li>
+<li>Create new files named <code>groceries.component.html</code> and <code>groceries.component.ts</code> within the <code>groceries</code> folder.</li>
+<li>Create a file named <code>app.routes.ts</code> in your root <code>app</code> folder.</li>
+</ul>
+<p>You should now have a folder structure that looks like this.</p>
+<div class="no-copy-button"></div>
+
+<pre><code>app
+├── app.component.ts
+├── app.css
+├── app.routes.ts
+├── groceries
+│   ├── groceries.component.html
+│   ├── groceries.component.ts
+│   ├── grocery.service.ts
+│   └── grocery.ts
+├── main.ts
+└── package.json
+</code></pre><p>Next, update your <code>groceries.component.ts</code> file to use the code below:</p>
+<pre><code class="lang-TypeScript">import { Component, OnInit } from &quot;@angular/core&quot;;
+import { RouterExtensions } from &quot;nativescript-angular/router&quot;;
+
+import { GroceryService } from &quot;./grocery.service&quot;;
+import { Grocery } from &quot;./grocery&quot;;
+
+@Component({
+  selector: &quot;my-app&quot;,
+  templateUrl: &quot;groceries/groceries.component.html&quot;,
+  providers: [GroceryService]
+})
+export class GroceriesComponent {
+  grocery: String;
+  groceries: Array&lt;Grocery&gt;;
+
+  constructor(private groceryService: GroceryService) {}
+
+  ngOnInit() {
+    this.groceries = this.groceryService.get();
+  }
+
+  add() {
+    this.groceryService.add(this.grocery);
+    this.grocery = &quot;&quot;;
+  }
+}
+</code></pre>
+<p>After that, copy and paste the contents of <code>app.component.html</code> into <code>groceries.component.html</code>, and delete the <code>app.component.html</code> file.</p>
+<p>Finally, update the following three files as follows.</p>
+<p><code>app.routes.ts</code>:</p>
+<pre><code class="lang-TypeScript">import {RouterConfig} from &quot;@angular/router&quot;;
+import {nsProvideRouter} from &quot;nativescript-angular/router&quot;
+import {GroceriesComponent} from &quot;./groceries/groceries.component&quot;;
+
+export const routes: RouterConfig = [
+  { path: &quot;&quot;, component: GroceriesComponent }
+];
+
+export const APP_ROUTER_PROVIDERS = [
+  nsProvideRouter(routes, {})
+];
+</code></pre>
+<p><code>app.component.ts</code>:</p>
+<pre><code class="lang-TypeScript">import {RouterConfig} from &quot;@angular/router&quot;;
+import {nsProvideRouter} from &quot;nativescript-angular/router&quot;
+import {GroceriesComponent} from &quot;./groceries/groceries.component&quot;;
+
+export const routes: RouterConfig = [
+  { path: &quot;&quot;, component: GroceriesComponent }
+];
+
+export const APP_ROUTER_PROVIDERS = [
+  nsProvideRouter(routes, {})
+];
+</code></pre>
+<p><code>main.ts</code>:</p>
+<pre><code class="lang-TypeScript">import {nativeScriptBootstrap} from &quot;nativescript-angular/application&quot;;
+import {AppComponent} from &quot;./app.component&quot;;
+import {APP_ROUTER_PROVIDERS} from &quot;./app.routes&quot;;
+
+nativeScriptBootstrap(AppComponent, [APP_ROUTER_PROVIDERS]);
+</code></pre>
+<div class="exercise-end"></div>
+
+<p>With that your app hasn’t changed, but you’ve moved files around so that you’re setup to add additional routes. Let’s do that!</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Scafold out a new route
+</h4>
+
+<p>Create a new <code>about</code> folder within the <code>app</code> folder, and add two files named <code>about.component.html</code> and <code>about.component.ts</code>.</p>
+<div class="no-copy-button"></div>
+
+<pre><code>app
+├── about
+│   ├── about.component.html
+│   └── about.component.ts
+├── groceries
+│   └── ...
+└── ...
+</code></pre><p>Paste the following code in for <code>about.component.html</code>:</p>
+<pre><code class="lang-XML">&lt;ActionBar title=&quot;About&quot;&gt;&lt;/ActionBar&gt;
+
+&lt;StackLayout&gt;
+  &lt;Label height=&quot;100&quot; text=&quot;Groceries is a simple grocery management app.&quot; textWrap=&quot;true&quot;&gt;&lt;/Label&gt;
+&lt;/StackLayout&gt;
+</code></pre>
+<p>And the following code to your <code>about.component.ts</code> file:</p>
+<pre><code class="lang-TypeScript">import { Component, OnInit } from &quot;@angular/core&quot;;
+
+@Component({
+  selector: &quot;my-app&quot;,
+  templateUrl: &quot;about/about.component.html&quot;
+})
+export class AboutComponent {}
+</code></pre>
+<p>Next, open <code>groceries.component.html</code> back up and add the following code to the very top of the file:</p>
+<pre><code class="lang-TypeScript">&lt;ActionBar title=&quot;Groceries&quot;&gt;
+  &lt;ActionItem text=&quot;About&quot; (tap)=&quot;navigate()&quot;&gt;&lt;/ActionItem&gt;
+&lt;/ActionBar&gt;
+</code></pre>
+<p>After that, open <code>groceries.component.ts</code> and add the method below to the <code>GroceriesComponent</code> class:</p>
+<pre><code class="lang-TypeScript">navigate() {
+  this.routerExtensions.navigate([&quot;/about&quot;]);
+}
+</code></pre>
+<p>Finally, replace the contents of <code>app.routes.ts</code> with the code below, which registers the new about route.</p>
+<pre><code class="lang-TypeScript">import {RouterConfig} from &quot;@angular/router&quot;;
+import {nsProvideRouter} from &quot;nativescript-angular/router&quot;
+
+import {AboutComponent} from &quot;./about/about.component&quot;;
+import {GroceriesComponent} from &quot;./groceries/groceries.component&quot;;
+
+export const routes: RouterConfig = [
+  { path: &quot;&quot;, component: GroceriesComponent },
+  { path: &quot;about&quot;, component: AboutComponent },
+];
+
+export const APP_ROUTER_PROVIDERS = [
+  nsProvideRouter(routes, {})
+];
+</code></pre>
+<div class="exercise-end"></div>
+
+<p>At this point you now have two routes, but let’s try tweaking how the routing works with a challenge.</p>
+<h4 class="exercise-start">
+    <b>Challenge</b>: Configure routing
+</h4>
+
+<p>You have two tasks in this challenge: first you must make the navigation from the main component to the about component perform a flip animation, and second you must make the “About” button appear on the right-hand side of the ActionBar on iOS. (If you’re only setup to run Android, work with someone nearby on iOS for this one.)</p>
+<p>Here are some documentation pages you can refer to for help:</p>
+<ul>
+<li><a href="https://docs.nativescript.org/angular/core-concepts/angular-navigation.html#specifying-page-transitions">Specifying page transitions</a></li>
+<li><a href="https://docs.nativescript.org/angular/ui/action-bar.html#ios-specifics">iOS specifics of working with NativeScript ActionBars</a></li>
+</ul>
+<div class="solution-start"></div>
+
+<p>Change the <code>navigate()</code> method in <code>groceries.component.ts</code> to use the code below:</p>
+<pre><code class="lang-TypeScript">navigate() {
+  this.routerExtensions.navigate([&quot;/about&quot;], {
+    transition: {
+      name: &quot;flip&quot;
+    }
+  });
+}
+</code></pre>
+<p>Change the <code>ActionItem</code> in <code>groceries.component.html</code> to have a new <code>ios.position</code> attribute:</p>
+<pre><code class="lang-XML">&lt;ActionItem text=&quot;About&quot; (tap)=&quot;navigate()&quot; ios.position=&quot;right&quot;&gt;&lt;/ActionItem&gt;
+</code></pre>
+<div class="solution-end"></div>
+
+<div class="exercise-end"></div>
+
+<p>With routing out of the way, let’s now look at what is perhaps NativeScript’s coolest feature: the ability to access native iOS and Android APIs.</p>
 <h3 id="accessing-native-ios-and-android-apis">Accessing native iOS and Android APIs</h3>
 
 			</div>
