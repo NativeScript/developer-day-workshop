@@ -63,12 +63,276 @@
 			<hr>
 			<div class="chapter">
 				<h2 id="the-user-interface">The user interface</h2>
-<p>Now that you’ve gotten a feel for how NativeScript apps work, let’s shift our focus to the user interface. In our second hands-on workshop, you’ll learn about using UI components, styling them with CSS, and animating them with NativeScript’s robust animation library.</p>
+<p>Now that you’ve gotten a feel for how NativeScript apps work, let’s shift our focus to the user interface. In our second hands-on workshop, you’ll learn about using UI components, styling them with CSS, and animating them with NativeScript’s robust animation library. In this workshop, we&#39;ll create an adorable Kitten Adoption app with a card interface.</p>
 <h3 id="adding-ui-components">Adding UI components</h3>
-<h3 id="organizing-components-with-layouts">Organizing components with layouts</h3>
-<h3 id="styling-apps-with-css">Styling apps with CSS</h3>
-<h3 id="creating-robust-animations">Creating robust animations</h3>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Create a new app
+</h4>
 
+<p>Let&#39;s create a new NativeScript app for this workshop:</p>
+<pre><code>tns create WorkshopTwo --ng
+</code></pre><p>Next, change directories into your new project:</p>
+<pre><code>cd WorkshopTwo
+</code></pre><div class="exercise-end"></div>
+
+<p>Open this new project up in Visual Studio Code (you can type <code>code .</code>) and add our first UI component.</p>
+<p>First, let&#39;s take a look at the files we will need to work with. Notice in the <code>/app</code> folder of your project there is a file called <code>app.component.ts</code>. This is where you put the functions that are called by the front-end file, <code>app.component.html</code>.</p>
+<p>Open <code>app.component.html</code> and delete everything there.</p>
+<p>Start your app&#39;s livesyncing process on iOS by typing into the command line:</p>
+<pre><code>tns livesync ios --watch
+</code></pre><p>For Android, we recommend using Genymotion; open Genymotion and start an emulator running. type:</p>
+<pre><code>tns livesync android --watch
+</code></pre><p>Now, when you make changes to your code, your app will refresh in the emulator.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Add your first UI element
+</h4>
+
+<p>Native apps need native-looking controls. We will create a native ActionBar using XML markup. In <code>app.component.html</code>, delete all the markup and replace it with this line:</p>
+<pre><code>&lt;ActionBar title=&quot;Adopt A Kitten!&quot;&gt;&lt;/ActionBar&gt;
+</code></pre><div class="exercise-end"></div>
+
+<p>Before we go further, we need some data that we can layout on the screen. Let&#39;s grab ten kitten images from <a href="http://placekitten.com">placekitten.com</a> to have them ready to place on our app screen.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Get some data ready
+</h4>
+
+<p>We won&#39;t go into the details now of binding your data to UI as you&#39;ll cover this in the next workshop.</p>
+<p>Open <code>app.component.ts</code> and delete everything there. Replace it with the code below:</p>
+<pre><code>import {Component} from &quot;@angular/core&quot;;
+
+        @Component({
+            selector: &quot;my-app&quot;,
+            templateUrl: &quot;app.component.html&quot;
+        })
+        export class AppComponent {
+          public kittens: Array&lt;any&gt;;
+          public url: string;
+          public counter:number = 200;
+
+            constructor() {
+                this.kittens = [];
+                this.url = &#39;https://placekitten.com/200/&#39;;
+
+                for (var i = 0; i &lt; 10; i++) {
+                    this.counter++;
+                    console.log(this.url+this.counter)
+                    this.kittens.push(this.url+this.counter);
+                }
+            }   
+        }
+</code></pre><p>We&#39;ll use this data in our layout in the next section.</p>
+<div class="exercise-end"></div>
+
+<h3 id="types-of-layouts">Types of layouts</h3>
+<p>There are five basic layouts offered by NativeScript that correspond to standard native ways of laying elements out onto a page: StackLayout, GridLayout, WrapLayout, DockLayout, and AbsoluteLayout. Let&#39;s take a look at these.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Experiment with layouts
+</h4>
+
+<p>One of the simplest layouts is a StackLayout, which simply stacks elements on top of each other. Paste this code under the ActionBar: </p>
+<pre><code>&lt;StackLayout horizontalAlignment=&quot;center&quot;&gt;
+    &lt;Image [src]=&quot;kittens[0]&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[1]&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[2]&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+&lt;/StackLayout&gt;
+</code></pre><p>If you need to position your element in an exact spot, use AbsoluteLayout:</p>
+<pre><code>&lt;AbsoluteLayout&gt;
+     &lt;Image [src]=&quot;kittens[0]&quot; left=&quot;100&quot; top=&quot;100&quot; width=&quot;200&quot; height=&quot;200&quot; &gt;&lt;/Image&gt;
+&lt;/AbsoluteLayout&gt;
+</code></pre><p>Try a grid layout by replacing the AbsoluteLayout with the snippet below. You can have control over the format of your grid by tweaking the &#39;*&#39; values. Note the columns/rows vs col/row values.</p>
+<pre><code>&lt;GridLayout columns=&quot;*,*,*&quot; rows=&quot;*,*,*,*&quot;&gt;
+    &lt;Image [src]=&quot;kittens[0]&quot; col=&quot;0&quot; row=&quot;0&quot; colSpan=&quot;2&quot; rowSpan=&quot;2&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[1]&quot; col=&quot;2&quot; row=&quot;0&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[2]&quot; col=&quot;2&quot; row=&quot;1&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[3]&quot; col=&quot;0&quot; row=&quot;2&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[4]&quot; col=&quot;1&quot; row=&quot;2&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[5]&quot; col=&quot;2&quot; row=&quot;2&quot; rowSpan=&quot;2&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[7]&quot; col=&quot;0&quot; row=&quot;3&quot; colSpan=&quot;2&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
+&lt;/GridLayout&gt;
+</code></pre><p>If you need elements &#39;docked&#39; onto the top, bottom, and/or sides of your app interface, try a DockLayout:</p>
+<pre><code>&lt;DockLayout&gt;
+    &lt;Image dock=&quot;left&quot; width=&quot;80&quot; [src]=&quot;kittens[0]&quot; stretch=&quot;aspectFill&quot;&gt;&lt;/Image&gt;
+    &lt;Image dock=&quot;top&quot; height=&quot;80&quot; [src]=&quot;kittens[1]&quot; stretch=&quot;aspectFill&quot;&gt;&lt;/Image&gt;
+    &lt;Image dock=&quot;right&quot; width=&quot;80&quot; [src]=&quot;kittens[2]&quot; stretch=&quot;aspectFill&quot;&gt;&lt;/Image&gt;
+    &lt;Image dock=&quot;bottom&quot; height=&quot;80&quot; [src]=&quot;kittens[3]&quot; stretch=&quot;aspectFill&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[4]&quot; stretch=&quot;aspectFill&quot;&gt;&lt;/Image&gt;
+&lt;/DockLayout&gt;
+</code></pre><p><b>Bonus!</b> Finally, try a ListView - which isn&#39;t a layout per se but deserves to be tried out. This one has some fancy layouting with left and right alignment:</p>
+<pre><code>&lt;ListView [items]=&quot;kittens&quot;&gt;
+    &lt;template let-item=&quot;item&quot; let-odd=&quot;odd&quot; let-even=&quot;even&quot;&gt;
+        &lt;DockLayout&gt;
+            &lt;Image [src]=&quot;item&quot; width=&quot;50&quot; height=&quot;50&quot; dock=&quot;{{ odd ? &#39;left&#39; : &#39;right&#39; }}&quot;&gt;&lt;/Image&gt;
+            &lt;Label text=&quot;minou&quot; textWrap=&quot;true&quot; horizontalAlignment=&quot;{{ odd ? &#39;left&#39; : &#39;right&#39; }}&quot;&gt;&lt;/Label&gt;
+        &lt;/DockLayout&gt;
+    &lt;/template&gt;
+&lt;/ListView&gt;
+</code></pre><div class="exercise-end"></div>
+
+<p>You can mix and match layouts, and have full control over the way your app looks using proper layouting.</p>
+<h3 id="create-a-custom-layout">Create a custom layout</h3>
+<p>Now it&#39;s time to have some fun with creating a little functional layout for our kitten adoption app. We&#39;re going to create a card layout by combining StackLayout and WrapLayout.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Place the kitten images in a scrolling StackLayout
+</h4>
+
+<p>What happens if you just put an array of kitten images within a StackLayout?</p>
+<p>In <code>app.component.html</code>, add the following under the ActionBar:</p>
+<pre><code>&lt;StackLayout&gt;
+    &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+&lt;/StackLayout&gt;
+</code></pre><p>The images are stacked, but they don&#39;t scroll.</p>
+<p>Nest this StackLayout into a ScrollView:</p>
+<pre><code>&lt;ScrollView&gt;
+  &lt;StackLayout&gt;
+      &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+      &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+      &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+      &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+      &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+  &lt;/StackLayout&gt; 
+&lt;/ScrollView&gt;
+</code></pre><div class="exercise-end"></div>
+
+<blockquote>
+    <p><strong>Note</strong>: If your iOS app complains about not being able to load insecure content, follow the instructions <a href="https://www.thepolyglotdeveloper.com/2015/12/fix-ios-9-app-transport-security-issues-in-nativescript/">here</a> and rebuild your app by running <code>tns run ios</code>.</p>
+</blockquote>
+
+<p>It&#39;s all fine to add images manually to an app, but any data-driven app will need to have data loaded dynamically. Let&#39;s get our StackLayout to loop, so we can start creating cards.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Create the kitten cards
+</h4>
+
+<p>In <code>app.component.html</code>, replace the current ScrollView with a layout that is generated dynamically:</p>
+<pre><code>&lt;ScrollView&gt;
+    &lt;StackLayout *ngFor=&quot;let kitten of kittens&quot;&gt;
+       &lt;Image [src]=&quot;kitten&quot;&gt;&lt;/Image&gt;
+    &lt;/StackLayout&gt;     
+&lt;/ScrollView&gt;
+</code></pre><div class="exercise-end"></div>
+
+<p>Notice the actual images (there should be 10) aren&#39;t laid out in a loop. We need to nest our layout to do this.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Dynamically layout the cards
+</h4>
+
+<p>In <code>app.component.html</code>, replace the current ScrollView with a WrapLayout that will allow the StackLayout to loop.</p>
+<pre><code>&lt;ScrollView&gt;
+    &lt;WrapLayout&gt;
+        &lt;StackLayout *ngFor=&quot;let kitten of kittens&quot;&gt;
+           &lt;Image [src]=&quot;kitten&quot;&gt;&lt;/Image&gt;
+        &lt;/StackLayout&gt;
+    &lt;/WrapLayout&gt;     
+&lt;/ScrollView&gt;
+</code></pre><p>This allows the layout to loop, but the cards don&#39;t look very good. Let&#39;s control the width of the cards by making their width a percentage and align them horizontally:</p>
+<pre><code>&lt;StackLayout width=&quot;40%&quot; *ngFor=&quot;let kitten of kittens&quot; horizontalAlignment=&quot;center&quot;&gt;
+</code></pre><p>Align the cards to the center by controlling the alignment of the WrapLayout:</p>
+<pre><code>&lt;WrapLayout horizontalAlignment=&quot;center&quot;&gt;
+</code></pre><p>Now we have a wrapping layout of cards dynamically loaded onto the screen!</p>
+<p>The final thing we want to do to these cards is to add a caption underneath the image. Add a caption of your own under the image:</p>
+<pre><code>&lt;Label text=&quot;p&#39;tit minou&quot; horizontalAlignment=&quot;center&quot;&gt;&lt;/Label&gt;
+</code></pre><div class="exercise-end"></div>
+
+<blockquote>
+    <p><strong>CHALLENGE!</strong>: Can you find a nicer way to layout these cards? Experiment with GridLayouts and AbsoluteLayouts. Show us your results!</p>
+</blockquote>
+
+<h3 id="styling-apps-with-css">Styling apps with CSS</h3>
+<p>The cards are laid out properly, but they don&#39;t look very good. Time to add some styles!</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Add some color
+</h4>
+
+<p>Choose a pallette of color from <a href="http://coolors.co">Coolors.co</a> or another pallette generator of your choice.</p>
+<p>Attach a style sheet to your app by editing the <code>@Component</code> block in <code>app.component.ts</code>:</p>
+<pre><code>@Component({
+    selector: &quot;my-app&quot;,
+    templateUrl: &quot;app.component.html&quot;,
+    styleUrls: [&quot;app.css&quot;]
+})
+</code></pre><p>Delete everything in app.css. Add some color to the ActionBar and the Page background by adding a few styles to this file:</p>
+<pre><code>Page {
+    background-color: #EBEBD3;
+}
+
+ActionBar {
+    background-color: #083D77;
+    color: #EBEBD3;
+}
+</code></pre><p>Style the card by adding a css class to the StackLayout in <code>app.component.html</code>:</p>
+<pre><code>&lt;StackLayout width=&quot;40%&quot; *ngFor=&quot;let kitten of kittens&quot; horizontalAlignment=&quot;center&quot; class=&quot;card&quot;&gt;
+</code></pre><p>Finally, add styles to the card itself by adding this style to <code>app.css</code>:</p>
+<pre><code>.card {
+    background-color: #DA4167;
+    margin: 10;
+    border-radius: 5;
+    color: #EBEBD3;
+}
+</code></pre><div class="exercise-end"></div>
+
+<blockquote>
+    <p><strong>CHALLENGE!</strong>: Can you find a nicer way to layout these cards? Experiment with GridLayouts and AbsoluteLayouts. Show us your results!</p>
+</blockquote>
+
+<p>Congratulations! With a bit of code, you&#39;ve succesfully created a nice card interface!</p>
+<h3 id="creating-robust-animations">Creating robust animations</h3>
+<p>The more mobile app development you do, the more you realize that clean animations are not just a &#39;nice-to-have&#39;, they are a &#39;must-have&#39;. Fortunately, NativeScript makes animating components really easy!</p>
+<p>There are two ways to animate in NativeScript - let&#39;s look at the first way, which is to use the animation library.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Animate a card
+</h4>
+
+<p>First, we need to pass through a reference to the card we want to animate, and we do that in the <code>app.component.html</code> XML by giving it an id and adding a function that will fire when we tap the card:</p>
+<pre><code>&lt;StackLayout (tap)=&quot;flip(card)&quot; #card width=&quot;40%&quot; *ngFor=&quot;let kitten of kittens&quot; horizontalAlignment=&quot;center&quot; class=&quot;card&quot;&gt;
+</code></pre><p>Next, open <code>app.component.ts</code> and import the Animation library at the top:</p>
+<pre><code>import { Animation } from &quot;ui/animation&quot;;
+</code></pre><p>Then, build out the <code>animate()</code> function. Add this function under the constructor:</p>
+<pre><code>animate(card) {
+       card.animate({ opacity: 0 })
+            .then(function () { return card.animate({ opacity: 1 }); })
+            .then(function () { return card.animate({ translate: { x: 100, y: 100 } }); })
+            .then(function () { return card.animate({ translate: { x: 0, y: 0 } }); })
+            .then(function () { return card.animate({ scale: { x: 3, y: 3 } }); })
+            .then(function () { return card.animate({ scale: { x: 1, y: 1 } }); })
+            .then(function () { return card.animate({ rotate: 180 }); })
+            .then(function () { return card.animate({ rotate: 0 }); })
+            .then(function () {
+            console.log(&quot;Animation finished&quot;);
+        })
+            .catch(function (e) {
+            console.log(e.message);
+        });    
+    }
+</code></pre><p>As you can see, we are chaining several animations together using promises. When one completes, the next fires. </p>
+<div class="exercise-end"></div>
+
+<blockquote>
+    <p><strong>CHALLENGE!</strong>: Create a different animation using the Animation library as documented here: <a href="https://docs.nativescript.org/ui/animation">https://docs.nativescript.org/ui/animation</a></p>
+</blockquote>
+
+<p>Now, let&#39;s take a look at the other way of animating elements on the screen; by using CSS keyframe animation. Let&#39;s make the cards fade in during the page loading process. </p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Add a keyframe animation
+</h4>
+
+<p>To do this, we simply need to tweak the CSS, so open <code>app.css</code> and add a <code>@keyframes</code> rule named <code>card</code>:</p>
+<pre><code>@keyframes card {
+    from { opacity: 0 }
+    to { opacity: 1}
+}
+</code></pre><p>Then, add these lines to the <code>.card</code> class:</p>
+<pre><code>    animation-name: card;
+    animation-duration: 4s;
+    opacity: 0;
+</code></pre><p>The app should refresh and the cards will fade in. </p>
+<div class="exercise-end"></div>
+
+<blockquote>
+    <p><strong>CHALLENGE!</strong>: What else can you do with CSS animations?</p>
+</blockquote>
 			</div>
 			<hr>
 			<div class="chapter">
