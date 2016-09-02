@@ -650,11 +650,15 @@ With the ability to delete groceries implemented, let’s try one additional cha
     <b>Challenge</b>: Add groceries on “Enter” presses
 </h4>
 
-THE EXPLANATION!
+Currently you can add groceries by tapping on the “Add” button. But it would be nice if you could also add by pressing the DONE button (or Enter/Return when in a simulator). As a hint, try searching for “return” on the [TextField’s API documentation](http://docs.nativescript.org/api-reference/classes/_ui_text_field_.textfield.html).
 
 <div class="solution-start"></div>
 
-SOLUTION!
+Change the `<TextField>` in `groceries.component.html` to use the code below, which adds a new `returnKeyType` property and `returnPress` event handler.
+
+``` XML
+<TextField col="0" hint="Enter a grocery" [(ngModel)]="grocery" returnKeyType="done" (returnPress)="add()"></TextField>
+```
 
 <div class="solution-end"></div>
 
