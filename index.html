@@ -521,7 +521,94 @@ export const APP_ROUTER_PROVIDERS = [
 <div class="exercise-end"></div>
 
 <p>With routing out of the way, let’s now look at what is perhaps NativeScript’s coolest feature: the ability to access native iOS and Android APIs.</p>
-<h3 id="accessing-native-ios-and-android-apis">Accessing native iOS and Android APIs</h3>
+<h3 id="adding-additional-angular-functionality">Adding additional Angular functionality</h3>
+<p>Now that you have a bit of Angular experience let’s try adding a few additional features to this groceries app. This section will be a super special ALL CHALLENGES SECTION—meaning, we’re going to suggest some new functionality for the application, and leave it up to you to do the implementations. No worries though, we’ll provide tips to point you in the right direction, as well as the solutions if you’d like to cheat 😀</p>
+<h4 class="exercise-start">
+    <b>Challenge</b>: Add delete functionality
+</h4>
+
+<p>A grocery list is kind of useless if you can’t delete from the list, and your challenge is to implement a UI that allows users to do that. There are many ways you can choose to implement a UI like this. One potential option is laid out in the Solution below, however, you’re free to take any approach you’d like.</p>
+<div class="solution-start"></div>
+
+<p>First, update the <code>&lt;template&gt;</code> in <code>groceries.component.html</code> to use the code below:</p>
+<pre><code class="lang-XML">&lt;template let-item=&quot;item&quot;&gt;
+  &lt;GridLayout columns=&quot;*, auto&quot;&gt;
+    &lt;Label col=&quot;0&quot; [text]=&quot;item.name&quot;&gt;&lt;/Label&gt;
+    &lt;Label col=&quot;1&quot; (tap)=&quot;delete(item)&quot; text=&quot;Delete&quot; color=&quot;red&quot;&gt;&lt;/Label&gt;
+  &lt;/GridLayout&gt;
+&lt;/template&gt;
+</code></pre>
+<p>Next, add the following function to the <code>GroceriesComponent</code> class in <code>groceries.component.ts</code>:</p>
+<pre><code class="lang-TypeScript">delete(grocery: Grocery) {
+  this.groceryService.delete(grocery);
+}
+</code></pre>
+<p>Finally, replace the <code>groceries.service.ts</code> file with the code below, which adds a new <code>delete()</code> method, as well as a minor refactor to save changes on additions and deletions.</p>
+<pre><code class="lang-TypeScript">import { Injectable } from &quot;@angular/core&quot;;
+import { getString, setString } from &quot;application-settings&quot;;
+
+import { Grocery } from &quot;./grocery&quot;;
+
+@Injectable()
+export class GroceryService {
+  private groceries: Array&lt;Grocery&gt;;
+
+  constructor() {
+    this.groceries = [];
+    let savedGroceriesString = getString(&quot;groceries&quot;); 
+    if (savedGroceriesString) {
+      savedGroceriesString.split(&quot;,&quot;).forEach((grocery) =&gt; {
+        this.groceries.push(new Grocery(grocery));
+      });
+    }
+  }
+
+  get() {
+    return this.groceries;
+  }
+
+  add(name) {
+    this.groceries.unshift(new Grocery(name));
+    this.save();
+  }
+
+  delete(grocery: Grocery) {
+    let index = -1;
+    this.groceries.forEach((item: Grocery, i) =&gt; {
+      if (item === grocery) {
+        index = i;
+      }
+    });
+    this.groceries.splice(index, 1);
+    this.save();
+  }
+
+  private save() {
+    let names = this.groceries.map((item: Grocery) =&gt; {
+      return item.name;
+    });
+    setString(&quot;groceries&quot;, names.toString());
+  }
+}
+</code></pre>
+<div class="solution-end"></div>
+
+<div class="exercise-end"></div>
+
+<p>With the ability to delete groceries implemented, let’s try one additional challenge.</p>
+<h4 class="exercise-start">
+    <b>Challenge</b>: Add groceries on “Enter” presses
+</h4>
+
+<p>THE EXPLANATION!</p>
+<div class="solution-start"></div>
+
+<p>SOLUTION!</p>
+<div class="solution-end"></div>
+
+<div class="exercise-end"></div>
+
+<p>And that’s it. It’s time for lunch, and then back to more NativeScript and Angular 2!</p>
 
 			</div>
 			<hr>
