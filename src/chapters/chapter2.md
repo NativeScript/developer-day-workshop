@@ -255,10 +255,10 @@ Download Visual Studio Code [from it's official download page](https://code.visu
 Now we will add NativeScript extensions to Visual Studio Code.
 Just run VS Code and go to the Extensions tab (on mac press `shift + command + x` on windows press `shift + ctrl + x`). 
 From here search for 'nativescript', once the search returns reults install `NativeScript` and `NativeScript + Angular 2 Snippets`
-![Search result and install](https://github.com/NativeScript/developer-day-workshop/tree/gh-pages/images/vscode-nsext-install.png)
+![Search result and install](../../images/vscode-nsext-install.png)
 
 Installing each them shouldn't take too long, once ready you will be prompted to enable the extensions, just click on enable next to one of the modules, which will restart VS Code and you will be ready to go
-![Search result and install](https://github.com/NativeScript/developer-day-workshop/tree/gh-pages/images/vscode-nsext-enable.png)
+![Search result and install](../../images/vscode-nsext-enable.png)
 
 <div class="exercise-end"></div>
 
@@ -283,7 +283,7 @@ For this exercise add the following componenents using code snippets.
  * TextField with the `hint` set to `password...` -> `nstextfield`
  * Button with the `text` set `Sign In` -> `nsbtn`
 
-![Creating login screen](https://github.com/NativeScript/developer-day-workshop/tree/gh-pages/images/vscode-using-snippets.gif)
+![Creating login screen](../../images/vscode-using-snippets.gif)
 
 When done, run the app and see what you got.
 
