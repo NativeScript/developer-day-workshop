@@ -52,12 +52,208 @@
 			<div class="chapter">
 				<h2 id="the-basics">The basics</h2>
 <p>For our first hands-on workshop, you’ll learn how to build and manage NativeScript apps, as well as how to make simple changes and debug your code.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>In order to complete all of todays&#39; workshops you need the NativeScript CLI installed on your machine.</p>
+<p><a href="https://docs.nativescript.org/start/quick-setup">Here are the instructions on how to do it</a></p>
 <h3 id="how-the-cli-works">How the CLI works</h3>
+<p>The CLI allows you to perform various tasks from creating a new project, building an app to importing plugins.
+All the CLI commands start with a prefix <code>tns</code></p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Create your first project
+</h4>
+
+<p>Open your terminal (Mac) or command line console (Windows) and navigate to the folder where you want to create your first project. Now run the following command:</p>
+<pre><code>tns create WorkshopOne --ng
+</code></pre><p><code>WorkshopOne</code> is the name of the project, while <code>--ng</code> tells the CLI to create an ng2 type of project.</p>
+<p>When complete navigate into the created project folder:</p>
+<pre><code>cd WorkshopOne
+</code></pre><div class="exercise-end"></div>
+
+
+<p>At this point we have a hello world type of project, with a bit of simple logic.
+Now we need add the platforms we want to build this app for.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Adding mobile platforms
+</h4>
+
+<p>To add Android to your project run:</p>
+<pre><code>tns platform add android
+</code></pre><p>For iOS run:</p>
+<pre><code>tns platform add ios
+</code></pre><div class="exercise-end"></div>
+
+
+<h4 class="exercise-start">
+
+Now we will learn how to build and run your apps.
+
+    <b>Exercise</b>: Running the app
+</h4>
+
+<p>To build an Android app and run it on a connected device or Genymotion instance call: </p>
+<pre><code>tns run android
+</code></pre><p>However if you want to run the app in an emulator you should call</p>
+<pre><code>tns run android --emulator
+</code></pre><p>The same applies to building and running iOS apps. Just swap <code>android</code> for <code>ios</code></p>
+<pre><code>tns platform add ios --emulator
+</code></pre><p>As a side note. If you called <code>tns run</code> and then realised that you want to make a change first, you can cancel the build by pressing <code>CTRL+C</code></p>
+<div class="exercise-end"></div>
+
+
+<p>Sometimes waiting for the build process can be a bit painful, especially when you need to rebuild the app every time you make a tiny change to the code.
+This is why the CLI has the <code>livesync</code> command, which allows you to build the app in such way, so that whenever you make a change in your code the app will get refreshed really quickly.
+To make it more insteresting, if you make a change to your <code>TypeScript</code> code, the CLI will parse it to <code>JavaScript</code> first and then refresh the app.</p>
+<h4 class="exercise-start">
+
+Streamlining the build process.
+
+    <b>Exercise</b>: Livesync
+</h4>
+
+<p>Build your app using the <code>livesync</code> command and then open <code>app.css</code>, make some changes to the styling and save the file.</p>
+<pre><code>tns livesync android --watch
+</code></pre><p>or </p>
+<pre><code>tns livesync ios --emulator --watch
+</code></pre><div class="exercise-end"></div>
+
+
+<h4 class="exercise-start">
+
+    <b>Exercise</b>: Debugging
+</h4>
+Build your app in the debug mode using the following command.
+This should launch debugging tools for you. Once that is ready find app.component.js add a breakpoint to <code>onTap()</code> then tap on the button and try to explore what you can do with it.
+
+<code>tns debug android</code>
+
+<code>tns debug ios --emulator</code>
+
+Here is an interesting thing. Launching a debugger is a very slow process, but yet again <code>livesync</code> comes in to save the day.
+You can run the debugger in the livesync mode by adding <code>--watch</code> at the end of the command, like this:
+
+<code>tns debug android --watch</code>
+
+<div class="exercise-end"></div>
+
+
+Now that we know how to build the apps, let&#39;s add an npm module to the project to help us with getting additional functionality.
+If you go to <a href="https://www.npmjs.com/search?q=nativescript"><code>npmjs</code> and search for <code>nativescript</code></a> you will get a long list of NativeScript specific npm modules that might come in handy when building an app.
+
+<h4 class="exercise-start">
+Here we will learn how to add an npm module.
+
+    <b>Exercise</b>: Installing a NativeScript plugin from npm
+</h4>
+
+<p>The usual way to add an npm module would be to call <code>npm i module-name</code>, however when it comes to installing NativeScript specific plugins it is better to call <code>tns plugin add module-name</code>. That is because <code>tns plugin add</code> will do all that <code>npm install</code> does plus it configures any native dependencies that the plugin may need to use. This might include installing additional native iOS and/or components.</p>
+<p>Let&#39;s add the <a href="https://www.npmjs.com/package/nativescript-appinfo">appinfo plugin</a>, which will allow us to get info like the <code>version name</code>, <code>build number</code> and <code>app ID</code>.</p>
+<pre><code>tns plugin add nativescript-appinfo
+</code></pre><p>Once you run this command you should be able to see the <code>nativescript-appinfo</code> module inside the <code>node_modules</code> folder and also the dependency to the module should be added to the <code>package.json</code> at the root of the project (not the one in the <code>app</code> folder)</p>
+<p>Now let&#39;s try to use the <code>nativescript-appinfo</code> module.
+Open <code>app.component.ts</code> and add the following line to the top of the file (or anywhere before <code>@Component</code> starts):</p>
+<pre><code>var appinfo = require(&quot;nativescript-appinfo&quot;);
+</code></pre><p>This will give us access to the appinfo module in this area of code.</p>
+<p>Now we can call the <code>appinfo</code> instance to get some app information. Add the following piece of code inside the <code>onTap()</code> function:</p>
+<pre><code>appinfo.getAppId()
+    .then(function(id) {
+        console.log(&quot;Your app&#39;s id is: &quot; + id);
+    });
+</code></pre><p>Now build the app and see what happens when you tap the button.</p>
+<p>As a bonus exercise: run this app in the <code>debug mode</code> and a break point at <code>getAppId()</code> and try to step in to getAppId function to see what happens.</p>
+<div class="exercise-end"></div>
+
+
 <h3 id="nativescript-folder-structure">NativeScript folder structure</h3>
+<p>At the root of the project we have <code>package.json</code>, which contains all npm dependencies and project configuration.
+This is where you can change the id of the project or the app version.</p>
+<p>On top of that NativeScript project is made of a number of folders, however you should mainly pay attention to 3 of them.</p>
+<h4 id="the-app-folder">the <code>app</code> folder</h4>
+<p>This is where the code of the application goes.</p>
+<p>Some of the most notable files here are:</p>
+<ul>
+<li><code>main.ts</code> - is where the application starts. It is also the file where you can initialize the routing configuration for page navigation.</li>
+<li><code>app.css</code> - is the global css file, the styling contained here is applied accross the whole of the application</li>
+<li><code>app.component</code> - by default it contains the firts angular component that get&#39;s loaded when you run the app, however most apps that you will work on will probably use a different component as the starting one.  </li>
+<li><code>App_Resources\Android\app.gradle</code> - this file contains Android build configuration options. Whenever your app requires permissions to access specific functionality (like contacts or GPS), this is where the necessary configuration goes</li>
+</ul>
+<h4 id="the-node_modules-folder">the <code>node_modules</code> folder</h4>
+<p>This folder contains all npm modules specified in the <code>package.json</code>.
+This folder can be easily regenerated, this means that you can safely delete it whenever you feel like.
+You should also refrain from pushing the folder into <code>github</code> or any source control.</p>
+<h4 id="the-platforms-folder">the <code>platforms</code> folder</h4>
+<p>This is the build folder for each of your platforms.
+Just like the <code>node_modules</code> folder, this folder can be regenared at will, so you should never add it to your source control.</p>
 <h3 id="managing-platforms-and-node_modules-">Managing <code>platforms</code> and <code>node_modules</code></h3>
-<h3 id="making-your-first-change">Making your first change</h3>
-<h3 id="working-in-visual-studio-code">Working in Visual Studio Code</h3>
-<h3 id="setting-up-a-debugging-workflow">Setting up a debugging workflow</h3>
+<p>When you clone an existing github project, the project will already contain a list of required npm modules (which you can view the <code>package.json</code> file) together with selected platforms (Android and/or iOS) it is designed to work for.
+These will get automatically downloaded when you build the project, however until the modules get loaded TypeScript won&#39;t be able to provide you with the support for these modules.
+The best thing to do at this stage is to call:</p>
+<pre><code>tns install
+</code></pre><p>Which will download and configure all the required modules and platforms.</p>
+<h4 id="changing-npm-module-version">Changing npm module version</h4>
+<p>When you want to change the version of an npm module, just find it in <code>package.json</code> change the version to the one you need, then delete it from the <code>node_modules</code> folder and finally run <code>tns install</code>.</p>
+<h4 id="trouble-shooting-new-npm-installs-not-working-as-expected-">Trouble shooting new npm installs not working as expected.</h4>
+<p>Sometimes freshly installed modules with Native dependencies don&#39;t seem to work.
+This usually happens when you built your app once already. Then you add a new npm module (which requires native Android or iOS support). And you are trying to use the module and run the app again. </p>
+<p>The best thing to do is to either delete the <code>platforms</code> folder and rerun the build or you could use the CLI to help you with the task by calling <code>tns platform add</code> and then <code>remove</code>.
+Just like this
+For Android:</p>
+<pre><code>tns platform remove android
+tns platform add android
+</code></pre><p>For iOS:</p>
+<pre><code>tns platform remove ios
+tns platform add ios
+</code></pre><h3 id="working-in-visual-studio-code">Working in Visual Studio Code</h3>
+<p>There are a number of IDEs that you might be used to work with, however for the purpose of this workshop we will focus on working with VS Code, which has a lot of really good features that can help you build NativeScript apps.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Setting up the IDE
+</h4>
+
+<p>Download Visual Studio Code <a href="https://code.visualstudio.com/download">from it&#39;s official download page</a> and install it.</p>
+<p>Now we will add NativeScript extensions to Visual Studio Code.
+Just run VS Code and go to the Extensions tab (on mac press <code>shift + command + x</code> on windows press <code>shift + ctrl + x</code>). 
+From here search for &#39;nativescript&#39;, once the search returns reults install <code>NativeScript</code> and <code>NativeScript + Angular 2 Snippets</code>
+<img src="../../images/vscode-nsext-install.png" alt="Search result and install"></p>
+<p>Installing each them shouldn&#39;t take too long, once ready you will be prompted to enable the extensions, just click on enable next to one of the modules, which will restart VS Code and you will be ready to go
+<img src="../../images/vscode-nsext-enable.png" alt="Search result and install"></p>
+<div class="exercise-end"></div>
+
+
+<h4 class="exercise-start">
+Now that VS Code is ready, let&#39;s see how it can be of service.
+We will start by playing with code snippets.
+
+    <b>Exercise</b>: Using code snippets
+</h4>
+
+<p>First open the <code>WorkshopOne</code> project folder in VS Code by using <code>file-&gt;open</code>.
+Then find <code>app\app.component.html</code> (this file contains the UI definition of app.component).</p>
+<p>Add a new line just before the closing <code>&lt;/StackLayout&gt;</code> tag and start typing <code>ns</code> immediately you will get a list of available snippets. If you keep typing the list of available snippets will narrow down.
+When you select one of the snippets and hit <code>enter</code> the text you were typing will be replaced with a snippet. Some snippets will have more than one place where you can type, you can <code>tab</code> through them.</p>
+<p>For this exercise add the following componenents using code snippets.</p>
+<ul>
+<li>Label with the <code>text</code> set to <code>Email:</code> -&gt; <code>nslabel</code></li>
+<li>TextField with the <code>hint</code> set to <code>email...</code> -&gt; <code>nstestfield</code></li>
+<li>Label with the <code>text</code> set to <code>Passowrd</code> -&gt; <code>nslabel</code></li>
+<li>TextField with the <code>hint</code> set to <code>password...</code> -&gt; <code>nstextfield</code></li>
+<li>Button with the <code>text</code> set <code>Sign In</code> -&gt; <code>nsbtn</code></li>
+</ul>
+<p><img src="../../images/vscode-using-snippets.gif" alt="Creating login screen"></p>
+<p>When done, run the app and see what you got.</p>
+<div class="exercise-end"></div>
+
+
+<p><h4 class="exercise-start">
+    <b>Exercise</b>: Building the project in VS Code
+</h4>
+Instruction of the exercise</p>
+<div class="exercise-end"></div>
+
+
+<p><h4 class="exercise-start">
+    <b>Exercise</b>: Debugging with VS Code
+</h4>
+Instruction of the exercise</p>
+<div class="exercise-end"></div>
 
 			</div>
 			<hr>
@@ -880,9 +1076,56 @@ export class GroceryService {
 			<hr>
 			<div class="chapter">
 				<h2 id="user-interface-deep-dive">User interface deep dive</h2>
-<h3 id="creating-and-styling-action-bars">Creating and styling action bars</h3>
+<p>Now that you have the basics down, as well as the basics of Angular, let’s look at some more advanced user interface concepts you can use to build your applications.</p>
 <h3 id="implementing-navigation-patterns">Implementing navigation patterns</h3>
-<h3 id="building-with-non-trivial-layouts">Building with non-trivial layouts</h3>
+<p>We’ll start with navigation patterns, as they’re one of the most important decisions you have to make when you start your applications. In this section we’ll cover the two most navigation patterns, tab bars and drawers, and show how to implement them in NativeScript.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Start up a new app
+</h4>
+
+<p>Go ahead and start up a new NativeScript app for this workshop:</p>
+<pre><code>tns create WorkshopFour --ng
+</code></pre><p>Next, change directories into your new project:</p>
+<pre><code>cd WorkshopFour
+</code></pre><p>After that, open the new project in Visual Studio Code, and replace the contents of <code>app.component.ts</code> with the code below:</p>
+<pre><code class="lang-TypeScript">import { Component } from &quot;@angular/core&quot;;
+
+@Component({
+  selector: &quot;my-app&quot;,
+  template: `
+&lt;TabView&gt;
+  &lt;StackLayout *tabItem=&quot;{title: &#39;Tab1&#39;}&quot;&gt;
+    &lt;Label text=&quot;This is Label in Tab 1&quot;&gt;&lt;/Label&gt;
+  &lt;/StackLayout&gt;
+  &lt;StackLayout *tabItem=&quot;{title: &#39;Tab2&#39;}&quot;&gt;
+    &lt;Label text=&quot;This is Label in Tab 2&quot;&gt;&lt;/Label&gt;
+  &lt;/StackLayout&gt;
+&lt;/TabView&gt;
+`
+})
+export class AppComponent {}
+</code></pre>
+<div class="exercise-end"></div>
+
+<p>This is what a very basic tab view looks like in an app built with NativeScript and Angular 2. Next, let’s add a side drawer to this same app so you can see each in action.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Start up a new app
+</h4>
+
+<p>In NativeScript, drawer navigation is implemented as part of <a href="http://www.telerik.com/nativescript-ui">UI for NativeSrcipt</a>. UI for NativeScript contains a variety of high-quality components for using in NativeScript applications. The two components we’ll use today are the SideDrawer and ListView controls, both of which are free to use.</p>
+<blockquote>
+<p><strong>NOTE</strong>: UI for NativeScript also features premium chart, calendar, and data form components, which we will not be covering today.</p>
+</blockquote>
+<p>To install UI for NativeScript, run the following command in your workshop four project:</p>
+<pre><code>tns plugin add nativescript-telerik-ui
+</code></pre><blockquote>
+<p><strong>TIP</strong>: You might need to hit <code>Ctrl</code> + <code>C</code> to kill the previous file watcher.</p>
+</blockquote>
+<p>Next, rerun your app using the <code>tns run</code> command.</p>
+<pre><code>tns run ios --watch
+</code></pre><p>Or</p>
+<pre><code>tns run android --watch
+</code></pre><div class="exercise-end"></div>
 
 			</div>
 			<hr>
