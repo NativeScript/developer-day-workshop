@@ -243,8 +243,65 @@ tns platform remove ios
 tns platform add ios
 ```
 
-### Making your first change
-
 ### Working in Visual Studio Code
+There are a number of IDEs that you might be used to work with, however for the purpose of this workshop we will focus on working with VS Code, which has a lot of really good features that can help you build NativeScript apps.
 
-### Setting up a debugging workflow
+<h4 class="exercise-start">
+    <b>Exercise</b>: Setting up the IDE
+</h4>
+
+Download Visual Studio Code [from it's official download page](https://code.visualstudio.com/download) and install it.
+
+Now we will add NativeScript extensions to Visual Studio Code.
+Just run VS Code and go to the Extensions tab (on mac press `shift + command + x` on windows press `shift + ctrl + x`). 
+From here search for 'nativescript', once the search returns reults install `NativeScript` and `NativeScript + Angular 2 Snippets`
+![Search result and install][https://github.com/NativeScript/developer-day-workshop/tree/gh-pages/images/vscode-nsext-install.png]
+
+Installing each them shouldn't take too long, once ready you will be prompted to enable the extensions, just click on enable next to one of the modules, which will restart VS Code and you will be ready to go
+![Search result and install][https://github.com/NativeScript/developer-day-workshop/tree/gh-pages/images/vscode-nsext-enable.png]
+
+<div class="exercise-end"></div>
+
+
+<h4 class="exercise-start">
+Now that VS Code is ready, let's see how it can be of service.
+We will start by playing with code snippets.
+ 
+    <b>Exercise</b>: Using code snippets
+</h4>
+
+First open the `WorkshopOne` project folder in VS Code by using `file->open`.
+Then find `app\app.component.html` (this file contains the UI definition of app.component).
+
+Add a new line just before the closing `</StackLayout>` tag and start typing `ns` immediately you will get a list of available snippets. If you keep typing the list of available snippets will narrow down.
+When you select one of the snippets and hit `enter` the text you were typing will be replaced with a snippet. Some snippets will have more than one place where you can type, you can `tab` through them.
+
+For this exercise add the following componenents using code snippets.
+ * Label with the `text` set to `Email:` -> `nslabel `
+ * TextField with the `hint` set to `email...` -> `nstestfield`
+ * Label with the `text` set to `Passowrd` -> `nslabel`
+ * TextField with the `hint` set to `password...` -> `nstextfield`
+ * Button with the `text` set `Sign In` -> `nsbtn`
+
+![Creating login screen][https://github.com/NativeScript/developer-day-workshop/tree/gh-pages/images/vscode-using-snippets.gif]
+
+When done, run the app and see what you got.
+
+<div class="exercise-end"></div>
+
+
+<h4 class="exercise-start">
+    <b>Exercise</b>: Building the project in VS Code
+</h4>
+Instruction of the exercise
+```
+code example
+```
+<div class="exercise-end"></div>
+
+
+<h4 class="exercise-start">
+    <b>Exercise</b>: Debugging with VS Code
+</h4>
+
+<div class="exercise-end"></div>
