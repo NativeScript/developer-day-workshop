@@ -182,9 +182,66 @@ As a bonus exercise: run this app in the `debug mode` and a break point at `getA
 
 <div class="exercise-end"></div>
 
+
 ### NativeScript folder structure
 
+At the root of the project we have `package.json`, which contains all npm dependencies and project configuration.
+This is where you can change the id of the project or the app version.
+
+On top of that NativeScript project is made of a number of folders, however you should mainly pay attention to 3 of them.
+
+#### the `app` folder
+This is where the code of the application goes.
+
+Some of the most notable files here are:
+ * `main.ts` - is where the application starts. It is also the file where you can initialize the routing configuration for page navigation.
+ * `app.css` - is the global css file, the styling contained here is applied accross the whole of the application
+ * `app.component` - by default it contains the firts angular component that get's loaded when you run the app, however most apps that you will work on will probably use a different component as the starting one.  
+ * `App_Resources\Android\app.gradle` - this file contains Android build configuration options. Whenever your app requires permissions to access specific functionality (like contacts or GPS), this is where the necessary configuration goes
+
+#### the `node_modules` folder
+This folder contains all npm modules specified in the `package.json`.
+This folder can be easily regenerated, this means that you can safely delete it whenever you feel like.
+You should also refrain from pushing the folder into `github` or any source control.
+
+#### the `platforms` folder
+This is the build folder for each of your platforms.
+Just like the `node_modules` folder, this folder can be regenared at will, so you should never add it to your source control.
+
+
 ### Managing `platforms` and `node_modules`
+
+When you clone an existing github project, the project will already contain a list of required npm modules (which you can view the `package.json` file) together with selected platforms (Android and/or iOS) it is designed to work for.
+These will get automatically downloaded when you build the project, however until the modules get loaded TypeScript won't be able to provide you with the support for these modules.
+The best thing to do at this stage is to call:
+```
+tns install
+```
+Which will download and configure all the required modules and platforms.
+
+#### Changing npm module version
+
+When you want to change the version of an npm module, just find it in `package.json` change the version to the one you need, then delete it from the `node_modules` folder and finally run `tns install`.
+
+#### Trouble shooting new npm installs not working as expected.
+
+Sometimes freshly installed modules with Native dependencies don't seem to work.
+This usually happens when you built your app once already. Then you add a new npm module (which requires native Android or iOS support). And you are trying to use the module and run the app again. 
+
+The best thing to do is to either delete the `platforms` folder and rerun the build or you could use the CLI to help you with the task by calling `tns platform add` and then `remove`.
+Just like this
+For Android:
+
+```
+tns platform remove android
+tns platform add android
+```
+
+For iOS:
+```
+tns platform remove ios
+tns platform add ios
+```
 
 ### Making your first change
 
