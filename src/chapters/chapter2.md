@@ -384,7 +384,6 @@ VS Code also provides support for debugging NativeScript code, to make it even m
 Open the debug tab - click the debug icon on the right hand side: ![Debug View icon](https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-icon-debug.png)
 
 From here press the litte `Gear icon` to `Select the build environment` and choose `NativeScript`
-
 ![Select the build environment icon](https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-icon-gear.png)
 
 When the IDE is ready click on the drop down next to the `Gear icon` and select:
