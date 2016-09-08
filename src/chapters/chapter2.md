@@ -2,8 +2,6 @@
 
 For our first hands-on workshop, you’ll learn how to build and manage NativeScript apps, as well as how to make simple changes and debug your code.
 
-
-
 ### Prerequisites
 In order to complete all of todays' workshops you need the NativeScript CLI installed on your machine.
 
@@ -162,7 +160,7 @@ This will give us access to the appinfo module in this area of code.
 
 Now we can call the `appinfo` instance to get some app information. Add the following piece of code inside the `onTap()` function:
 
-```
+``` TypeScript
 appinfo.getAppId()
     .then((id) => {
         alert("Your app's id is: " + id);
@@ -278,39 +276,136 @@ For this exercise add the following componenents using code snippets.
  * TextField with the `hint` set to `email...` -> `nstestfield`
  * Label with the `text` set to `Passowrd` -> `nslabel`
  * TextField with the `hint` set to `password...` -> `nstextfield`
- * Button with the `text` set `Sign In` -> `nsbtn`
+ * Button with the `text` set `Sign In` and `tap` set to `signIn()` -> `nsbtn`
 
 ![Creating login screen](../../images/vscode-using-snippets.gif)
+
+<div class="solution-start"></div>
+``` XML
+    <Label [text]="message" class="message" textWrap="true"></Label>
+    <Label text="Email:" textWrap="true"></Label>
+    <TextField hint="email..." text=""></TextField>
+    <Label text="Password:" textWrap="true"></Label>
+    <TextField hint="password..." text=""></TextField>
+    <Button text="Sign In" (tap)="signIn()"></Button>
+```
+<div class="solution-end"></div>
+
+Now open `app.component.ts` and add the following function to the `AppComponent` class:
+``` TypeScript
+public signIn() {
+    alert("NativeScript is great");
+}
+```
 
 When done, run the app and see what you got.
 
 <div class="exercise-end"></div>
 
 
-descrition of the exercise
+You can also create your own snippets
+
+<h4 class="exercise-start">
+    <b>Bonus Exercise</b>: Create your own snippet 
+</h4>
+
+Open `User Sippets` editor and select `TypeScript`
+
+On Mac: `Code->Preferences->User Snippets`
+![User Snippets on Mac](../../images/vscode-snippets-mac.png) 
+
+On Windows: `File->Preferences->User Snippets`
+![User Snippets on](../../images/vscode-snippets-win.png) 
+
+Now add the following snippet
+``` TypeScript
+    "shorthand for console.log": {
+        "prefix": "tsprint",
+        "body": [
+            "console.log('${text}')",
+            "$2"
+        ]
+    }
+```
+
+This snippet will serve us as a shorthand for `console.log`, you can trigger it by expanding `tsprint` in your TypeScript code.
+
+In `app.Component.ts` go to `onTap` function and start typing `tsp` and press `Enter`.
+Straight away the cursor will be placed on top of the `text` placeholder. Change it to `hello` and press `tab` which will take you to the new line (`$2`);
+
+You can learn more about VS Code snippets [here](https://code.visualstudio.com/docs/customization/userdefinedsnippets)
+
+<div class="exercise-end"></div>
+
+
+VS Code can be really helpful with code prediction when you try to work your TypeScript magic.
+The Intellisense not only knows about the attributes and functions of your current class, but it can also help you with code predition for any TypeScript based module you use.
+
 <h4 class="exercise-start">
     <b>Exercise</b>: Using Intellisense
 </h4>
-Instruction of the exercise
-```
-code example
-```
-<div class="exercise-end"></div>
 
-
-
-
-<h4 class="exercise-start">
-    <b>Exercise</b>: Building the project in VS Code
-</h4>
-Instruction of the exercise
+As you start typing TypeScript code 
 
 <div class="exercise-end"></div>
 
 
+You can enhance your Intellisense experience by adding comments to your functions
 <h4 class="exercise-start">
-    <b>Exercise</b>: Debugging with VS Code
+    <b>Bonus Exercise</b>: Add Intellisense friendly comments
 </h4>
-Instruction of the exercise
+
+Add the following function at the bottom of `app.componenents.ts` (otside the `AppComponent` class).
+``` TypeScript
+/**
+ * Prints the provided text in uppercase
+ * @param text text to be printed 
+ */
+function largePrint(text: string) {
+    console.log(text.toUpperCase());
+}
+```
+
+Now you can use the `largePrint` function, which will provide you with the description of the function and it's parameter. 
+
+<div class="exercise-end"></div>
+
+
+VS Code also provides support for debugging NativeScript code, to make it even more interesting it let's you debug directly in TypeScript. 
+
+<h4 class="exercise-start">
+    <b>Exercise</b>: Debugging in VS Code
+</h4>
+
+Open the debug tab - click the debug icon on the right hand side: ![Debug View icon](../../images/vscode-icon-debug.png)
+
+From here press the litte `Gear icon` to `Select the build environment` and choose `NativeScript`
+![Select the build environment icon](../../images/vscode-icon-gear.png)
+
+When the IDE is ready click on the drop down next to the `Gear icon` and select:
+`Launch on Android` or `Launch on iOS` and press `play`.
+
+This might take a minute or two, especially when you run it for the first time.
+
+Sometimes the iOS debugger detaches after the app started. When that happens just select `Attach on iOS` and press play. This should fix the problem.
+
+After the debugger starts you will notice that the app will stop at the very first line of the app.
+This is so that you could add the necessary breakpoints before the app crashes, if you have some issues that break the app at the startup.
+
+As part of this exercise open `app.component.ts` and add a breakpoint to the `onTap` function and then tap on the button in your app.
+The debugger should stop at your breakpoint.
+
+Here is how I did it:
+![Using the debugger in VS Code](../../images/vscode-configure-debugger.gif)
+
+When you are in debug mode you can:
+ * hover over variables to check their value or add them to the watch list
+ * step in or step over the code
+ * use the `Debug Console` to run commands or read/edit variables
+
+ Try to change the value of the `counter` by running the following command in the `Debug Console` 
+ ``` TypeScript
+ this.counter = 100;
+ ```
 
 <div class="exercise-end"></div>
