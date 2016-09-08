@@ -250,9 +250,11 @@ Download Visual Studio Code [from it's official download page](https://code.visu
 Now we will add NativeScript extensions to Visual Studio Code.
 Just run VS Code and go to the Extensions tab (on mac press `shift + command + x` on windows press `shift + ctrl + x`). 
 From here search for 'nativescript', once the search returns reults install `NativeScript` and `NativeScript + Angular 2 Snippets`
+
 ![Search result and install](../../images/vscode-nsext-install.png)
 
 Installing each them shouldn't take too long, once ready you will be prompted to enable the extensions, just click on enable next to one of the modules, which will restart VS Code and you will be ready to go
+
 ![Search result and install](../../images/vscode-nsext-enable.png)
 
 <div class="exercise-end"></div>
@@ -312,9 +314,11 @@ You can also create your own snippets
 Open `User Sippets` editor and select `TypeScript`
 
 On Mac: `Code->Preferences->User Snippets`
+
 ![User Snippets on Mac](../../images/vscode-snippets-mac.png) 
 
 On Windows: `File->Preferences->User Snippets`
+
 ![User Snippets on](../../images/vscode-snippets-win.png) 
 
 Now add the following snippet
@@ -380,6 +384,7 @@ VS Code also provides support for debugging NativeScript code, to make it even m
 Open the debug tab - click the debug icon on the right hand side: ![Debug View icon](../../images/vscode-icon-debug.png)
 
 From here press the litte `Gear icon` to `Select the build environment` and choose `NativeScript`
+
 ![Select the build environment icon](../../images/vscode-icon-gear.png)
 
 When the IDE is ready click on the drop down next to the `Gear icon` and select:
