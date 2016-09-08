@@ -251,11 +251,11 @@ Now we will add NativeScript extensions to Visual Studio Code.
 Just run VS Code and go to the Extensions tab (on mac press `shift + command + x` on windows press `shift + ctrl + x`). 
 From here search for 'nativescript', once the search returns reults install `NativeScript` and `NativeScript + Angular 2 Snippets`
 
-![Search result and install](../../images/vscode-nsext-install.png)
+![Search result and install](https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-nsext-install.png)
 
 Installing each them shouldn't take too long, once ready you will be prompted to enable the extensions, just click on enable next to one of the modules, which will restart VS Code and you will be ready to go
 
-![Search result and install](../../images/vscode-nsext-enable.png)
+![Search result and install](https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-nsext-enable.png)
 
 <div class="exercise-end"></div>
 
@@ -280,7 +280,7 @@ For this exercise add the following componenents using code snippets.
  * TextField with the `hint` set to `password...` -> `nstextfield`
  * Button with the `text` set `Sign In` and `tap` set to `signIn()` -> `nsbtn`
 
-![Creating login screen](../../images/vscode-using-snippets.gif)
+![Creating login screen](https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-using-snippets.gif)
 
 <div class="solution-start"></div>
 ``` XML
@@ -315,11 +315,11 @@ Open `User Sippets` editor and select `TypeScript`
 
 On Mac: `Code->Preferences->User Snippets`
 
-![User Snippets on Mac](../../images/vscode-snippets-mac.png) 
+![User Snippets on Mac](https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-snippets-mac.png) 
 
 On Windows: `File->Preferences->User Snippets`
 
-![User Snippets on](../../images/vscode-snippets-win.png) 
+![User Snippets on](https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-snippets-win.png) 
 
 Now add the following snippet
 ``` TypeScript
@@ -381,11 +381,11 @@ VS Code also provides support for debugging NativeScript code, to make it even m
     <b>Exercise</b>: Debugging in VS Code
 </h4>
 
-Open the debug tab - click the debug icon on the right hand side: ![Debug View icon](../../images/vscode-icon-debug.png)
+Open the debug tab - click the debug icon on the right hand side: ![Debug View icon](https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-icon-debug.png)
 
 From here press the litte `Gear icon` to `Select the build environment` and choose `NativeScript`
 
-![Select the build environment icon](../../images/vscode-icon-gear.png)
+![Select the build environment icon](https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-icon-gear.png)
 
 When the IDE is ready click on the drop down next to the `Gear icon` and select:
 `Launch on Android` or `Launch on iOS` and press `play`.
@@ -401,7 +401,7 @@ As part of this exercise open `app.component.ts` and add a breakpoint to the `on
 The debugger should stop at your breakpoint.
 
 Here is how I did it:
-![Using the debugger in VS Code](../../images/vscode-configure-debugger.gif)
+![Using the debugger in VS Code](https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-configure-debugger.gif)
 
 When you are in debug mode you can:
  * hover over variables to check their value or add them to the watch list
