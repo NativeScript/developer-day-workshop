@@ -83,10 +83,8 @@ Now we need add the platforms we want to build this app for.</p>
 </code></pre><div class="exercise-end"></div>
 
 
+<p>Now we will learn how to build and run your apps.</p>
 <h4 class="exercise-start">
-
-Now we will learn how to build and run your apps.
-
     <b>Exercise</b>: Running the app
 </h4>
 
@@ -96,17 +94,14 @@ Now we will learn how to build and run your apps.
 <pre><code>tns run android --emulator
 </code></pre><p>The same applies to building and running iOS apps. Just swap <code>android</code> for <code>ios</code></p>
 <pre><code>tns platform add ios --emulator
-</code></pre><p>As a side note. If you called <code>tns run</code> and then realised that you want to make a change first, you can cancel the build by pressing <code>CTRL+C</code></p>
+</code></pre><p>As a side note. If you want to stop the build process just press <code>CTRL+C</code></p>
 <div class="exercise-end"></div>
 
 
-<p>Sometimes waiting for the build process can be a bit painful, especially when you need to rebuild the app every time you make a tiny change to the code.
-This is why the CLI has the <code>livesync</code> command, which allows you to build the app in such way, so that whenever you make a change in your code the app will get refreshed really quickly.
-To make it more insteresting, if you make a change to your <code>TypeScript</code> code, the CLI will parse it to <code>JavaScript</code> first and then refresh the app.</p>
+<p>Sometimes waiting for the build process can be a bit painful, especially when you need to rebuild the app every time you make a tiny change to the code.</p>
+<p>This is why the CLI has the <code>livesync</code> command, which allows you to build the app in such way, so that whenever you make a change in your code the app will get refreshed really quickly.</p>
+<p>To make it more insteresting, if you make a change to your <code>TypeScript</code> code, the CLI will transpile it to <code>JavaScript</code> first and then refresh the app.</p>
 <h4 class="exercise-start">
-
-Streamlining the build process.
-
     <b>Exercise</b>: Livesync
 </h4>
 
@@ -118,48 +113,45 @@ Streamlining the build process.
 
 
 <h4 class="exercise-start">
-
     <b>Exercise</b>: Debugging
 </h4>
-Build your app in the debug mode using the following command.
-This should launch debugging tools for you. Once that is ready find app.component.js add a breakpoint to <code>onTap()</code> then tap on the button and try to explore what you can do with it.
 
-<code>tns debug android</code>
-
-<code>tns debug ios --emulator</code>
-
-Here is an interesting thing. Launching a debugger is a very slow process, but yet again <code>livesync</code> comes in to save the day.
-You can run the debugger in the livesync mode by adding <code>--watch</code> at the end of the command, like this:
-
-<code>tns debug android --watch</code>
-
-<div class="exercise-end"></div>
+<p>Build your app in the debug mode using the following command.
+This should launch debugging tools for you. Once that is ready find app.component.js add a breakpoint to <code>onTap()</code> then tap on the button and try to explore what you can do with it.</p>
+<pre><code>tns debug android
+</code></pre><p>or</p>
+<pre><code>tns debug ios --emulator
+</code></pre><p>You probably noticed that when you debug your app, the debugging tools operate on the JavaScript not TypeScript. This is because NativeScript runs on JavaScript code, which is transpiled from TypeScript.</p>
+<p>Here is an interesting thing. Launching a debugger is a very slow process, but yet again <code>livesync</code> comes in to save the day.
+You can run the debugger in the livesync mode by adding <code>--watch</code> at the end of the command, like this:</p>
+<pre><code>tns debug android --watch
+</code></pre><div class="exercise-end"></div>
 
 
-Now that we know how to build the apps, let&#39;s add an npm module to the project to help us with getting additional functionality.
-If you go to <a href="https://www.npmjs.com/search?q=nativescript"><code>npmjs</code> and search for <code>nativescript</code></a> you will get a long list of NativeScript specific npm modules that might come in handy when building an app.
-
+<p>Now that we know how to build the apps, let&#39;s add an npm module to the project to help us with getting additional functionality.</p>
+<p>If you go to <a href="https://www.npmjs.com/search?q=nativescript"><code>npmjs</code> and search for <code>nativescript</code></a> you will get a long list of NativeScript specific npm modules that might come in handy when building an app.</p>
+<p>Here we will learn how to add an npm module.</p>
 <h4 class="exercise-start">
-Here we will learn how to add an npm module.
-
     <b>Exercise</b>: Installing a NativeScript plugin from npm
 </h4>
 
 <p>The usual way to add an npm module would be to call <code>npm i module-name</code>, however when it comes to installing NativeScript specific plugins it is better to call <code>tns plugin add module-name</code>. That is because <code>tns plugin add</code> will do all that <code>npm install</code> does plus it configures any native dependencies that the plugin may need to use. This might include installing additional native iOS and/or components.</p>
 <p>Let&#39;s add the <a href="https://www.npmjs.com/package/nativescript-appinfo">appinfo plugin</a>, which will allow us to get info like the <code>version name</code>, <code>build number</code> and <code>app ID</code>.</p>
+<p>Run the following CLI command:</p>
 <pre><code>tns plugin add nativescript-appinfo
 </code></pre><p>Once you run this command you should be able to see the <code>nativescript-appinfo</code> module inside the <code>node_modules</code> folder and also the dependency to the module should be added to the <code>package.json</code> at the root of the project (not the one in the <code>app</code> folder)</p>
-<p>Now let&#39;s try to use the <code>nativescript-appinfo</code> module.
-Open <code>app.component.ts</code> and add the following line to the top of the file (or anywhere before <code>@Component</code> starts):</p>
+<p>Now let&#39;s try to use the <code>nativescript-appinfo</code> module.</p>
+<p>Open <code>app.component.ts</code> and add the following line to the top of the file (or anywhere before <code>@Component</code> starts):</p>
 <pre><code>var appinfo = require(&quot;nativescript-appinfo&quot;);
 </code></pre><p>This will give us access to the appinfo module in this area of code.</p>
 <p>Now we can call the <code>appinfo</code> instance to get some app information. Add the following piece of code inside the <code>onTap()</code> function:</p>
-<pre><code>appinfo.getAppId()
-    .then(function(id) {
-        console.log(&quot;Your app&#39;s id is: &quot; + id);
+<pre><code class="lang-TypeScript">appinfo.getAppId()
+    .then((id) =&gt; {
+        alert(&quot;Your app&#39;s id is: &quot; + id);
     });
-</code></pre><p>Now build the app and see what happens when you tap the button.</p>
-<p>As a bonus exercise: run this app in the <code>debug mode</code> and a break point at <code>getAppId()</code> and try to step in to getAppId function to see what happens.</p>
+</code></pre>
+<p>Now build the app and see what happens when you tap the button.</p>
+<p>As a bonus exercise: run this app in the <code>debug mode</code> and add a break point at <code>getAppId()</code> and try to step in to getAppId function to see what happens.</p>
 <div class="exercise-end"></div>
 
 
@@ -177,16 +169,16 @@ This is where you can change the id of the project or the app version.</p>
 <li><code>App_Resources\Android\app.gradle</code> - this file contains Android build configuration options. Whenever your app requires permissions to access specific functionality (like contacts or GPS), this is where the necessary configuration goes</li>
 </ul>
 <h4 id="the-node_modules-folder">the <code>node_modules</code> folder</h4>
-<p>This folder contains all npm modules specified in the <code>package.json</code>.
-This folder can be easily regenerated, this means that you can safely delete it whenever you feel like.
-You should also refrain from pushing the folder into <code>github</code> or any source control.</p>
+<p>This folder contains all npm modules specified in the <code>package.json</code>.</p>
+<p>This folder can be easily regenerated, this means that you can safely delete it whenever you feel like.</p>
+<p>You should also refrain from pushing the folder into <code>github</code> or any source control.</p>
 <h4 id="the-platforms-folder">the <code>platforms</code> folder</h4>
-<p>This is the build folder for each of your platforms.
-Just like the <code>node_modules</code> folder, this folder can be regenared at will, so you should never add it to your source control.</p>
+<p>This is the build folder for each of your platforms.</p>
+<p>Just like the <code>node_modules</code> folder, this folder can be regenared at will, so you should never add it to your source control.</p>
 <h3 id="managing-platforms-and-node_modules-">Managing <code>platforms</code> and <code>node_modules</code></h3>
-<p>When you clone an existing github project, the project will already contain a list of required npm modules (which you can view the <code>package.json</code> file) together with selected platforms (Android and/or iOS) it is designed to work for.
-These will get automatically downloaded when you build the project, however until the modules get loaded TypeScript won&#39;t be able to provide you with the support for these modules.
-The best thing to do at this stage is to call:</p>
+<p>When you clone an existing github project, the project will already contain a list of required npm modules (which you can view the <code>package.json</code> file) together with selected platforms (Android and/or iOS) it is designed to work for.</p>
+<p>These will get automatically downloaded when you build the project, however until the modules get loaded TypeScript won&#39;t be able to provide you with the support for these modules.</p>
+<p>The best thing to do at this stage is to call:</p>
 <pre><code>tns install
 </code></pre><p>Which will download and configure all the required modules and platforms.</p>
 <h4 id="changing-npm-module-version">Changing npm module version</h4>
@@ -195,8 +187,8 @@ The best thing to do at this stage is to call:</p>
 <p>Sometimes freshly installed modules with Native dependencies don&#39;t seem to work.
 This usually happens when you built your app once already. Then you add a new npm module (which requires native Android or iOS support). And you are trying to use the module and run the app again. </p>
 <p>The best thing to do is to either delete the <code>platforms</code> folder and rerun the build or you could use the CLI to help you with the task by calling <code>tns platform add</code> and then <code>remove</code>.
-Just like this
-For Android:</p>
+Just like this:</p>
+<p>For Android:</p>
 <pre><code>tns platform remove android
 tns platform add android
 </code></pre><p>For iOS:</p>
@@ -211,48 +203,132 @@ tns platform add ios
 <p>Download Visual Studio Code <a href="https://code.visualstudio.com/download">from it&#39;s official download page</a> and install it.</p>
 <p>Now we will add NativeScript extensions to Visual Studio Code.
 Just run VS Code and go to the Extensions tab (on mac press <code>shift + command + x</code> on windows press <code>shift + ctrl + x</code>). 
-From here search for &#39;nativescript&#39;, once the search returns reults install <code>NativeScript</code> and <code>NativeScript + Angular 2 Snippets</code>
-<img src="../../images/vscode-nsext-install.png" alt="Search result and install"></p>
-<p>Installing each them shouldn&#39;t take too long, once ready you will be prompted to enable the extensions, just click on enable next to one of the modules, which will restart VS Code and you will be ready to go
-<img src="../../images/vscode-nsext-enable.png" alt="Search result and install"></p>
+From here search for &#39;nativescript&#39;, once the search returns reults install <code>NativeScript</code> and <code>NativeScript + Angular 2 Snippets</code></p>
+<p><img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-nsext-install.png" alt="Search result and install"></p>
+<p>Installing each them shouldn&#39;t take too long, once ready you will be prompted to enable the extensions, just click on enable next to one of the modules, which will restart VS Code and you will be ready to go</p>
+<p><img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-nsext-enable.png" alt="Search result and install"></p>
 <div class="exercise-end"></div>
 
-
+<p>Now that VS Code is ready, let&#39;s see how it can be of service.
+We will start by playing with code snippets.</p>
 <h4 class="exercise-start">
-Now that VS Code is ready, let&#39;s see how it can be of service.
-We will start by playing with code snippets.
-
     <b>Exercise</b>: Using code snippets
 </h4>
 
 <p>First open the <code>WorkshopOne</code> project folder in VS Code by using <code>file-&gt;open</code>.
 Then find <code>app\app.component.html</code> (this file contains the UI definition of app.component).</p>
-<p>Add a new line just before the closing <code>&lt;/StackLayout&gt;</code> tag and start typing <code>ns</code> immediately you will get a list of available snippets. If you keep typing the list of available snippets will narrow down.
-When you select one of the snippets and hit <code>enter</code> the text you were typing will be replaced with a snippet. Some snippets will have more than one place where you can type, you can <code>tab</code> through them.</p>
+<p>Add a new line just before the closing <code>&lt;/StackLayout&gt;</code> tag and start typing <code>ns</code> immediately you will get a list of available snippets. If you keep typing the list of available snippets will narrow down.</p>
+<p>When you select one of the snippets and hit <code>enter</code> the text you were typing will be replaced with a snippet. Some snippets will have more than one place where you can type, you can <code>tab</code> through them.</p>
 <p>For this exercise add the following componenents using code snippets.</p>
 <ul>
 <li>Label with the <code>text</code> set to <code>Email:</code> -&gt; <code>nslabel</code></li>
 <li>TextField with the <code>hint</code> set to <code>email...</code> -&gt; <code>nstestfield</code></li>
 <li>Label with the <code>text</code> set to <code>Passowrd</code> -&gt; <code>nslabel</code></li>
 <li>TextField with the <code>hint</code> set to <code>password...</code> -&gt; <code>nstextfield</code></li>
-<li>Button with the <code>text</code> set <code>Sign In</code> -&gt; <code>nsbtn</code></li>
+<li>Button with the <code>text</code> set <code>Sign In</code> and <code>tap</code> set to <code>signIn()</code> -&gt; <code>nsbtn</code></li>
 </ul>
-<p><img src="../../images/vscode-using-snippets.gif" alt="Creating login screen"></p>
+<p><img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-using-snippets.gif" alt="Creating login screen"></p>
+<div class="solution-start"></div>
+<code>XML
+    &lt;Label [text]=&quot;message&quot; class=&quot;message&quot; textWrap=&quot;true&quot;&gt;&lt;/Label&gt;
+    &lt;Label text=&quot;Email:&quot; textWrap=&quot;true&quot;&gt;&lt;/Label&gt;
+    &lt;TextField hint=&quot;email...&quot; text=&quot;&quot;&gt;&lt;/TextField&gt;
+    &lt;Label text=&quot;Password:&quot; textWrap=&quot;true&quot;&gt;&lt;/Label&gt;
+    &lt;TextField hint=&quot;password...&quot; text=&quot;&quot;&gt;&lt;/TextField&gt;
+    &lt;Button text=&quot;Sign In&quot; (tap)=&quot;signIn()&quot;&gt;&lt;/Button&gt;</code>
+<div class="solution-end"></div>
+
+<p>Now open <code>app.component.ts</code> and add the following function to the <code>AppComponent</code> class:</p>
+<pre><code class="lang-TypeScript">public signIn() {
+    alert(&quot;NativeScript is great&quot;);
+}
+</code></pre>
 <p>When done, run the app and see what you got.</p>
 <div class="exercise-end"></div>
 
 
-<p><h4 class="exercise-start">
-    <b>Exercise</b>: Building the project in VS Code
+<p>You can also create your own snippets</p>
+<h4 class="exercise-start">
+    <b>Bonus Exercise</b>: Create your own snippet 
 </h4>
-Instruction of the exercise</p>
+
+<p>Open <code>User Sippets</code> editor and select <code>TypeScript</code></p>
+<p>On Mac: <code>Code-&gt;Preferences-&gt;User Snippets</code></p>
+<p><img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-snippets-mac.png" alt="User Snippets on Mac"> </p>
+<p>On Windows: <code>File-&gt;Preferences-&gt;User Snippets</code></p>
+<p><img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-snippets-win.png" alt="User Snippets on"> </p>
+<p>Now add the following snippet</p>
+<pre><code class="lang-TypeScript">    &quot;shorthand for console.log&quot;: {
+        &quot;prefix&quot;: &quot;tsprint&quot;,
+        &quot;body&quot;: [
+            &quot;console.log(&#39;${text}&#39;)&quot;,
+            &quot;$2&quot;
+        ]
+    }
+</code></pre>
+<p>This snippet will serve us as a shorthand for <code>console.log</code>, you can trigger it by expanding <code>tsprint</code> in your TypeScript code.</p>
+<p>In <code>app.Component.ts</code> go to <code>onTap</code> function and start typing <code>tsp</code> and press <code>Enter</code>.
+Straight away the cursor will be placed on top of the <code>text</code> placeholder. Change it to <code>hello</code> and press <code>tab</code> which will take you to the new line (<code>$2</code>);</p>
+<p>You can learn more about VS Code snippets <a href="https://code.visualstudio.com/docs/customization/userdefinedsnippets">here</a></p>
 <div class="exercise-end"></div>
 
 
-<p><h4 class="exercise-start">
-    <b>Exercise</b>: Debugging with VS Code
+<p>VS Code can be really helpful with code prediction when you try to work your TypeScript magic.
+The Intellisense not only knows about the attributes and functions of your current class, but it can also help you with code predition for any TypeScript based module you use.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Using Intellisense
 </h4>
-Instruction of the exercise</p>
+
+<p>As you start typing TypeScript code </p>
+<div class="exercise-end"></div>
+
+
+<p>You can enhance your Intellisense experience by adding comments to your functions</p>
+<h4 class="exercise-start">
+    <b>Bonus Exercise</b>: Add Intellisense friendly comments
+</h4>
+
+<p>Add the following function at the bottom of <code>app.componenents.ts</code> (otside the <code>AppComponent</code> class).</p>
+<pre><code class="lang-TypeScript">/**
+ * Prints the provided text in uppercase
+ * @param text text to be printed 
+ */
+function largePrint(text: string) {
+    console.log(text.toUpperCase());
+}
+</code></pre>
+<p>Now you can use the <code>largePrint</code> function, which will provide you with the description of the function and it&#39;s parameter. </p>
+<div class="exercise-end"></div>
+
+
+<p>VS Code also provides support for debugging NativeScript code, to make it even more interesting it let&#39;s you debug directly in TypeScript. </p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Debugging in VS Code
+</h4>
+
+<p>Open the debug tab - click the debug icon on the right hand side: <img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-icon-debug.png" alt="Debug View icon"></p>
+<p>From here press the litte <code>Gear icon</code> to <code>Select the build environment</code> and choose <code>NativeScript</code>
+<img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-icon-gear.png" alt="Select the build environment icon"></p>
+<p>When the IDE is ready click on the drop down next to the <code>Gear icon</code> and select:
+<code>Launch on Android</code> or <code>Launch on iOS</code> and press <code>play</code>.</p>
+<p>This might take a minute or two, especially when you run it for the first time.</p>
+<p>Sometimes the iOS debugger detaches after the app started. When that happens just select <code>Attach on iOS</code> and press play. This should fix the problem.</p>
+<p>After the debugger starts you will notice that the app will stop at the very first line of the app.
+This is so that you could add the necessary breakpoints before the app crashes, if you have some issues that break the app at the startup.</p>
+<p>As part of this exercise open <code>app.component.ts</code> and add a breakpoint to the <code>onTap</code> function and then tap on the button in your app.
+The debugger should stop at your breakpoint.</p>
+<p>Here is how I did it:
+<img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-configure-debugger.gif" alt="Using the debugger in VS Code"></p>
+<p>When you are in debug mode you can:</p>
+<ul>
+<li>hover over variables to check their value or add them to the watch list</li>
+<li>step in or step over the code</li>
+<li><p>use the <code>Debug Console</code> to run commands or read/edit variables</p>
+<p>Try to change the value of the <code>counter</code> by running the following command in the <code>Debug Console</code> </p>
+<pre><code class="lang-TypeScript">this.counter = 100;
+</code></pre>
+</li>
+</ul>
 <div class="exercise-end"></div>
 
 			</div>
@@ -271,7 +347,7 @@ Instruction of the exercise</p>
 <pre><code>cd WorkshopTwo
 </code></pre><div class="exercise-end"></div>
 
-<p>Open this new project up in Visual Studio Code (you can type <code>code .</code>) and add our first UI component.</p>
+<p>Open this new project up in Visual Studio Code (you can type <code>code .</code>).</p>
 <p>First, let&#39;s take a look at the files we will need to work with. Notice in the <code>/app</code> folder of your project there is a file called <code>app.component.ts</code>. This is where you put the functions that are called by the front-end file, <code>app.component.html</code>.</p>
 <p>Open <code>app.component.html</code> and delete everything there.</p>
 <p>Start your app&#39;s livesyncing process on iOS by typing into the command line:</p>
@@ -283,11 +359,15 @@ Instruction of the exercise</p>
     <b>Exercise</b>: Add your first UI element
 </h4>
 
-<p>Native apps need native-looking controls. We will create a native ActionBar using XML markup. In <code>app.component.html</code>, delete all the markup and replace it with this line:</p>
+<p>Native apps need native-looking controls. We will create a native ActionBar using XML markup. In <code>app.component.html</code>, put this line at the top:</p>
 <pre><code>&lt;ActionBar title=&quot;Adopt A Kitten!&quot;&gt;&lt;/ActionBar&gt;
 </code></pre><div class="exercise-end"></div>
 
 <p>Before we go further, we need some data that we can layout on the screen. Let&#39;s grab ten kitten images from <a href="http://placekitten.com">placekitten.com</a> to have them ready to place on our app screen.</p>
+<blockquote>
+    <p><strong>Note</strong>: If your iOS app complains about not being able to load insecure content, follow the instructions <a href="https://www.thepolyglotdeveloper.com/2015/12/fix-ios-9-app-transport-security-issues-in-nativescript/">here</a> and rebuild your app by running <code>tns run ios</code>.</p>
+</blockquote>
+
 <h4 class="exercise-start">
     <b>Exercise</b>: Get some data ready
 </h4>
@@ -311,7 +391,6 @@ Instruction of the exercise</p>
 
                 for (var i = 0; i &lt; 10; i++) {
                     this.counter++;
-                    console.log(this.url+this.counter)
                     this.kittens.push(this.url+this.counter);
                 }
             }   
@@ -320,7 +399,7 @@ Instruction of the exercise</p>
 <div class="exercise-end"></div>
 
 <h3 id="types-of-layouts">Types of layouts</h3>
-<p>There are five basic layouts offered by NativeScript that correspond to standard native ways of laying elements out onto a page: StackLayout, GridLayout, WrapLayout, DockLayout, and AbsoluteLayout. Let&#39;s take a look at these.</p>
+<p>There are five basic layouts offered by NativeScript that correspond to standard native ways of laying elements out onto a page: StackLayout, GridLayout, WrapLayout, DockLayout, and AbsoluteLayout. Let&#39;s take a look at these, and, as a bonus, a ListView.</p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Experiment with layouts
 </h4>
@@ -331,11 +410,24 @@ Instruction of the exercise</p>
     &lt;Image [src]=&quot;kittens[1]&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
     &lt;Image [src]=&quot;kittens[2]&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
 &lt;/StackLayout&gt;
-</code></pre><p>If you need to position your element in an exact spot, use AbsoluteLayout:</p>
+</code></pre><p>If you want your content to simply wrap, use WrapLayout. Delete the StackLayout and replace it with this snippet:</p>
+<pre><code>&lt;WrapLayout&gt;
+    &lt;Image src=&quot;https://placekitten.com/100/100&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/100/100&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/100/100&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/100/100&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/100/100&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/100/100&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/100/100&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/100/100&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/100/100&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/100/100&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+&lt;/WrapLayout&gt;
+</code></pre><p>If you need to position your element in an exact spot, use AbsoluteLayout. Delete the WrapLayout and replace it with the following snippet:</p>
 <pre><code>&lt;AbsoluteLayout&gt;
      &lt;Image [src]=&quot;kittens[0]&quot; left=&quot;100&quot; top=&quot;100&quot; width=&quot;200&quot; height=&quot;200&quot; &gt;&lt;/Image&gt;
 &lt;/AbsoluteLayout&gt;
-</code></pre><p>Try a grid layout by replacing the AbsoluteLayout with the snippet below. You can have control over the format of your grid by tweaking the &#39;*&#39; values. Note the columns/rows vs col/row values.</p>
+</code></pre><p>Delete the AbsoluteLayout, and try a grid layout by replacing the AbsoluteLayout with the snippet below. You can have control over the format of your grid by tweaking the &#39;*&#39; values. Note the columns/rows vs col/row values.</p>
 <pre><code>&lt;GridLayout columns=&quot;*,*,*&quot; rows=&quot;*,*,*,*&quot;&gt;
     &lt;Image [src]=&quot;kittens[0]&quot; col=&quot;0&quot; row=&quot;0&quot; colSpan=&quot;2&quot; rowSpan=&quot;2&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
     &lt;Image [src]=&quot;kittens[1]&quot; col=&quot;2&quot; row=&quot;0&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
@@ -345,7 +437,7 @@ Instruction of the exercise</p>
     &lt;Image [src]=&quot;kittens[5]&quot; col=&quot;2&quot; row=&quot;2&quot; rowSpan=&quot;2&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
     &lt;Image [src]=&quot;kittens[7]&quot; col=&quot;0&quot; row=&quot;3&quot; colSpan=&quot;2&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
 &lt;/GridLayout&gt;
-</code></pre><p>If you need elements &#39;docked&#39; onto the top, bottom, and/or sides of your app interface, try a DockLayout:</p>
+</code></pre><p>If you need elements &#39;docked&#39; onto the top, bottom, and/or sides of your app interface, try a DockLayout by overwriting the GridLayout with this snippet:</p>
 <pre><code>&lt;DockLayout&gt;
     &lt;Image dock=&quot;left&quot; width=&quot;80&quot; [src]=&quot;kittens[0]&quot; stretch=&quot;aspectFill&quot;&gt;&lt;/Image&gt;
     &lt;Image dock=&quot;top&quot; height=&quot;80&quot; [src]=&quot;kittens[1]&quot; stretch=&quot;aspectFill&quot;&gt;&lt;/Image&gt;
@@ -353,7 +445,7 @@ Instruction of the exercise</p>
     &lt;Image dock=&quot;bottom&quot; height=&quot;80&quot; [src]=&quot;kittens[3]&quot; stretch=&quot;aspectFill&quot;&gt;&lt;/Image&gt;
     &lt;Image [src]=&quot;kittens[4]&quot; stretch=&quot;aspectFill&quot;&gt;&lt;/Image&gt;
 &lt;/DockLayout&gt;
-</code></pre><p><b>Bonus!</b> Finally, try a ListView - which isn&#39;t a layout per se but deserves to be tried out. This one has some fancy layouting with left and right alignment:</p>
+</code></pre><p><b>Bonus!</b> Finally, try a ListView by overwriting the DockLayout snippet with the snippet below. ListViews aren&#39;t a layout per se but deserve to be tried out. This one has some fancy layouting with left and right alignment:</p>
 <pre><code>&lt;ListView [items]=&quot;kittens&quot;&gt;
     &lt;template let-item=&quot;item&quot; let-odd=&quot;odd&quot; let-even=&quot;even&quot;&gt;
         &lt;DockLayout&gt;
@@ -372,7 +464,7 @@ Instruction of the exercise</p>
 </h4>
 
 <p>What happens if you just put an array of kitten images within a StackLayout?</p>
-<p>In <code>app.component.html</code>, add the following under the ActionBar:</p>
+<p>In <code>app.component.html</code>, replace any code you have under the ActionBar with this snippet: </p>
 <pre><code>&lt;StackLayout&gt;
     &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
     &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
@@ -381,7 +473,7 @@ Instruction of the exercise</p>
     &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
 &lt;/StackLayout&gt;
 </code></pre><p>The images are stacked, but they don&#39;t scroll.</p>
-<p>Nest this StackLayout into a ScrollView:</p>
+<p>Nest your StackLayout into a ScrollView:</p>
 <pre><code>&lt;ScrollView&gt;
   &lt;StackLayout&gt;
       &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
@@ -392,10 +484,6 @@ Instruction of the exercise</p>
   &lt;/StackLayout&gt; 
 &lt;/ScrollView&gt;
 </code></pre><div class="exercise-end"></div>
-
-<blockquote>
-    <p><strong>Note</strong>: If your iOS app complains about not being able to load insecure content, follow the instructions <a href="https://www.thepolyglotdeveloper.com/2015/12/fix-ios-9-app-transport-security-issues-in-nativescript/">here</a> and rebuild your app by running <code>tns run ios</code>.</p>
-</blockquote>
 
 <p>It&#39;s all fine to add images manually to an app, but any data-driven app will need to have data loaded dynamically. Let&#39;s get our StackLayout to loop, so we can start creating cards.</p>
 <h4 class="exercise-start">
@@ -443,13 +531,8 @@ Instruction of the exercise</p>
 </h4>
 
 <p>Choose a pallette of color from <a href="http://coolors.co">Coolors.co</a> or another pallette generator of your choice.</p>
-<p>Attach a style sheet to your app by editing the <code>@Component</code> block in <code>app.component.ts</code>:</p>
-<pre><code>@Component({
-    selector: &quot;my-app&quot;,
-    templateUrl: &quot;app.component.html&quot;,
-    styleUrls: [&quot;app.css&quot;]
-})
-</code></pre><p>Delete everything in app.css. Add some color to the ActionBar and the Page background by adding a few styles to this file:</p>
+<p>The style sheet in the <code>app</code> folder is automatically associated to your project by its naming convention, so we just have to edit it.</p>
+<p>Delete everything in app.css. Add some color to the ActionBar and the Page background by adding a few styles to this file:</p>
 <pre><code>Page {
     background-color: #EBEBD3;
 }
@@ -476,13 +559,12 @@ ActionBar {
 <p>Congratulations! With a bit of code, you&#39;ve succesfully created a nice card interface!</p>
 <h3 id="creating-robust-animations">Creating robust animations</h3>
 <p>The more mobile app development you do, the more you realize that clean animations are not just a &#39;nice-to-have&#39;, they are a &#39;must-have&#39;. Fortunately, NativeScript makes animating components really easy!</p>
-<p>There are two ways to animate in NativeScript - let&#39;s look at the first way, which is to use the animation library.</p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Animate a card
 </h4>
 
 <p>First, we need to pass through a reference to the card we want to animate, and we do that in the <code>app.component.html</code> XML by giving it an id and adding a function that will fire when we tap the card:</p>
-<pre><code>&lt;StackLayout (tap)=&quot;flip(card)&quot; #card width=&quot;40%&quot; *ngFor=&quot;let kitten of kittens&quot; horizontalAlignment=&quot;center&quot; class=&quot;card&quot;&gt;
+<pre><code>&lt;StackLayout (tap)=&quot;animate(card)&quot; #card width=&quot;40%&quot; *ngFor=&quot;let kitten of kittens&quot; horizontalAlignment=&quot;center&quot; class=&quot;card&quot;&gt;
 </code></pre><p>Next, open <code>app.component.ts</code> and import the Animation library at the top:</p>
 <pre><code>import { Animation } from &quot;ui/animation&quot;;
 </code></pre><p>Then, build out the <code>animate()</code> function. Add this function under the constructor:</p>
@@ -502,33 +584,42 @@ ActionBar {
             console.log(e.message);
         });    
     }
-</code></pre><p>As you can see, we are chaining several animations together using promises. When one completes, the next fires. </p>
+</code></pre><p>As you can see, we are chaining several animations together using promises. When one completes, the next fires. Test your animation by clicking a card.</p>
 <div class="exercise-end"></div>
 
 <blockquote>
     <p><strong>CHALLENGE!</strong>: Create a different animation using the Animation library as documented here: <a href="https://docs.nativescript.org/ui/animation">https://docs.nativescript.org/ui/animation</a></p>
 </blockquote>
 
-<p>Now, let&#39;s take a look at the other way of animating elements on the screen; by using CSS keyframe animation. Let&#39;s make the cards fade in during the page loading process. </p>
+<!--Now, let's take a look at the other way of animating elements on the screen; by using CSS keyframe animation. Let's make the cards fade in during the page loading process. 
+
 <h4 class="exercise-start">
     <b>Exercise</b>: Add a keyframe animation
 </h4>
 
-<p>To do this, we simply need to tweak the CSS, so open <code>app.css</code> and add a <code>@keyframes</code> rule named <code>card</code>:</p>
-<pre><code>@keyframes card {
+To do this, we simply need to tweak the CSS, so open `app.css` and add a `@keyframes` rule named `card`:
+
+```
+@keyframes card {
     from { opacity: 0 }
     to { opacity: 1}
 }
-</code></pre><p>Then, add these lines to the <code>.card</code> class:</p>
-<pre><code>    animation-name: card;
+```
+Then, add these lines to the `.card` class:
+
+```
+    animation-name: card;
     animation-duration: 4s;
     opacity: 0;
-</code></pre><p>The app should refresh and the cards will fade in. </p>
+```
+The app should refresh and the cards will fade in. 
+
 <div class="exercise-end"></div>
 
 <blockquote>
     <p><strong>CHALLENGE!</strong>: What else can you do with CSS animations?</p>
 </blockquote>
+-->
 			</div>
 			<hr>
 			<div class="chapter">
@@ -1136,6 +1227,400 @@ export class AppComponent {}
 			<hr>
 			<div class="chapter">
 				<h2 id="code-sharing">Code sharing</h2>
+<h2 id="code-sharing">Code sharing</h2>
+<h3 id="the-case-for-code-sharing">The case for code sharing</h3>
+<p>If you have a use case that requires sharing code between a web site and a mobile app, have I got the tool for you! Introducing Nathan Walker&#39;s <a href="Advanced Angular2 Seed">https://github.com/NathanWalker/angular2-seed-advanced</a> project. This project is based on Minko Geshev&#39;s <a href="Angular 2 Seed">https://github.com/mgechev/angular2-seed</a> project which allows you to quickly spin up a web site, but it takes this project vastly forward with the introduction of allowing code to be shared between web, desktop via Electron, and mobile via NativeScript. You can quickly spin up three apps in one fell swoop.</p>
+<p>The Advanced Seed project also integrates i18n support for multilingual apps by leveraging ngTranslate, as well as analytics via Angulartics and a test harness so you can test your code...and more!</p>
+<p>This technological advancement is brought to you by the advent of Angular 2, which decoupled the DOM so that we can start sharing large parts of our codebase for various platforms.</p>
+<p>In this workshop, we&#39;re going to work with the <a href="PokeAPI">http://pokeapi.co/</a> to populate a list on the web as well as iOS and Android.</p>
+<h3 id="getting-started-with-the-advanced-angular2-seed-repo">Getting started with the Advanced-Angular2-Seed repo</h3>
+<p>Let&#39;s get up and running with the Advanced Seed. Please refer to the <a href="Readme">https://github.com/NathanWalker/angular2-seed-advanced</a> to ensure that your environment is ready.</p>
+<pre><code>&gt; git clone --depth 1 https://github.com/NathanWalker/angular2-seed-advanced.git
+&gt; cd angular2-seed-advanced
+&gt; npm install
+&gt; npm start
+</code></pre><p>Start the mobile workflow</p>
+<pre><code>iOS:                      npm run start.ios
+iOS (livesync emulator):  npm run start.livesync.ios
+iOS (livesync device):    npm run start.livesync.ios.device
+
+// or...using AVD or Genymotion Android emulator
+
+Android:                      npm run start.android
+Android (livesync emulator):  npm run start.livesync.android
+Android (livesync device):    npm run start.livesync.android.device
+</code></pre><p>You should have a web site and either an iOS or Android simulator running. You can also run two simulators at once if you like. </p>
+<blockquote>
+<p>Note, on occasion your mobile livesyncing may fail when using this seed. On occasion, you may need to restart the process, so press Ctrl&gt;C in your terminal and restart the <code>npm run start.livesync...</code> routine.</p>
+</blockquote>
+<h3 id="exploring-the-architecture">Exploring the architecture</h3>
+<ul>
+<li>Shared code can be found in <code>frameworks</code>:<ul>
+<li><code>app</code>: your shared application architecture code</li>
+<li><code>core</code>: foundation layer (decorators and low-level services)</li>
+<li><code>analytics</code>: analytics provided by <a href="https://segment.com/">Segment</a></li>
+<li><code>i18n</code>: internationalization features</li>
+<li><code>electron</code>: <a href="http://electron.atom.io/">Electron</a> specific code</li>
+<li><code>test</code>: test specific code providing conveniences to make testing your code easier and faster</li>
+</ul>
+</li>
+</ul>
+<p>Your NativeScript app is found in the <code>nativescript</code> folder. Make any mobile-specific edits here, such as adding icons and splash screen images to your <code>app/App_Resources</code> folder.</p>
+<ul>
+<li>To edit both web and mobile apps, you can make changes to files in <code>src/client</code> or <code>nativescript</code> folders. </li>
+<li>A symbolic link exists between the web <code>src/client</code> and the <code>nativescript</code> folder so changes in either location are mirrored because they are the same directory inside.</li>
+</ul>
+<blockquote>
+<p>Note: Normally when greenfielding a project using this seed, it&#39;s best for maintenance ease to create a fresh folder for your new app code in <code>src/client/app/frameworks</code> - for example my PocketRave app is located in <code>src/client/app/frameworks/pocketrave</code> - and then change any paths that point to the <code>app</code> folder. This way, you can upgrade your project by checking out a new copy of the Advanced Seed and then dropping your app&#39;s folder into <code>/frameworks</code>. For this workshop, however, we will simply be editing files in <code>src/client/app/components</code>. Reference <a href="http://www.github.com/jlooper/pocketrave">PocketRave</a> as an example of this type of setup. Visit <a href="PocketRave">http://PocketRave.me</a> online for a full demo of this app.</p>
+</blockquote>
+<h3 id="making-a-cross-platform-edit">Making a cross-platform edit</h3>
+<p>Let&#39;s change this app from being a shout-out to great scientists to being a celebration of Pokemon! Because we can!</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Edit the app&#39;s structure
+</h4>
+
+<p>Let&#39;s remove the language switcher component, which is a dropdown on the web and a segmented bar on mobile. Let&#39;s also edit the app&#39;s title.</p>
+<p>First, let&#39;s make some edits on the web. Navigate in VSCode to <code>src/client/app/frameworks/sample/components/</code>. In this folder are stored the navigation type files (toolbar and navbar) for this app. </p>
+<p>Open <code>toolbar.component.html</code>. The language-switcher is included here as <code>&lt;lang-switcher&gt;&lt;/lang-switcher&gt;</code>. Delete that line.</p>
+<p>Change the <code>&lt;h1&gt;&lt;/h1&gt;</code> tag in this file for the web as well to &quot;I love Pokemon!&quot;.</p>
+<p>Your web app should refresh and you will see the site without the language switcher.</p>
+<p>Second, let&#39;s make these same edits on mobile.</p>
+<p>Now take a look at <code>src/client/app/frameworks/sample/components/toolbar.component.tns.html</code> - note it has intentionally been left blank. </p>
+<p>Normally this type of file would have corresponding code to match web and mobile layouts. Note the naming conventions of these files. Anything with <code>.tns.</code> is destined to be used in a <code>Telerik NativeScript</code> app. For our case, however, we need to navigate to <code>src/client/app/components/app.component.tns.html</code> to remove the <lang-switcher></lang-switcher> component. Edit the ActionBar as well with the new title.</p>
+<p>In this file, change the title of the app in the <code>&lt;ActionBar&gt;</code> markup to be &quot;I love Pokemon!&quot;.</p>
+<p>Note how the app title is contained in an <code>&lt;h1&gt;</code> on web and an <code>&lt;ActionBar&gt;</code> on mobile. This illustrates the limited ability, currently, of the app to share every bit of code between web and mobile, as the layouting mechanism is very different on these two platforms. We will see tighter codesharing in a minute, however.</p>
+<p>By removing the language switcher, we&#39;ve broken the i18n translations, so let&#39;s delete everything in the body of the home page and rebuild it. Go to <code>src/client/app/components/home</code> and delete everything in <code>home.component.tns.html</code> and <code>home.component.html</code>.</p>
+<div class="exercise-end"></div>
+
+<p>The takeaway from this exercise is that you have full control over where your code goes, but there are some patterns that start to manifest themselves. Most importantly, note the naming conventions that allow you to separate your code per platform.</p>
+<h3 id="adding-a-service">Adding a service</h3>
+<p>Let&#39;s add a service to consume data brought in from the PokeAPI. We&#39;re going to display a list of pokemon on all platforms. </p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Add a service
+</h4>
+
+<p>Add a new file to <code>src/client/app/frameworks/sample/services/</code> called <code>pokemon.service.ts</code> and paste in the following:</p>
+<pre><code>import {Injectable} from &#39;@angular/core&#39;;
+import {Http, Response} from &#39;@angular/http&#39;;
+import {LogService} from &#39;../../core/services/log.service&#39;;
+import {Observable} from &#39;rxjs/Rx&#39;;
+import &#39;rxjs/add/operator/map&#39;;
+
+@Injectable()
+export class PokemonService {
+    private requestURL: string;
+
+    constructor(
+        private logger: LogService,
+        private http: Http) {
+        logger.debug(`pokemon service initializing...`);
+        this.requestURL = &#39;http://pokeapi.co/api/v2/pokemon&#39;;
+    }
+
+    public getPokemon(): Observable&lt;any&gt; {
+        let pokemonURL = this.requestURL;
+        return this.http.get(pokemonURL)
+            .map((res) =&gt; {
+                let pokemon = res.json();
+                return pokemon.results || [];
+            })
+            .catch(this.handleError);
+    }
+
+
+    private handleError(error: Response) {
+        return Observable.throw(error);
+    }
+
+
+}
+</code></pre><p>Now, let&#39;s integrate this service into the app:</p>
+<p>Navigate to <code>src/client/app/frameowrks/sample/sample.module.ts</code> to include service like this:</p>
+<p>Paste this line under the multilingualReducer line:</p>
+<pre><code>import { PokemonService } from &#39;./services/pokemon.service&#39;;
+</code></pre><p>and ensure that it&#39;s listed as a provider by adding it to the list of providers under <code>NameListService</code>:</p>
+<pre><code>providers: [
+    NameListService,
+    PokemonService
+  ],
+</code></pre><p>Add this service into the index.ts list of available services by adding this export to the bottom of <code>src/client/app/frameworks/sample/index.ts</code>:</p>
+<pre><code>export * from &#39;./services/pokemon.service&#39;;
+</code></pre><p>Finally, you need to import this service into your frontend files, so that your home pages can leverage it. Navigate to <code>src/client/app/components/home/home.component.ts</code> and replace the content of this file with this:</p>
+<pre><code>// libs
+import {BehaviorSubject} from &#39;rxjs/BehaviorSubject&#39;;
+import {OnInit} from &#39;@angular/core&#39;;
+
+// app
+import { BaseComponent } from &#39;../../frameworks/core/index&#39;;
+import { PokemonService } from &#39;../../frameworks/sample/index&#39;;
+
+@BaseComponent({
+  moduleId: module.id,
+  selector: &#39;sd-home&#39;,
+  templateUrl: &#39;home.component.html&#39;,
+  styleUrls: [&#39;home.component.css&#39;]
+})
+export class HomeComponent implements OnInit { 
+
+  public pokemon$: BehaviorSubject&lt;Array&lt;any&gt;&gt; = new BehaviorSubject([]);
+
+  constructor(
+    public pokemonService: PokemonService
+    ) {}
+
+  ngOnInit() {
+    this.pokemonService.getPokemon()
+      .subscribe((pokemon: Array&lt;any&gt;) =&gt; {
+          this.pokemon$.next(pokemon);
+      });
+  }
+}
+</code></pre><div class="exercise-end"></div>
+
+<p>You now have a service that returns an array via an http call to the PokeAPI. Notice, you only have one service and it&#39;s sent to the frontend in one call. Now, you can display the data as you like, using web and mobile layouts!</p>
+<h3 id="rebuilding-the-home-screen">Rebuilding the home screen</h3>
+<p>We are going to show a list of Pokemon, as returned by the service, on both web and mobile screens. On mobile, we will simply display a ListView, and on the web, we will show a simple set of <code>&lt;p&gt;</code> tags. </p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Edit the frontend
+</h4>
+
+<p>Paste the following snippet into <code>src/client/app/components/home/home.component.tns.html</code> to add a ListView for the mobile app:</p>
+<pre><code>&lt;StackLayout class=&quot;container-content&quot;&gt;
+    &lt;GridLayout columns=&quot;*&quot; rows=&quot;*&quot;&gt;
+        &lt;ListView [items]=&quot;pokemon$ | async&quot; row=&quot;1&quot; height=&quot;300&quot;&gt;
+            &lt;template let-item=&quot;item&quot;&gt;
+                &lt;StackLayout&gt;
+                    &lt;Label [text]=&quot;item.name&quot;&gt;&lt;/Label&gt;
+                &lt;/StackLayout&gt;
+            &lt;/template&gt;
+        &lt;/ListView&gt;
+    &lt;/GridLayout&gt;
+&lt;/StackLayout&gt;
+</code></pre><p>Then, paste the following line into <code>src/client/app/components/home/home.component.html</code> to create a simple list on native:</p>
+<pre><code>&lt;ul *ngFor=&quot;let pokemon of pokemon$ | async&quot;&gt;
+    &lt;li&gt;{{ pokemon.name }}&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre><div class="exercise-end"></div>
+
+<p>With just a few lines of code, you&#39;ve built a cross-platform presentation screen to show a list of Pokemon! </p>
+<blockquote>
+    <p><strong>SUPER CHALLENGE!</strong>:  Make this app into a master-detail screen. You will need to use the url that this API passes to you, pass it through a (tap) function on the front end, and switch the screen to display the detail of the Pokemon, which will require another API call. Good luck! Take a look at <a href="https://github.com/jlooper/practice-buddy-mobile-app-2.0">PracticeBuddy</a> for tips.</p>
+</blockquote>
+
+<h3 id="isolating-your-code-via-css">Isolating your code via css</h3>
+<p>You can truly fine-tune the look of your web and native mobile app by isolating certain elements of the CSS associated to each file, simply by paying attention to the the names of the files. </p>
+<p>In the <code>src/client/app/components/home</code> folder, note the naming convention of the css files. CSS for the web for the home page, for example, is handled by <code>home.component.css</code> and CSS for mobile is handled by <code>home.component.tns.css</code>. </p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Tweak the CSS
+</h4>
+
+<p>The listview looks a little crunched on mobile, so edit the  <code>src/client/app/components/home/home.comonent.tns.css</code>:</p>
+<pre><code>.list-item{
+  padding: 10;
+  margin: 10;
+}
+</code></pre><div class="exercise-end"></div>
+
+<blockquote>
+    <p><strong>CHALLENGE!</strong>:  Do some more CSS tweaks to personalize your apps. Try to make both global and local css changes and see how it looks.</p>
+</blockquote>
+
+
+<h3 id="using-opaquetokens">Using OpaqueTokens</h3>
+<p>It&#39;s easy enough to create shared services and forked frontend code with this Seed, but soon enough you will need to integrate a plugin that can only be used on mobile. This integration must be shielded from the web, as it will break the web frontend if not done properly. Enter the wonderful world of <a href="http://blog.thoughtram.io/angular/2016/05/23/opaque-tokens-in-angular-2.html">OpaqueTokens</a>!</p>
+<p>If, for example, you wanted to use a special Audio plugin in your NativeScript app, but didn&#39;t want that plugin to be exposed to the web view, you would inject a string token representing that token at runtime. For the token to be available during the dependency injection process you setup providers for the token. </p>
+<p>Let&#39;s use a Loader plugin that will only be available for the mobile app.  </p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Setup a plugin and a token
+</h4>
+
+<p>First, install the plugin in your NativeScript app: </p>
+<pre><code>&gt; cd nativescript
+&gt; tns plugin add nativescript-loading-indicator
+</code></pre><blockquote>
+<p>Note, you may need to rebuild the app to make the plugin install properly (<code>npm run start.ios/android</code>)</p>
+</blockquote>
+<p>Now set up the token system. First, take a look at the &#39;switchboard&#39; of your app: <code>src/app/frameworks/sample/sample.module.ts</code>. This is the main ngModule of your app and it needs to include a master file of tokens that we are going to call token.ts. 
+In <code>sample.module.ts</code>, make the following edits:</p>
+<p>At the top, under the block of imports for &#39;app&#39;, add this line:</p>
+<pre><code>import { TOKENS_SHARED } from &#39;../core/tokens&#39;;
+</code></pre><p>Then, edit the Providers array:</p>
+<pre><code>providers: [
+    NameListService,
+    PokemonService,
+    TOKENS_SHARED
+  ],
+</code></pre><p>Now, create a file in <code>src/app/frameworks/core</code> called tokens.ts and paste the following code in this file:</p>
+<pre><code>import {OpaqueToken} from &#39;@angular/core&#39;;
+
+export const LOADER: OpaqueToken = new OpaqueToken(&#39;LoadingIndicator&#39;);
+
+export const TOKENS_SHARED: Array&lt;any&gt; = [
+  { provide: LOADER, useValue: {} }
+];
+</code></pre><p>Then, edit <code>nativescript/app/native.module.ts</code> in a similar way to add a reference to tokens only available to the mobile app:</p>
+<p>At the bottom of the &#39;app&#39; block of imports, import a native token file reference:</p>
+<pre><code>import { TOKENS_NATIVE } from &#39;./tokens.native&#39;;
+</code></pre><p>Edit the import block at the bottom as well:</p>
+<pre><code>CoreModule.forRoot([
+      TOKENS_NATIVE,
+      { provide: WindowService, useClass: WindowNative },
+      { provide: ConsoleService, useValue: console }
+    ]),
+</code></pre><p>Now create a file in this folder called <code>tokens.native.ts</code>.</p>
+<pre><code>import {LOADER} from &#39;./app/frameworks/core/tokens&#39;;
+import { LoadingIndicator } from &#39;nativescript-loading-indicator&#39;;
+
+export const TOKENS_NATIVE: Array&lt;any&gt; = [
+  { provide: LOADER, useClass: LoadingIndicator}
+];
+</code></pre><p>Similarly, edit the web module: <code>src/client/web.module.ts</code>, adding a reference to web tokens at the top, in the &#39;app&#39; block of imports:</p>
+<pre><code>import { TOKENS_WEB } from &#39;./tokens.web&#39;;
+</code></pre><p>Complete the integration by adding the tokens as a provider:</p>
+<pre><code>CoreModule.forRoot([
+      TOKENS_WEB,
+      { provide: WindowService, useValue: window },
+      { provide: ConsoleService, useValue: console }
+    ]),
+</code></pre><p>Add a file called <code>src/client/tokens.web.ts</code> with a blank array (you could populate this later with other types of tokens)</p>
+<pre><code>export const TOKENS_WEB: Array&lt;any&gt; = [
+  //empty for now
+];
+</code></pre><p>now you can reference the native tokens you built in your mobile code. Replace the current code in <code>src/client/app/component/home/home.component.ts</code> with the following:</p>
+<pre><code>// libs
+import {BehaviorSubject} from &#39;rxjs/BehaviorSubject&#39;;
+import {OnInit, Inject} from &#39;@angular/core&#39;;
+import {LOADER} from &#39;../../frameworks/core/tokens&#39;;
+import {Config} from &#39;../../frameworks/core/utils/config&#39;;
+
+// app
+import { BaseComponent } from &#39;../../frameworks/core/index&#39;;
+import { PokemonService } from &#39;../../frameworks/sample/index&#39;;
+
+@BaseComponent({
+  moduleId: module.id,
+  selector: &#39;sd-home&#39;,
+  templateUrl: &#39;home.component.html&#39;,
+  styleUrls: [&#39;home.component.css&#39;]
+})
+export class HomeComponent implements OnInit { 
+
+  public pokemon$: BehaviorSubject&lt;Array&lt;any&gt;&gt; = new BehaviorSubject([]);
+
+  constructor(
+    public pokemonService: PokemonService,
+    @Inject(LOADER) private LoadingIndicator: any
+    ) {}
+
+  ngOnInit() {
+    if (Config.IS_MOBILE_NATIVE()) {
+      this.LoadingIndicator.show();
+    }
+    this.pokemonService.getPokemon()
+      .subscribe((pokemon: Array&lt;any&gt;) =&gt; {
+          this.pokemon$.next(pokemon);
+          if (Config.IS_MOBILE_NATIVE()) {
+            this.LoadingIndicator.hide();
+          }
+      });
+  }
+}
+</code></pre><p>Now you are able to view the loading indicator on mobile only; it is shielded from the web view. </p>
+<div class="exercise-end"></div>
+
+<blockquote>
+    <p><strong>CHALLENGE!</strong>:  Play with tokens - add a new web-only token, or a new mobile only token. Several tokens are integrated into <a href="http://www.github.com/jlooper/pocketrave">PocketRave</a>.</p>
+</blockquote>
+
+
+<h3 id="bonus-running-a-test">Bonus: Running a test</h3>
+<p>As a brief demo, we&#39;re going to look at how unit tests can be integrated into this app. There is already built-in functionality to test; we simply need to edit what we&#39;re testing so the tests will pass. All we&#39;re actually testing for is that our <code>&lt;h1&gt;</code> contains the words &#39;I love Pokemon!&#39;</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Write a test
+</h4>
+
+<p>Unit tests are associated to each folder; there are a few in the <code>src/cient/app/components/home</code> folder, so navigate there and paste the following into the <code>home.component.spec.ts</code> file:</p>
+<pre><code>import {TestComponentBuilder, TestBed} from &#39;@angular/core/testing&#39;;
+import {Component} from &#39;@angular/core&#39;;
+import {FormsModule} from &#39;@angular/forms&#39;;
+import {RouterModule} from &#39;@angular/router&#39;;
+
+// libs
+import {provideStore} from &#39;@ngrx/store&#39;;
+import {TranslateModule} from &#39;ng2-translate/ng2-translate&#39;;
+
+import {t} from &#39;../../frameworks/test/index&#39;;
+import {TEST_CORE_PROVIDERS, TEST_HTTP_PROVIDERS, TEST_ROUTER_PROVIDERS} from &#39;../../frameworks/core/testing/index&#39;;
+import {NameListService, nameListReducer, PokemonService} from &#39;../../frameworks/sample/index&#39;;
+import {TEST_MULTILINGUAL_PROVIDERS} from &#39;../../frameworks/i18n/testing/index&#39;;
+import {HomeComponent} from &#39;./home.component&#39;;
+
+// test module configuration for each test
+const testModuleConfig = () =&gt; {
+  TestBed.configureTestingModule({
+    imports: [FormsModule, RouterModule, TranslateModule.forRoot()]
+  });
+};
+
+export function main() {
+  t.describe(&#39;@Component: HomeComponent&#39;, () =&gt; {
+
+    t.be(testModuleConfig);
+
+    t.it(&#39;should work&#39;,
+      t.async(t.inject([TestComponentBuilder], (tcb: TestComponentBuilder) =&gt; {
+        tcb.createAsync(TestComponent)
+          .then((rootTC: any) =&gt; {
+
+            rootTC.detectChanges();
+
+          });
+      })));
+  });
+}
+
+@Component({
+  providers: [
+    TEST_CORE_PROVIDERS(),
+    TEST_HTTP_PROVIDERS(),
+    TEST_ROUTER_PROVIDERS(),
+    provideStore({ names: nameListReducer }),
+    NameListService,
+    PokemonService,
+    TEST_MULTILINGUAL_PROVIDERS()
+  ],
+  selector: &#39;test-cmp&#39;,
+  directives: [HomeComponent],
+  template: &#39;&lt;sd-home&gt;&lt;/sd-home&gt;&#39;
+})
+class TestComponent {
+
+}
+</code></pre><p>then, in the same folder, paste this code into <code>home.component.e2e-spec.ts</code>:</p>
+<pre><code>import {t} from &#39;../../frameworks/test/index&#39;;
+
+declare var browser: any, element: any, by: any;
+
+t.describe(&#39;Home&#39;, function () {
+
+  t.be(function () {
+    browser.get(&#39;/&#39;);
+  });
+
+  t.it(&#39;should have correct h1&#39;, function () {
+    t.e(element(by.css(&#39;sd-app sd-home h1&#39;)).getText()).toEqual(&#39;I love Pokemon!&#39;);
+  });
+
+
+});
+</code></pre><p>You should now be able to run a test to check whether the <code>&lt;h1&gt;</code> tag is correct by typing <code>npm test</code> into a terminal at the root of your project. </p>
+<div class="exercise-end"></div>
+
+<blockquote>
+    <p><strong>CHALLENGE!</strong>:  Test something else!</p>
+</blockquote>
+
+<p>Congratulations! You have built a service, customized a web and mobile app at the same time, tweaked its UI, and tested it! Just think of all the amazing web sites and apps you&#39;ll be able to spin up in the near future.</p>
 
 			</div>
 			<hr>
