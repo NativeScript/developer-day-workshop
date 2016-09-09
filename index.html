@@ -52,23 +52,483 @@
 			<div class="chapter">
 				<h2 id="the-basics">The basics</h2>
 <p>For our first hands-on workshop, you’ll learn how to build and manage NativeScript apps, as well as how to make simple changes and debug your code.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>In order to complete all of todays&#39; workshops you need the NativeScript CLI installed on your machine.</p>
+<p><a href="https://docs.nativescript.org/start/quick-setup">Here are the instructions on how to do it</a></p>
 <h3 id="how-the-cli-works">How the CLI works</h3>
+<p>The CLI allows you to perform various tasks from creating a new project, building an app to importing plugins.
+All the CLI commands start with a prefix <code>tns</code></p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Create your first project
+</h4>
+
+<p>Open your terminal (Mac) or command line console (Windows) and navigate to the folder where you want to create your first project. Now run the following command:</p>
+<pre><code>tns create WorkshopOne --ng
+</code></pre><p><code>WorkshopOne</code> is the name of the project, while <code>--ng</code> tells the CLI to create an ng2 type of project.</p>
+<p>When complete navigate into the created project folder:</p>
+<pre><code>cd WorkshopOne
+</code></pre><div class="exercise-end"></div>
+
+
+<p>At this point we have a hello world type of project, with a bit of simple logic.
+Now we need add the platforms we want to build this app for.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Adding mobile platforms
+</h4>
+
+<p>To add Android to your project run:</p>
+<pre><code>tns platform add android
+</code></pre><p>For iOS run:</p>
+<pre><code>tns platform add ios
+</code></pre><div class="exercise-end"></div>
+
+
+<h4 class="exercise-start">
+
+Now we will learn how to build and run your apps.
+
+    <b>Exercise</b>: Running the app
+</h4>
+
+<p>To build an Android app and run it on a connected device or Genymotion instance call: </p>
+<pre><code>tns run android
+</code></pre><p>However if you want to run the app in an emulator you should call</p>
+<pre><code>tns run android --emulator
+</code></pre><p>The same applies to building and running iOS apps. Just swap <code>android</code> for <code>ios</code></p>
+<pre><code>tns platform add ios --emulator
+</code></pre><p>As a side note. If you called <code>tns run</code> and then realised that you want to make a change first, you can cancel the build by pressing <code>CTRL+C</code></p>
+<div class="exercise-end"></div>
+
+
+<p>Sometimes waiting for the build process can be a bit painful, especially when you need to rebuild the app every time you make a tiny change to the code.
+This is why the CLI has the <code>livesync</code> command, which allows you to build the app in such way, so that whenever you make a change in your code the app will get refreshed really quickly.
+To make it more insteresting, if you make a change to your <code>TypeScript</code> code, the CLI will parse it to <code>JavaScript</code> first and then refresh the app.</p>
+<h4 class="exercise-start">
+
+Streamlining the build process.
+
+    <b>Exercise</b>: Livesync
+</h4>
+
+<p>Build your app using the <code>livesync</code> command and then open <code>app.css</code>, make some changes to the styling and save the file.</p>
+<pre><code>tns livesync android --watch
+</code></pre><p>or </p>
+<pre><code>tns livesync ios --emulator --watch
+</code></pre><div class="exercise-end"></div>
+
+
+<h4 class="exercise-start">
+
+    <b>Exercise</b>: Debugging
+</h4>
+Build your app in the debug mode using the following command.
+This should launch debugging tools for you. Once that is ready find app.component.js add a breakpoint to <code>onTap()</code> then tap on the button and try to explore what you can do with it.
+
+<code>tns debug android</code>
+
+<code>tns debug ios --emulator</code>
+
+Here is an interesting thing. Launching a debugger is a very slow process, but yet again <code>livesync</code> comes in to save the day.
+You can run the debugger in the livesync mode by adding <code>--watch</code> at the end of the command, like this:
+
+<code>tns debug android --watch</code>
+
+<div class="exercise-end"></div>
+
+
+Now that we know how to build the apps, let&#39;s add an npm module to the project to help us with getting additional functionality.
+If you go to <a href="https://www.npmjs.com/search?q=nativescript"><code>npmjs</code> and search for <code>nativescript</code></a> you will get a long list of NativeScript specific npm modules that might come in handy when building an app.
+
+<h4 class="exercise-start">
+Here we will learn how to add an npm module.
+
+    <b>Exercise</b>: Installing a NativeScript plugin from npm
+</h4>
+
+<p>The usual way to add an npm module would be to call <code>npm i module-name</code>, however when it comes to installing NativeScript specific plugins it is better to call <code>tns plugin add module-name</code>. That is because <code>tns plugin add</code> will do all that <code>npm install</code> does plus it configures any native dependencies that the plugin may need to use. This might include installing additional native iOS and/or components.</p>
+<p>Let&#39;s add the <a href="https://www.npmjs.com/package/nativescript-appinfo">appinfo plugin</a>, which will allow us to get info like the <code>version name</code>, <code>build number</code> and <code>app ID</code>.</p>
+<pre><code>tns plugin add nativescript-appinfo
+</code></pre><p>Once you run this command you should be able to see the <code>nativescript-appinfo</code> module inside the <code>node_modules</code> folder and also the dependency to the module should be added to the <code>package.json</code> at the root of the project (not the one in the <code>app</code> folder)</p>
+<p>Now let&#39;s try to use the <code>nativescript-appinfo</code> module.
+Open <code>app.component.ts</code> and add the following line to the top of the file (or anywhere before <code>@Component</code> starts):</p>
+<pre><code>var appinfo = require(&quot;nativescript-appinfo&quot;);
+</code></pre><p>This will give us access to the appinfo module in this area of code.</p>
+<p>Now we can call the <code>appinfo</code> instance to get some app information. Add the following piece of code inside the <code>onTap()</code> function:</p>
+<pre><code>appinfo.getAppId()
+    .then(function(id) {
+        console.log(&quot;Your app&#39;s id is: &quot; + id);
+    });
+</code></pre><p>Now build the app and see what happens when you tap the button.</p>
+<p>As a bonus exercise: run this app in the <code>debug mode</code> and a break point at <code>getAppId()</code> and try to step in to getAppId function to see what happens.</p>
+<div class="exercise-end"></div>
+
+
 <h3 id="nativescript-folder-structure">NativeScript folder structure</h3>
+<p>At the root of the project we have <code>package.json</code>, which contains all npm dependencies and project configuration.
+This is where you can change the id of the project or the app version.</p>
+<p>On top of that NativeScript project is made of a number of folders, however you should mainly pay attention to 3 of them.</p>
+<h4 id="the-app-folder">the <code>app</code> folder</h4>
+<p>This is where the code of the application goes.</p>
+<p>Some of the most notable files here are:</p>
+<ul>
+<li><code>main.ts</code> - is where the application starts. It is also the file where you can initialize the routing configuration for page navigation.</li>
+<li><code>app.css</code> - is the global css file, the styling contained here is applied accross the whole of the application</li>
+<li><code>app.component</code> - by default it contains the firts angular component that get&#39;s loaded when you run the app, however most apps that you will work on will probably use a different component as the starting one.  </li>
+<li><code>App_Resources\Android\app.gradle</code> - this file contains Android build configuration options. Whenever your app requires permissions to access specific functionality (like contacts or GPS), this is where the necessary configuration goes</li>
+</ul>
+<h4 id="the-node_modules-folder">the <code>node_modules</code> folder</h4>
+<p>This folder contains all npm modules specified in the <code>package.json</code>.
+This folder can be easily regenerated, this means that you can safely delete it whenever you feel like.
+You should also refrain from pushing the folder into <code>github</code> or any source control.</p>
+<h4 id="the-platforms-folder">the <code>platforms</code> folder</h4>
+<p>This is the build folder for each of your platforms.
+Just like the <code>node_modules</code> folder, this folder can be regenared at will, so you should never add it to your source control.</p>
 <h3 id="managing-platforms-and-node_modules-">Managing <code>platforms</code> and <code>node_modules</code></h3>
-<h3 id="making-your-first-change">Making your first change</h3>
-<h3 id="working-in-visual-studio-code">Working in Visual Studio Code</h3>
-<h3 id="setting-up-a-debugging-workflow">Setting up a debugging workflow</h3>
+<p>When you clone an existing github project, the project will already contain a list of required npm modules (which you can view the <code>package.json</code> file) together with selected platforms (Android and/or iOS) it is designed to work for.
+These will get automatically downloaded when you build the project, however until the modules get loaded TypeScript won&#39;t be able to provide you with the support for these modules.
+The best thing to do at this stage is to call:</p>
+<pre><code>tns install
+</code></pre><p>Which will download and configure all the required modules and platforms.</p>
+<h4 id="changing-npm-module-version">Changing npm module version</h4>
+<p>When you want to change the version of an npm module, just find it in <code>package.json</code> change the version to the one you need, then delete it from the <code>node_modules</code> folder and finally run <code>tns install</code>.</p>
+<h4 id="trouble-shooting-new-npm-installs-not-working-as-expected-">Trouble shooting new npm installs not working as expected.</h4>
+<p>Sometimes freshly installed modules with Native dependencies don&#39;t seem to work.
+This usually happens when you built your app once already. Then you add a new npm module (which requires native Android or iOS support). And you are trying to use the module and run the app again. </p>
+<p>The best thing to do is to either delete the <code>platforms</code> folder and rerun the build or you could use the CLI to help you with the task by calling <code>tns platform add</code> and then <code>remove</code>.
+Just like this
+For Android:</p>
+<pre><code>tns platform remove android
+tns platform add android
+</code></pre><p>For iOS:</p>
+<pre><code>tns platform remove ios
+tns platform add ios
+</code></pre><h3 id="working-in-visual-studio-code">Working in Visual Studio Code</h3>
+<p>There are a number of IDEs that you might be used to work with, however for the purpose of this workshop we will focus on working with VS Code, which has a lot of really good features that can help you build NativeScript apps.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Setting up the IDE
+</h4>
+
+<p>Download Visual Studio Code <a href="https://code.visualstudio.com/download">from it&#39;s official download page</a> and install it.</p>
+<p>Now we will add NativeScript extensions to Visual Studio Code.
+Just run VS Code and go to the Extensions tab (on mac press <code>shift + command + x</code> on windows press <code>shift + ctrl + x</code>). 
+From here search for &#39;nativescript&#39;, once the search returns reults install <code>NativeScript</code> and <code>NativeScript + Angular 2 Snippets</code>
+<img src="../../images/vscode-nsext-install.png" alt="Search result and install"></p>
+<p>Installing each them shouldn&#39;t take too long, once ready you will be prompted to enable the extensions, just click on enable next to one of the modules, which will restart VS Code and you will be ready to go
+<img src="../../images/vscode-nsext-enable.png" alt="Search result and install"></p>
+<div class="exercise-end"></div>
+
+
+<h4 class="exercise-start">
+Now that VS Code is ready, let&#39;s see how it can be of service.
+We will start by playing with code snippets.
+
+    <b>Exercise</b>: Using code snippets
+</h4>
+
+<p>First open the <code>WorkshopOne</code> project folder in VS Code by using <code>file-&gt;open</code>.
+Then find <code>app\app.component.html</code> (this file contains the UI definition of app.component).</p>
+<p>Add a new line just before the closing <code>&lt;/StackLayout&gt;</code> tag and start typing <code>ns</code> immediately you will get a list of available snippets. If you keep typing the list of available snippets will narrow down.
+When you select one of the snippets and hit <code>enter</code> the text you were typing will be replaced with a snippet. Some snippets will have more than one place where you can type, you can <code>tab</code> through them.</p>
+<p>For this exercise add the following componenents using code snippets.</p>
+<ul>
+<li>Label with the <code>text</code> set to <code>Email:</code> -&gt; <code>nslabel</code></li>
+<li>TextField with the <code>hint</code> set to <code>email...</code> -&gt; <code>nstestfield</code></li>
+<li>Label with the <code>text</code> set to <code>Passowrd</code> -&gt; <code>nslabel</code></li>
+<li>TextField with the <code>hint</code> set to <code>password...</code> -&gt; <code>nstextfield</code></li>
+<li>Button with the <code>text</code> set <code>Sign In</code> -&gt; <code>nsbtn</code></li>
+</ul>
+<p><img src="../../images/vscode-using-snippets.gif" alt="Creating login screen"></p>
+<p>When done, run the app and see what you got.</p>
+<div class="exercise-end"></div>
+
+
+<p><h4 class="exercise-start">
+    <b>Exercise</b>: Building the project in VS Code
+</h4>
+Instruction of the exercise</p>
+<div class="exercise-end"></div>
+
+
+<p><h4 class="exercise-start">
+    <b>Exercise</b>: Debugging with VS Code
+</h4>
+Instruction of the exercise</p>
+<div class="exercise-end"></div>
 
 			</div>
 			<hr>
 			<div class="chapter">
 				<h2 id="the-user-interface">The user interface</h2>
-<p>Now that you’ve gotten a feel for how NativeScript apps work, let’s shift our focus to the user interface. In our second hands-on workshop, you’ll learn about using UI components, styling them with CSS, and animating them with NativeScript’s robust animation library.</p>
+<p>Now that you’ve gotten a feel for how NativeScript apps work, let’s shift our focus to the user interface. In our second hands-on workshop, you’ll learn about using UI components, styling them with CSS, and animating them with NativeScript’s robust animation library. In this workshop, we&#39;ll create an adorable Kitten Adoption app with a card interface.</p>
 <h3 id="adding-ui-components">Adding UI components</h3>
-<h3 id="organizing-components-with-layouts">Organizing components with layouts</h3>
-<h3 id="styling-apps-with-css">Styling apps with CSS</h3>
-<h3 id="creating-robust-animations">Creating robust animations</h3>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Create a new app
+</h4>
 
+<p>Let&#39;s create a new NativeScript app for this workshop:</p>
+<pre><code>tns create WorkshopTwo --ng
+</code></pre><p>Next, change directories into your new project:</p>
+<pre><code>cd WorkshopTwo
+</code></pre><div class="exercise-end"></div>
+
+<p>Open this new project up in Visual Studio Code (you can type <code>code .</code>) and add our first UI component.</p>
+<p>First, let&#39;s take a look at the files we will need to work with. Notice in the <code>/app</code> folder of your project there is a file called <code>app.component.ts</code>. This is where you put the functions that are called by the front-end file, <code>app.component.html</code>.</p>
+<p>Open <code>app.component.html</code> and delete everything there.</p>
+<p>Start your app&#39;s livesyncing process on iOS by typing into the command line:</p>
+<pre><code>tns livesync ios --watch
+</code></pre><p>For Android, we recommend using Genymotion; open Genymotion and start an emulator running. type:</p>
+<pre><code>tns livesync android --watch
+</code></pre><p>Now, when you make changes to your code, your app will refresh in the emulator.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Add your first UI element
+</h4>
+
+<p>Native apps need native-looking controls. We will create a native ActionBar using XML markup. In <code>app.component.html</code>, delete all the markup and replace it with this line:</p>
+<pre><code>&lt;ActionBar title=&quot;Adopt A Kitten!&quot;&gt;&lt;/ActionBar&gt;
+</code></pre><div class="exercise-end"></div>
+
+<p>Before we go further, we need some data that we can layout on the screen. Let&#39;s grab ten kitten images from <a href="http://placekitten.com">placekitten.com</a> to have them ready to place on our app screen.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Get some data ready
+</h4>
+
+<p>We won&#39;t go into the details now of binding your data to UI as you&#39;ll cover this in the next workshop.</p>
+<p>Open <code>app.component.ts</code> and delete everything there. Replace it with the code below:</p>
+<pre><code>import {Component} from &quot;@angular/core&quot;;
+
+        @Component({
+            selector: &quot;my-app&quot;,
+            templateUrl: &quot;app.component.html&quot;
+        })
+        export class AppComponent {
+          public kittens: Array&lt;any&gt;;
+          public url: string;
+          public counter:number = 200;
+
+            constructor() {
+                this.kittens = [];
+                this.url = &#39;https://placekitten.com/200/&#39;;
+
+                for (var i = 0; i &lt; 10; i++) {
+                    this.counter++;
+                    console.log(this.url+this.counter)
+                    this.kittens.push(this.url+this.counter);
+                }
+            }   
+        }
+</code></pre><p>We&#39;ll use this data in our layout in the next section.</p>
+<div class="exercise-end"></div>
+
+<h3 id="types-of-layouts">Types of layouts</h3>
+<p>There are five basic layouts offered by NativeScript that correspond to standard native ways of laying elements out onto a page: StackLayout, GridLayout, WrapLayout, DockLayout, and AbsoluteLayout. Let&#39;s take a look at these.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Experiment with layouts
+</h4>
+
+<p>One of the simplest layouts is a StackLayout, which simply stacks elements on top of each other. Paste this code under the ActionBar: </p>
+<pre><code>&lt;StackLayout horizontalAlignment=&quot;center&quot;&gt;
+    &lt;Image [src]=&quot;kittens[0]&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[1]&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[2]&quot; stretch=&quot;none&quot;&gt;&lt;/Image&gt;
+&lt;/StackLayout&gt;
+</code></pre><p>If you need to position your element in an exact spot, use AbsoluteLayout:</p>
+<pre><code>&lt;AbsoluteLayout&gt;
+     &lt;Image [src]=&quot;kittens[0]&quot; left=&quot;100&quot; top=&quot;100&quot; width=&quot;200&quot; height=&quot;200&quot; &gt;&lt;/Image&gt;
+&lt;/AbsoluteLayout&gt;
+</code></pre><p>Try a grid layout by replacing the AbsoluteLayout with the snippet below. You can have control over the format of your grid by tweaking the &#39;*&#39; values. Note the columns/rows vs col/row values.</p>
+<pre><code>&lt;GridLayout columns=&quot;*,*,*&quot; rows=&quot;*,*,*,*&quot;&gt;
+    &lt;Image [src]=&quot;kittens[0]&quot; col=&quot;0&quot; row=&quot;0&quot; colSpan=&quot;2&quot; rowSpan=&quot;2&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[1]&quot; col=&quot;2&quot; row=&quot;0&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[2]&quot; col=&quot;2&quot; row=&quot;1&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[3]&quot; col=&quot;0&quot; row=&quot;2&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[4]&quot; col=&quot;1&quot; row=&quot;2&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[5]&quot; col=&quot;2&quot; row=&quot;2&quot; rowSpan=&quot;2&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[7]&quot; col=&quot;0&quot; row=&quot;3&quot; colSpan=&quot;2&quot; stretch=&quot;aspectFill&quot; class=&quot;img&quot;&gt;&lt;/Image&gt;
+&lt;/GridLayout&gt;
+</code></pre><p>If you need elements &#39;docked&#39; onto the top, bottom, and/or sides of your app interface, try a DockLayout:</p>
+<pre><code>&lt;DockLayout&gt;
+    &lt;Image dock=&quot;left&quot; width=&quot;80&quot; [src]=&quot;kittens[0]&quot; stretch=&quot;aspectFill&quot;&gt;&lt;/Image&gt;
+    &lt;Image dock=&quot;top&quot; height=&quot;80&quot; [src]=&quot;kittens[1]&quot; stretch=&quot;aspectFill&quot;&gt;&lt;/Image&gt;
+    &lt;Image dock=&quot;right&quot; width=&quot;80&quot; [src]=&quot;kittens[2]&quot; stretch=&quot;aspectFill&quot;&gt;&lt;/Image&gt;
+    &lt;Image dock=&quot;bottom&quot; height=&quot;80&quot; [src]=&quot;kittens[3]&quot; stretch=&quot;aspectFill&quot;&gt;&lt;/Image&gt;
+    &lt;Image [src]=&quot;kittens[4]&quot; stretch=&quot;aspectFill&quot;&gt;&lt;/Image&gt;
+&lt;/DockLayout&gt;
+</code></pre><p><b>Bonus!</b> Finally, try a ListView - which isn&#39;t a layout per se but deserves to be tried out. This one has some fancy layouting with left and right alignment:</p>
+<pre><code>&lt;ListView [items]=&quot;kittens&quot;&gt;
+    &lt;template let-item=&quot;item&quot; let-odd=&quot;odd&quot; let-even=&quot;even&quot;&gt;
+        &lt;DockLayout&gt;
+            &lt;Image [src]=&quot;item&quot; width=&quot;50&quot; height=&quot;50&quot; dock=&quot;{{ odd ? &#39;left&#39; : &#39;right&#39; }}&quot;&gt;&lt;/Image&gt;
+            &lt;Label text=&quot;minou&quot; textWrap=&quot;true&quot; horizontalAlignment=&quot;{{ odd ? &#39;left&#39; : &#39;right&#39; }}&quot;&gt;&lt;/Label&gt;
+        &lt;/DockLayout&gt;
+    &lt;/template&gt;
+&lt;/ListView&gt;
+</code></pre><div class="exercise-end"></div>
+
+<p>You can mix and match layouts, and have full control over the way your app looks using proper layouting.</p>
+<h3 id="create-a-custom-layout">Create a custom layout</h3>
+<p>Now it&#39;s time to have some fun with creating a little functional layout for our kitten adoption app. We&#39;re going to create a card layout by combining StackLayout and WrapLayout.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Place the kitten images in a scrolling StackLayout
+</h4>
+
+<p>What happens if you just put an array of kitten images within a StackLayout?</p>
+<p>In <code>app.component.html</code>, add the following under the ActionBar:</p>
+<pre><code>&lt;StackLayout&gt;
+    &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+    &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+&lt;/StackLayout&gt;
+</code></pre><p>The images are stacked, but they don&#39;t scroll.</p>
+<p>Nest this StackLayout into a ScrollView:</p>
+<pre><code>&lt;ScrollView&gt;
+  &lt;StackLayout&gt;
+      &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+      &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+      &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+      &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+      &lt;Image src=&quot;https://placekitten.com/300/300&quot;&gt;&lt;/Image&gt;
+  &lt;/StackLayout&gt; 
+&lt;/ScrollView&gt;
+</code></pre><div class="exercise-end"></div>
+
+<blockquote>
+    <p><strong>Note</strong>: If your iOS app complains about not being able to load insecure content, follow the instructions <a href="https://www.thepolyglotdeveloper.com/2015/12/fix-ios-9-app-transport-security-issues-in-nativescript/">here</a> and rebuild your app by running <code>tns run ios</code>.</p>
+</blockquote>
+
+<p>It&#39;s all fine to add images manually to an app, but any data-driven app will need to have data loaded dynamically. Let&#39;s get our StackLayout to loop, so we can start creating cards.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Create the kitten cards
+</h4>
+
+<p>In <code>app.component.html</code>, replace the current ScrollView with a layout that is generated dynamically:</p>
+<pre><code>&lt;ScrollView&gt;
+    &lt;StackLayout *ngFor=&quot;let kitten of kittens&quot;&gt;
+       &lt;Image [src]=&quot;kitten&quot;&gt;&lt;/Image&gt;
+    &lt;/StackLayout&gt;     
+&lt;/ScrollView&gt;
+</code></pre><div class="exercise-end"></div>
+
+<p>Notice the actual images (there should be 10) aren&#39;t laid out in a loop. We need to nest our layout to do this.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Dynamically layout the cards
+</h4>
+
+<p>In <code>app.component.html</code>, replace the current ScrollView with a WrapLayout that will allow the StackLayout to loop.</p>
+<pre><code>&lt;ScrollView&gt;
+    &lt;WrapLayout&gt;
+        &lt;StackLayout *ngFor=&quot;let kitten of kittens&quot;&gt;
+           &lt;Image [src]=&quot;kitten&quot;&gt;&lt;/Image&gt;
+        &lt;/StackLayout&gt;
+    &lt;/WrapLayout&gt;     
+&lt;/ScrollView&gt;
+</code></pre><p>This allows the layout to loop, but the cards don&#39;t look very good. Let&#39;s control the width of the cards by making their width a percentage and align them horizontally:</p>
+<pre><code>&lt;StackLayout width=&quot;40%&quot; *ngFor=&quot;let kitten of kittens&quot; horizontalAlignment=&quot;center&quot;&gt;
+</code></pre><p>Align the cards to the center by controlling the alignment of the WrapLayout:</p>
+<pre><code>&lt;WrapLayout horizontalAlignment=&quot;center&quot;&gt;
+</code></pre><p>Now we have a wrapping layout of cards dynamically loaded onto the screen!</p>
+<p>The final thing we want to do to these cards is to add a caption underneath the image. Add a caption of your own under the image:</p>
+<pre><code>&lt;Label text=&quot;p&#39;tit minou&quot; horizontalAlignment=&quot;center&quot;&gt;&lt;/Label&gt;
+</code></pre><div class="exercise-end"></div>
+
+<blockquote>
+    <p><strong>CHALLENGE!</strong>: Can you find a nicer way to layout these cards? Experiment with GridLayouts and AbsoluteLayouts. Show us your results!</p>
+</blockquote>
+
+<h3 id="styling-apps-with-css">Styling apps with CSS</h3>
+<p>The cards are laid out properly, but they don&#39;t look very good. Time to add some styles!</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Add some color
+</h4>
+
+<p>Choose a pallette of color from <a href="http://coolors.co">Coolors.co</a> or another pallette generator of your choice.</p>
+<p>Attach a style sheet to your app by editing the <code>@Component</code> block in <code>app.component.ts</code>:</p>
+<pre><code>@Component({
+    selector: &quot;my-app&quot;,
+    templateUrl: &quot;app.component.html&quot;,
+    styleUrls: [&quot;app.css&quot;]
+})
+</code></pre><p>Delete everything in app.css. Add some color to the ActionBar and the Page background by adding a few styles to this file:</p>
+<pre><code>Page {
+    background-color: #EBEBD3;
+}
+
+ActionBar {
+    background-color: #083D77;
+    color: #EBEBD3;
+}
+</code></pre><p>Style the card by adding a css class to the StackLayout in <code>app.component.html</code>:</p>
+<pre><code>&lt;StackLayout width=&quot;40%&quot; *ngFor=&quot;let kitten of kittens&quot; horizontalAlignment=&quot;center&quot; class=&quot;card&quot;&gt;
+</code></pre><p>Finally, add styles to the card itself by adding this style to <code>app.css</code>:</p>
+<pre><code>.card {
+    background-color: #DA4167;
+    margin: 10;
+    border-radius: 5;
+    color: #EBEBD3;
+}
+</code></pre><div class="exercise-end"></div>
+
+<blockquote>
+    <p><strong>CHALLENGE!</strong>: Can you find a nicer way to layout these cards? Experiment with GridLayouts and AbsoluteLayouts. Show us your results!</p>
+</blockquote>
+
+<p>Congratulations! With a bit of code, you&#39;ve succesfully created a nice card interface!</p>
+<h3 id="creating-robust-animations">Creating robust animations</h3>
+<p>The more mobile app development you do, the more you realize that clean animations are not just a &#39;nice-to-have&#39;, they are a &#39;must-have&#39;. Fortunately, NativeScript makes animating components really easy!</p>
+<p>There are two ways to animate in NativeScript - let&#39;s look at the first way, which is to use the animation library.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Animate a card
+</h4>
+
+<p>First, we need to pass through a reference to the card we want to animate, and we do that in the <code>app.component.html</code> XML by giving it an id and adding a function that will fire when we tap the card:</p>
+<pre><code>&lt;StackLayout (tap)=&quot;flip(card)&quot; #card width=&quot;40%&quot; *ngFor=&quot;let kitten of kittens&quot; horizontalAlignment=&quot;center&quot; class=&quot;card&quot;&gt;
+</code></pre><p>Next, open <code>app.component.ts</code> and import the Animation library at the top:</p>
+<pre><code>import { Animation } from &quot;ui/animation&quot;;
+</code></pre><p>Then, build out the <code>animate()</code> function. Add this function under the constructor:</p>
+<pre><code>animate(card) {
+       card.animate({ opacity: 0 })
+            .then(function () { return card.animate({ opacity: 1 }); })
+            .then(function () { return card.animate({ translate: { x: 100, y: 100 } }); })
+            .then(function () { return card.animate({ translate: { x: 0, y: 0 } }); })
+            .then(function () { return card.animate({ scale: { x: 3, y: 3 } }); })
+            .then(function () { return card.animate({ scale: { x: 1, y: 1 } }); })
+            .then(function () { return card.animate({ rotate: 180 }); })
+            .then(function () { return card.animate({ rotate: 0 }); })
+            .then(function () {
+            console.log(&quot;Animation finished&quot;);
+        })
+            .catch(function (e) {
+            console.log(e.message);
+        });    
+    }
+</code></pre><p>As you can see, we are chaining several animations together using promises. When one completes, the next fires. </p>
+<div class="exercise-end"></div>
+
+<blockquote>
+    <p><strong>CHALLENGE!</strong>: Create a different animation using the Animation library as documented here: <a href="https://docs.nativescript.org/ui/animation">https://docs.nativescript.org/ui/animation</a></p>
+</blockquote>
+
+<p>Now, let&#39;s take a look at the other way of animating elements on the screen; by using CSS keyframe animation. Let&#39;s make the cards fade in during the page loading process. </p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Add a keyframe animation
+</h4>
+
+<p>To do this, we simply need to tweak the CSS, so open <code>app.css</code> and add a <code>@keyframes</code> rule named <code>card</code>:</p>
+<pre><code>@keyframes card {
+    from { opacity: 0 }
+    to { opacity: 1}
+}
+</code></pre><p>Then, add these lines to the <code>.card</code> class:</p>
+<pre><code>    animation-name: card;
+    animation-duration: 4s;
+    opacity: 0;
+</code></pre><p>The app should refresh and the cards will fade in. </p>
+<div class="exercise-end"></div>
+
+<blockquote>
+    <p><strong>CHALLENGE!</strong>: What else can you do with CSS animations?</p>
+</blockquote>
 			</div>
 			<hr>
 			<div class="chapter">
@@ -521,15 +981,151 @@ export const APP_ROUTER_PROVIDERS = [
 <div class="exercise-end"></div>
 
 <p>With routing out of the way, let’s now look at what is perhaps NativeScript’s coolest feature: the ability to access native iOS and Android APIs.</p>
-<h3 id="accessing-native-ios-and-android-apis">Accessing native iOS and Android APIs</h3>
+<h3 id="adding-additional-angular-functionality">Adding additional Angular functionality</h3>
+<p>Now that you have a bit of Angular experience let’s try adding a few additional features to this groceries app. This section will be a super special ALL CHALLENGES SECTION—meaning, we’re going to suggest some new functionality for the application, and leave it up to you to do the implementations. No worries though, we’ll provide tips to point you in the right direction, as well as the solutions if you’d like to cheat 😀</p>
+<h4 class="exercise-start">
+    <b>Challenge</b>: Add delete functionality
+</h4>
+
+<p>A grocery list is kind of useless if you can’t delete from the list, and your challenge is to implement a UI that allows users to do that. There are many ways you can choose to implement a UI like this. One potential option is laid out in the Solution below, however, you’re free to take any approach you’d like.</p>
+<div class="solution-start"></div>
+
+<p>First, update the <code>&lt;template&gt;</code> in <code>groceries.component.html</code> to use the code below:</p>
+<pre><code class="lang-XML">&lt;template let-item=&quot;item&quot;&gt;
+  &lt;GridLayout columns=&quot;*, auto&quot;&gt;
+    &lt;Label col=&quot;0&quot; [text]=&quot;item.name&quot;&gt;&lt;/Label&gt;
+    &lt;Label col=&quot;1&quot; (tap)=&quot;delete(item)&quot; text=&quot;Delete&quot; color=&quot;red&quot;&gt;&lt;/Label&gt;
+  &lt;/GridLayout&gt;
+&lt;/template&gt;
+</code></pre>
+<p>Next, add the following function to the <code>GroceriesComponent</code> class in <code>groceries.component.ts</code>:</p>
+<pre><code class="lang-TypeScript">delete(grocery: Grocery) {
+  this.groceryService.delete(grocery);
+}
+</code></pre>
+<p>Finally, replace the <code>groceries.service.ts</code> file with the code below, which adds a new <code>delete()</code> method, as well as a minor refactor to save changes on additions and deletions.</p>
+<pre><code class="lang-TypeScript">import { Injectable } from &quot;@angular/core&quot;;
+import { getString, setString } from &quot;application-settings&quot;;
+
+import { Grocery } from &quot;./grocery&quot;;
+
+@Injectable()
+export class GroceryService {
+  private groceries: Array&lt;Grocery&gt;;
+
+  constructor() {
+    this.groceries = [];
+    let savedGroceriesString = getString(&quot;groceries&quot;); 
+    if (savedGroceriesString) {
+      savedGroceriesString.split(&quot;,&quot;).forEach((grocery) =&gt; {
+        this.groceries.push(new Grocery(grocery));
+      });
+    }
+  }
+
+  get() {
+    return this.groceries;
+  }
+
+  add(name) {
+    this.groceries.unshift(new Grocery(name));
+    this.save();
+  }
+
+  delete(grocery: Grocery) {
+    let index = -1;
+    this.groceries.forEach((item: Grocery, i) =&gt; {
+      if (item === grocery) {
+        index = i;
+      }
+    });
+    this.groceries.splice(index, 1);
+    this.save();
+  }
+
+  private save() {
+    let names = this.groceries.map((item: Grocery) =&gt; {
+      return item.name;
+    });
+    setString(&quot;groceries&quot;, names.toString());
+  }
+}
+</code></pre>
+<div class="solution-end"></div>
+
+<div class="exercise-end"></div>
+
+<p>With the ability to delete groceries implemented, let’s try one additional challenge.</p>
+<h4 class="exercise-start">
+    <b>Challenge</b>: Add groceries on “Enter” presses
+</h4>
+
+<p>Currently you can add groceries by tapping on the “Add” button. But it would be nice if you could also add by pressing the DONE button (or Enter/Return when in a simulator). As a hint, try searching for “return” on the <a href="http://docs.nativescript.org/api-reference/classes/_ui_text_field_.textfield.html">TextField’s API documentation</a>.</p>
+<div class="solution-start"></div>
+
+<p>Change the <code>&lt;TextField&gt;</code> in <code>groceries.component.html</code> to use the code below, which adds a new <code>returnKeyType</code> property and <code>returnPress</code> event handler.</p>
+<pre><code class="lang-XML">&lt;TextField col=&quot;0&quot; hint=&quot;Enter a grocery&quot; [(ngModel)]=&quot;grocery&quot; returnKeyType=&quot;done&quot; (returnPress)=&quot;add()&quot;&gt;&lt;/TextField&gt;
+</code></pre>
+<div class="solution-end"></div>
+
+<div class="exercise-end"></div>
+
+<p>And that’s it. It’s time for lunch, and then back to more NativeScript and Angular 2!</p>
 
 			</div>
 			<hr>
 			<div class="chapter">
 				<h2 id="user-interface-deep-dive">User interface deep dive</h2>
-<h3 id="creating-and-styling-action-bars">Creating and styling action bars</h3>
+<p>Now that you have the basics down, as well as the basics of Angular, let’s look at some more advanced user interface concepts you can use to build your applications.</p>
 <h3 id="implementing-navigation-patterns">Implementing navigation patterns</h3>
-<h3 id="building-with-non-trivial-layouts">Building with non-trivial layouts</h3>
+<p>We’ll start with navigation patterns, as they’re one of the most important decisions you have to make when you start your applications. In this section we’ll cover the two most navigation patterns, tab bars and drawers, and show how to implement them in NativeScript.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Start up a new app
+</h4>
+
+<p>Go ahead and start up a new NativeScript app for this workshop:</p>
+<pre><code>tns create WorkshopFour --ng
+</code></pre><p>Next, change directories into your new project:</p>
+<pre><code>cd WorkshopFour
+</code></pre><p>After that, open the new project in Visual Studio Code, and replace the contents of <code>app.component.ts</code> with the code below:</p>
+<pre><code class="lang-TypeScript">import { Component } from &quot;@angular/core&quot;;
+
+@Component({
+  selector: &quot;my-app&quot;,
+  template: `
+&lt;TabView&gt;
+  &lt;StackLayout *tabItem=&quot;{title: &#39;Tab1&#39;}&quot;&gt;
+    &lt;Label text=&quot;This is Label in Tab 1&quot;&gt;&lt;/Label&gt;
+  &lt;/StackLayout&gt;
+  &lt;StackLayout *tabItem=&quot;{title: &#39;Tab2&#39;}&quot;&gt;
+    &lt;Label text=&quot;This is Label in Tab 2&quot;&gt;&lt;/Label&gt;
+  &lt;/StackLayout&gt;
+&lt;/TabView&gt;
+`
+})
+export class AppComponent {}
+</code></pre>
+<div class="exercise-end"></div>
+
+<p>This is what a very basic tab view looks like in an app built with NativeScript and Angular 2. Next, let’s add a side drawer to this same app so you can see each in action.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Start up a new app
+</h4>
+
+<p>In NativeScript, drawer navigation is implemented as part of <a href="http://www.telerik.com/nativescript-ui">UI for NativeSrcipt</a>. UI for NativeScript contains a variety of high-quality components for using in NativeScript applications. The two components we’ll use today are the SideDrawer and ListView controls, both of which are free to use.</p>
+<blockquote>
+<p><strong>NOTE</strong>: UI for NativeScript also features premium chart, calendar, and data form components, which we will not be covering today.</p>
+</blockquote>
+<p>To install UI for NativeScript, run the following command in your workshop four project:</p>
+<pre><code>tns plugin add nativescript-telerik-ui
+</code></pre><blockquote>
+<p><strong>TIP</strong>: You might need to hit <code>Ctrl</code> + <code>C</code> to kill the previous file watcher.</p>
+</blockquote>
+<p>Next, rerun your app using the <code>tns run</code> command.</p>
+<pre><code>tns run ios --watch
+</code></pre><p>Or</p>
+<pre><code>tns run android --watch
+</code></pre><div class="exercise-end"></div>
 
 			</div>
 			<hr>

@@ -558,6 +558,110 @@ Change the `ActionItem` in `groceries.component.html` to have a new `ios.positio
 
 With routing out of the way, let’s now look at what is perhaps NativeScript’s coolest feature: the ability to access native iOS and Android APIs.
 
-### Accessing native iOS and Android APIs
+### Adding additional Angular functionality
 
+Now that you have a bit of Angular experience let’s try adding a few additional features to this groceries app. This section will be a super special ALL CHALLENGES SECTION—meaning, we’re going to suggest some new functionality for the application, and leave it up to you to do the implementations. No worries though, we’ll provide tips to point you in the right direction, as well as the solutions if you’d like to cheat 😀
 
+<h4 class="exercise-start">
+    <b>Challenge</b>: Add delete functionality
+</h4>
+
+A grocery list is kind of useless if you can’t delete from the list, and your challenge is to implement a UI that allows users to do that. There are many ways you can choose to implement a UI like this. One potential option is laid out in the Solution below, however, you’re free to take any approach you’d like.
+
+<div class="solution-start"></div>
+
+First, update the `<template>` in `groceries.component.html` to use the code below:
+
+``` XML
+<template let-item="item">
+  <GridLayout columns="*, auto">
+    <Label col="0" [text]="item.name"></Label>
+    <Label col="1" (tap)="delete(item)" text="Delete" color="red"></Label>
+  </GridLayout>
+</template>
+```
+
+Next, add the following function to the `GroceriesComponent` class in `groceries.component.ts`:
+
+``` TypeScript
+delete(grocery: Grocery) {
+  this.groceryService.delete(grocery);
+}
+```
+
+Finally, replace the `groceries.service.ts` file with the code below, which adds a new `delete()` method, as well as a minor refactor to save changes on additions and deletions.
+
+``` TypeScript
+import { Injectable } from "@angular/core";
+import { getString, setString } from "application-settings";
+
+import { Grocery } from "./grocery";
+
+@Injectable()
+export class GroceryService {
+  private groceries: Array<Grocery>;
+
+  constructor() {
+    this.groceries = [];
+    let savedGroceriesString = getString("groceries"); 
+    if (savedGroceriesString) {
+      savedGroceriesString.split(",").forEach((grocery) => {
+        this.groceries.push(new Grocery(grocery));
+      });
+    }
+  }
+
+  get() {
+    return this.groceries;
+  }
+
+  add(name) {
+    this.groceries.unshift(new Grocery(name));
+    this.save();
+  }
+
+  delete(grocery: Grocery) {
+    let index = -1;
+    this.groceries.forEach((item: Grocery, i) => {
+      if (item === grocery) {
+        index = i;
+      }
+    });
+    this.groceries.splice(index, 1);
+    this.save();
+  }
+
+  private save() {
+    let names = this.groceries.map((item: Grocery) => {
+      return item.name;
+    });
+    setString("groceries", names.toString());
+  }
+}
+```
+
+<div class="solution-end"></div>
+
+<div class="exercise-end"></div>
+
+With the ability to delete groceries implemented, let’s try one additional challenge.
+
+<h4 class="exercise-start">
+    <b>Challenge</b>: Add groceries on “Enter” presses
+</h4>
+
+Currently you can add groceries by tapping on the “Add” button. But it would be nice if you could also add by pressing the DONE button (or Enter/Return when in a simulator). As a hint, try searching for “return” on the [TextField’s API documentation](http://docs.nativescript.org/api-reference/classes/_ui_text_field_.textfield.html).
+
+<div class="solution-start"></div>
+
+Change the `<TextField>` in `groceries.component.html` to use the code below, which adds a new `returnKeyType` property and `returnPress` event handler.
+
+``` XML
+<TextField col="0" hint="Enter a grocery" [(ngModel)]="grocery" returnKeyType="done" (returnPress)="add()"></TextField>
+```
+
+<div class="solution-end"></div>
+
+<div class="exercise-end"></div>
+
+And that’s it. It’s time for lunch, and then back to more NativeScript and Angular 2!
