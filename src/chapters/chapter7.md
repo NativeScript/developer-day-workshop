@@ -1,5 +1,4 @@
 ## Code sharing
-## Code sharing
 
 ### The case for code sharing
 
