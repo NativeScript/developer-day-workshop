@@ -38,23 +38,31 @@ You should have a web site and either an iOS or Android simulator running. You c
 > Note, on occasion your mobile livesyncing may fail when using this seed. On occasion, you may need to restart the process, so press Ctrl>C in your terminal and restart the `npm run start.livesync...` routine.
 
 ### Exploring the architecture
-- Shared code can be found in `frameworks`:
-  - `app`: your shared application architecture code
+
+Open the root folder of your app in your IDE of choice. Let's take a look at all the moving parts. Navigate to the `src` folder.
+
+`app/frameworks`: contains your shared application architecture code. 
+
   - `core`: foundation layer (decorators and low-level services)
   - `analytics`: analytics provided by [Segment](https://segment.com/)
   - `i18n`: internationalization features
   - `electron`: [Electron](http://electron.atom.io/) specific code
   - `test`: test specific code providing conveniences to make testing your code easier and faster
 
-Your NativeScript app is found in the `nativescript` folder. Make any mobile-specific edits here, such as adding icons and splash screen images to your `app/App_Resources` folder.
+The code we will be editing in this workshop is:
+
+  - `sample`: contains shared navigational components like navbar and toolbar and `sample.module.ts` which is the app's 'switchboard'
+  - `sample/services`: contains services that can communicate with a backend
+  - `app/components`: contains pages (home and about) and base app code
+
+The NativeScript app is found in the `nativescript` folder. Make any mobile-specific edits in this folder, such as adding icons and splash screen images to your `app/App_Resources` folder.
 
  - To edit both web and mobile apps, you can make changes to files in `src/client` or `nativescript` folders. 
  - A symbolic link exists between the web `src/client` and the `nativescript` folder so changes in either location are mirrored because they are the same directory inside.
 
->Note: Normally when greenfielding a project using this seed, it's best for maintenance ease to create a fresh folder for your new app code in `src/client/app/frameworks` - for example my PocketRave app is located in `src/client/app/frameworks/pocketrave` - and then change any paths that point to the `app` folder. This way, you can upgrade your project by checking out a new copy of the Advanced Seed and then dropping your app's folder into `/frameworks`. For this workshop, however, we will simply be editing files in `src/client/app/components`. Reference [PocketRave](http://www.github.com/jlooper/pocketrave) as an example of this type of setup. Visit [http://PocketRave.me](PocketRave) online for a full demo of this app.
+>Note: Normally when greenfielding a project using this seed, it's best for maintenance ease to create a fresh folder for your new app code in `src/client/app/frameworks` - for example the PocketRave app is located in `src/client/app/frameworks/pocketrave` - and then change any paths that point to the `app` folder. This way, you can upgrade your project by checking out a new copy of the Advanced Seed and then dropping your app's folder into `/frameworks`. For this workshop, however, we will simply be editing files in `src/client/app/components`. Reference [PocketRave](http://www.github.com/jlooper/pocketrave) as an example of this type of setup. Visit [http://PocketRave.me](PocketRave) online for a full demo of this app.
  
 ### Making a cross-platform edit
-
 
 Let's change this app from being a shout-out to great scientists to being a celebration of Pokemon! Because we can!
 
@@ -131,8 +139,6 @@ export class PokemonService {
     private handleError(error: Response) {
         return Observable.throw(error);
     }
-
-
 }
 
 ```
@@ -192,6 +198,7 @@ export class HomeComponent implements OnInit {
   }
 }
 
+
 ```
 
 <div class="exercise-end"></div>
@@ -206,7 +213,7 @@ We are going to show a list of Pokemon, as returned by the service, on both web 
     <b>Exercise</b>: Edit the frontend
 </h4>
 
-Paste the following snippet into `src/client/app/components/home/home.component.tns.html` to add a ListView for the mobile app:
+Delete everything in `src/client/app/components/home/home.component.tns.html` and paste in the following code to add a ListView for the mobile app:
 
 ```
 <StackLayout class="container-content">
@@ -222,7 +229,7 @@ Paste the following snippet into `src/client/app/components/home/home.component.
 </StackLayout>
 ```
 
-Then, paste the following line into `src/client/app/components/home/home.component.html` to create a simple list on native:
+Then, replace the code in `src/client/app/components/home/home.component.html` with the code below to create a simple list on native:
 
 ```
 <ul *ngFor="let pokemon of pokemon$ | async">
@@ -237,7 +244,7 @@ With just a few lines of code, you've built a cross-platform presentation screen
     <p><strong>SUPER CHALLENGE!</strong>:  Make this app into a master-detail screen. You will need to use the url that this API passes to you, pass it through a (tap) function on the front end, and switch the screen to display the detail of the Pokemon, which will require another API call. Good luck! Take a look at [PracticeBuddy](https://github.com/jlooper/practice-buddy-mobile-app-2.0) for tips.</p>
 </blockquote>
 
-### Isolating your code via css
+### Customize the CSS by platform
 
 You can truly fine-tune the look of your web and native mobile app by isolating certain elements of the CSS associated to each file, simply by paying attention to the the names of the files. 
 
@@ -250,7 +257,7 @@ In the `src/client/app/components/home` folder, note the naming convention of th
 The listview looks a little crunched on mobile, so edit the  `src/client/app/components/home/home.comonent.tns.css`:
 
 ```
-.list-item{
+.list-item {
   padding: 10;
   margin: 10;
 }
@@ -266,7 +273,7 @@ The listview looks a little crunched on mobile, so edit the  `src/client/app/com
 
 It's easy enough to create shared services and forked frontend code with this Seed, but soon enough you will need to integrate a plugin that can only be used on mobile. This integration must be shielded from the web, as it will break the web frontend if not done properly. Enter the wonderful world of [OpaqueTokens](http://blog.thoughtram.io/angular/2016/05/23/opaque-tokens-in-angular-2.html)!
 
-If, for example, you wanted to use a special Audio plugin in your NativeScript app, but didn't want that plugin to be exposed to the web view, you would inject a string token representing that token at runtime. For the token to be available during the dependency injection process you setup providers for the token. 
+If, for example, you wanted to use a special Audio plugin in your NativeScript app, but didn't want that plugin to be exposed to the web view, you would inject a string token representing that plugin at runtime. For the token to be available during the dependency injection process you setup providers for the token. 
 
 Let's use a Loader plugin that will only be available for the mobile app.  
 
@@ -313,6 +320,7 @@ export const TOKENS_SHARED: Array<any> = [
   { provide: LOADER, useValue: {} }
 ];
 
+
 ```
 
 Then, edit `nativescript/app/native.module.ts` in a similar way to add a reference to tokens only available to the mobile app:
@@ -342,6 +350,7 @@ import { LoadingIndicator } from 'nativescript-loading-indicator';
 export const TOKENS_NATIVE: Array<any> = [
   { provide: LOADER, useClass: LoadingIndicator}
 ];
+
 ```
 
 Similarly, edit the web module: `src/client/web.module.ts`, adding a reference to web tokens at the top, in the 'app' block of imports:
@@ -367,7 +376,7 @@ export const TOKENS_WEB: Array<any> = [
   //empty for now
 ];
 ```
-now you can reference the native tokens you built in your mobile code. Replace the current code in `src/client/app/component/home/home.component.ts` with the following:
+Now you can reference the native tokens you built in your mobile code. Replace the current code in `src/client/app/component/home/home.component.ts` with the following:
 
 ```
 // libs
@@ -408,6 +417,7 @@ export class HomeComponent implements OnInit {
       });
   }
 }
+
 
 ``` 
 
@@ -488,6 +498,7 @@ class TestComponent {
 
 }
 
+
 ```
 
 then, in the same folder, paste this code into `home.component.e2e-spec.ts`:
@@ -510,9 +521,12 @@ t.describe('Home', function () {
 
 });
 
+
 ```
 
-You should now be able to run a test to check whether the `<h1>` tag is correct by typing `npm test` into a terminal at the root of your project. 
+You should now be able to run a test to check whether the `<h1>` tag is correct by typing `npm test` into a terminal at the root of your project.
+
+>Note: Delete the files `app.component.spec.ts` and `app.component.e2e-spec.ts` to get these tests to pass 
 
 <div class="exercise-end"></div>
 

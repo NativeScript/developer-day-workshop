@@ -1304,24 +1304,28 @@ Android (livesync device):    npm run start.livesync.android.device
 <p>Note, on occasion your mobile livesyncing may fail when using this seed. On occasion, you may need to restart the process, so press Ctrl&gt;C in your terminal and restart the <code>npm run start.livesync...</code> routine.</p>
 </blockquote>
 <h3 id="exploring-the-architecture">Exploring the architecture</h3>
+<p>Open the root folder of your app in your IDE of choice. Let&#39;s take a look at all the moving parts. Navigate to the <code>src</code> folder.</p>
+<p><code>app/frameworks</code>: contains your shared application architecture code. </p>
 <ul>
-<li>Shared code can be found in <code>frameworks</code>:<ul>
-<li><code>app</code>: your shared application architecture code</li>
 <li><code>core</code>: foundation layer (decorators and low-level services)</li>
 <li><code>analytics</code>: analytics provided by <a href="https://segment.com/">Segment</a></li>
 <li><code>i18n</code>: internationalization features</li>
 <li><code>electron</code>: <a href="http://electron.atom.io/">Electron</a> specific code</li>
 <li><code>test</code>: test specific code providing conveniences to make testing your code easier and faster</li>
 </ul>
-</li>
+<p>The code we will be editing in this workshop is:</p>
+<ul>
+<li><code>sample</code>: contains shared navigational components like navbar and toolbar and <code>sample.module.ts</code> which is the app&#39;s &#39;switchboard&#39;</li>
+<li><code>sample/services</code>: contains services that can communicate with a backend</li>
+<li><code>app/components</code>: contains pages (home and about) and base app code</li>
 </ul>
-<p>Your NativeScript app is found in the <code>nativescript</code> folder. Make any mobile-specific edits here, such as adding icons and splash screen images to your <code>app/App_Resources</code> folder.</p>
+<p>The NativeScript app is found in the <code>nativescript</code> folder. Make any mobile-specific edits in this folder, such as adding icons and splash screen images to your <code>app/App_Resources</code> folder.</p>
 <ul>
 <li>To edit both web and mobile apps, you can make changes to files in <code>src/client</code> or <code>nativescript</code> folders. </li>
 <li>A symbolic link exists between the web <code>src/client</code> and the <code>nativescript</code> folder so changes in either location are mirrored because they are the same directory inside.</li>
 </ul>
 <blockquote>
-<p>Note: Normally when greenfielding a project using this seed, it&#39;s best for maintenance ease to create a fresh folder for your new app code in <code>src/client/app/frameworks</code> - for example my PocketRave app is located in <code>src/client/app/frameworks/pocketrave</code> - and then change any paths that point to the <code>app</code> folder. This way, you can upgrade your project by checking out a new copy of the Advanced Seed and then dropping your app&#39;s folder into <code>/frameworks</code>. For this workshop, however, we will simply be editing files in <code>src/client/app/components</code>. Reference <a href="http://www.github.com/jlooper/pocketrave">PocketRave</a> as an example of this type of setup. Visit <a href="PocketRave">http://PocketRave.me</a> online for a full demo of this app.</p>
+<p>Note: Normally when greenfielding a project using this seed, it&#39;s best for maintenance ease to create a fresh folder for your new app code in <code>src/client/app/frameworks</code> - for example the PocketRave app is located in <code>src/client/app/frameworks/pocketrave</code> - and then change any paths that point to the <code>app</code> folder. This way, you can upgrade your project by checking out a new copy of the Advanced Seed and then dropping your app&#39;s folder into <code>/frameworks</code>. For this workshop, however, we will simply be editing files in <code>src/client/app/components</code>. Reference <a href="http://www.github.com/jlooper/pocketrave">PocketRave</a> as an example of this type of setup. Visit <a href="PocketRave">http://PocketRave.me</a> online for a full demo of this app.</p>
 </blockquote>
 <h3 id="making-a-cross-platform-edit">Making a cross-platform edit</h3>
 <p>Let&#39;s change this app from being a shout-out to great scientists to being a celebration of Pokemon! Because we can!</p>
@@ -1381,8 +1385,6 @@ export class PokemonService {
     private handleError(error: Response) {
         return Observable.throw(error);
     }
-
-
 }
 </code></pre><p>Now, let&#39;s integrate this service into the app:</p>
 <p>Navigate to <code>src/client/app/frameowrks/sample/sample.module.ts</code> to include service like this:</p>
@@ -1434,7 +1436,7 @@ export class HomeComponent implements OnInit {
     <b>Exercise</b>: Edit the frontend
 </h4>
 
-<p>Paste the following snippet into <code>src/client/app/components/home/home.component.tns.html</code> to add a ListView for the mobile app:</p>
+<p>Delete everything in <code>src/client/app/components/home/home.component.tns.html</code> and paste in the following code to add a ListView for the mobile app:</p>
 <pre><code>&lt;StackLayout class=&quot;container-content&quot;&gt;
     &lt;GridLayout columns=&quot;*&quot; rows=&quot;*&quot;&gt;
         &lt;ListView [items]=&quot;pokemon$ | async&quot; row=&quot;1&quot; height=&quot;300&quot;&gt;
@@ -1446,7 +1448,7 @@ export class HomeComponent implements OnInit {
         &lt;/ListView&gt;
     &lt;/GridLayout&gt;
 &lt;/StackLayout&gt;
-</code></pre><p>Then, paste the following line into <code>src/client/app/components/home/home.component.html</code> to create a simple list on native:</p>
+</code></pre><p>Then, replace the code in <code>src/client/app/components/home/home.component.html</code> with the code below to create a simple list on native:</p>
 <pre><code>&lt;ul *ngFor=&quot;let pokemon of pokemon$ | async&quot;&gt;
     &lt;li&gt;{{ pokemon.name }}&lt;/li&gt;
 &lt;/ul&gt;
@@ -1457,7 +1459,7 @@ export class HomeComponent implements OnInit {
     <p><strong>SUPER CHALLENGE!</strong>:  Make this app into a master-detail screen. You will need to use the url that this API passes to you, pass it through a (tap) function on the front end, and switch the screen to display the detail of the Pokemon, which will require another API call. Good luck! Take a look at <a href="https://github.com/jlooper/practice-buddy-mobile-app-2.0">PracticeBuddy</a> for tips.</p>
 </blockquote>
 
-<h3 id="isolating-your-code-via-css">Isolating your code via css</h3>
+<h3 id="customize-the-css-by-platform">Customize the CSS by platform</h3>
 <p>You can truly fine-tune the look of your web and native mobile app by isolating certain elements of the CSS associated to each file, simply by paying attention to the the names of the files. </p>
 <p>In the <code>src/client/app/components/home</code> folder, note the naming convention of the css files. CSS for the web for the home page, for example, is handled by <code>home.component.css</code> and CSS for mobile is handled by <code>home.component.tns.css</code>. </p>
 <h4 class="exercise-start">
@@ -1465,7 +1467,7 @@ export class HomeComponent implements OnInit {
 </h4>
 
 <p>The listview looks a little crunched on mobile, so edit the  <code>src/client/app/components/home/home.comonent.tns.css</code>:</p>
-<pre><code>.list-item{
+<pre><code>.list-item {
   padding: 10;
   margin: 10;
 }
@@ -1478,7 +1480,7 @@ export class HomeComponent implements OnInit {
 
 <h3 id="using-opaquetokens">Using OpaqueTokens</h3>
 <p>It&#39;s easy enough to create shared services and forked frontend code with this Seed, but soon enough you will need to integrate a plugin that can only be used on mobile. This integration must be shielded from the web, as it will break the web frontend if not done properly. Enter the wonderful world of <a href="http://blog.thoughtram.io/angular/2016/05/23/opaque-tokens-in-angular-2.html">OpaqueTokens</a>!</p>
-<p>If, for example, you wanted to use a special Audio plugin in your NativeScript app, but didn&#39;t want that plugin to be exposed to the web view, you would inject a string token representing that token at runtime. For the token to be available during the dependency injection process you setup providers for the token. </p>
+<p>If, for example, you wanted to use a special Audio plugin in your NativeScript app, but didn&#39;t want that plugin to be exposed to the web view, you would inject a string token representing that plugin at runtime. For the token to be available during the dependency injection process you setup providers for the token. </p>
 <p>Let&#39;s use a Loader plugin that will only be available for the mobile app.  </p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Setup a plugin and a token
@@ -1536,7 +1538,7 @@ export const TOKENS_NATIVE: Array&lt;any&gt; = [
 <pre><code>export const TOKENS_WEB: Array&lt;any&gt; = [
   //empty for now
 ];
-</code></pre><p>now you can reference the native tokens you built in your mobile code. Replace the current code in <code>src/client/app/component/home/home.component.ts</code> with the following:</p>
+</code></pre><p>Now you can reference the native tokens you built in your mobile code. Replace the current code in <code>src/client/app/component/home/home.component.ts</code> with the following:</p>
 <pre><code>// libs
 import {BehaviorSubject} from &#39;rxjs/BehaviorSubject&#39;;
 import {OnInit, Inject} from &#39;@angular/core&#39;;
@@ -1663,7 +1665,10 @@ t.describe(&#39;Home&#39;, function () {
 
 
 });
-</code></pre><p>You should now be able to run a test to check whether the <code>&lt;h1&gt;</code> tag is correct by typing <code>npm test</code> into a terminal at the root of your project. </p>
+</code></pre><p>You should now be able to run a test to check whether the <code>&lt;h1&gt;</code> tag is correct by typing <code>npm test</code> into a terminal at the root of your project.</p>
+<blockquote>
+<p>Note: Delete the files <code>app.component.spec.ts</code> and <code>app.component.e2e-spec.ts</code> to get these tests to pass </p>
+</blockquote>
 <div class="exercise-end"></div>
 
 <blockquote>
