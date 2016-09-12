@@ -13,7 +13,7 @@ In this workshop you’ll be building a simple grocery-management application. L
 Go ahead and start up a new NativeScript app for this workshop:
 
 ```
-tns create WorkshopThree --ng
+tns create WorkshopThree --template https://github.com/NativeScript/template-hello-world-ng
 ```
 
 Next, change directories into your new project:
@@ -50,7 +50,6 @@ export class AppComponent {
     this.groceries = this.groceryService.get();
   }
 }
-
 ```
 
 And then replace the contents of `app.component.html` with the code below, which shows the groceries on the screen:
@@ -106,7 +105,7 @@ Update you `app.css` with the code below, which will add a bit of spacing to the
 
 ``` CSS
 TextField, Button, Label {
-    padding: 15;
+  padding: 15;
 }
 ```
 
@@ -141,6 +140,24 @@ With that setup out of the way, let’s try a quick challenge.
 NativeScript button elements have a `tap` event that you can subscribe to using `<Button (tap)="functionName()">`. Angular 2 lets you implement two-way data binding between a text field and a component property using the `[(ngModel)]` styntax, for instance `<TextField [(ngModel)]="grocery">`.
 
 Your challenge is to combine the two, so that when the user taps the “Add” button they see the value they typed in the text field.
+
+One last note before you get started: replace the contents of your `main.ts` file with the code below, which adds a `NativeScriptFormsModule` import you’ll need for this to all work.
+
+``` TypeScript
+import { platformNativeScriptDynamic, NativeScriptModule } from "nativescript-angular/platform";
+import { NativeScriptFormsModule } from "nativescript-angular/forms";
+import { NgModule } from "@angular/core";
+import { AppComponent } from "./app.component";
+
+@NgModule({
+  declarations: [AppComponent],
+  bootstrap: [AppComponent],
+  imports: [NativeScriptModule, NativeScriptFormsModule]
+})
+class AppComponentModule {}
+
+platformNativeScriptDynamic().bootstrapModule(AppComponentModule);
+```
 
 <div class="solution-start"></div>
 
@@ -340,7 +357,7 @@ Routing in a NativeScript app with Angular 2 works very similarly to how it work
 - Create a new `groceries` folder in your app.
 - Move the `grocery.ts` and `grocery.service.ts` files into the new `groceries` folder.
 - Create new files named `groceries.component.html` and `groceries.component.ts` within the `groceries` folder.
-- Create a file named `app.routes.ts` in your root `app` folder.
+- Create a file named `app.routing.ts` in your root `app` folder.
 
 You should now have a folder structure that looks like this.
 
@@ -351,7 +368,7 @@ You should now have a folder structure that looks like this.
 app
 ├── app.component.ts
 ├── app.css
-├── app.routes.ts
+├── app.routing.ts
 ├── groceries
 │   ├── groceries.component.html
 │   ├── groceries.component.ts
@@ -379,7 +396,7 @@ export class GroceriesComponent {
   grocery: String;
   groceries: Array<Grocery>;
 
-  constructor(private groceryService: GroceryService) {}
+  constructor(private groceryService: GroceryService, private routerExtensions: RouterExtensions) {}
 
   ngOnInit() {
     this.groceries = this.groceryService.get();
@@ -396,46 +413,58 @@ After that, copy and paste the contents of `app.component.html` into `groceries.
 
 Finally, update the following three files as follows.
 
-`app.routes.ts`:
+`app.routing.ts`:
 
 ``` TypeScript
-import {RouterConfig} from "@angular/router";
-import {nsProvideRouter} from "nativescript-angular/router"
-import {GroceriesComponent} from "./groceries/groceries.component";
+import { Routes } from "@angular/router";
 
-export const routes: RouterConfig = [
+import { GroceriesComponent } from "./groceries/groceries.component";
+
+export const appRoutes: Routes = [
   { path: "", component: GroceriesComponent }
-];
-
-export const APP_ROUTER_PROVIDERS = [
-  nsProvideRouter(routes, {})
 ];
 ```
 
 `app.component.ts`:
 
 ``` TypeScript
-import {RouterConfig} from "@angular/router";
-import {nsProvideRouter} from "nativescript-angular/router"
-import {GroceriesComponent} from "./groceries/groceries.component";
+import { Component } from "@angular/core";
 
-export const routes: RouterConfig = [
-  { path: "", component: GroceriesComponent }
-];
-
-export const APP_ROUTER_PROVIDERS = [
-  nsProvideRouter(routes, {})
-];
+@Component({
+  selector: "main",
+  template: "<page-router-outlet></page-router-outlet>"
+})
+export class AppComponent { }
 ```
 
 `main.ts`:
 
 ``` TypeScript
-import {nativeScriptBootstrap} from "nativescript-angular/application";
-import {AppComponent} from "./app.component";
-import {APP_ROUTER_PROVIDERS} from "./app.routes";
+import { platformNativeScriptDynamic, NativeScriptModule } from "nativescript-angular/platform";
+import { NativeScriptFormsModule } from "nativescript-angular/forms";
+import { NativeScriptRouterModule } from "nativescript-angular/router";
+import { NgModule } from "@angular/core";
 
-nativeScriptBootstrap(AppComponent, [APP_ROUTER_PROVIDERS]);
+import { appRoutes } from "./app.routing";
+import { AppComponent } from "./app.component";
+import { GroceriesComponent } from "./groceries/groceries.component";
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    GroceriesComponent
+  ],
+  bootstrap: [AppComponent],
+  imports: [
+    NativeScriptModule,
+    NativeScriptFormsModule,
+    NativeScriptRouterModule,
+    NativeScriptRouterModule.forRoot(appRoutes)
+  ]
+})
+class AppComponentModule {}
+
+platformNativeScriptDynamic().bootstrapModule(AppComponentModule);
 ```
 
 <div class="exercise-end"></div>
@@ -498,22 +527,49 @@ navigate() {
 }
 ```
 
-Finally, replace the contents of `app.routes.ts` with the code below, which registers the new about route.
+After that, add `AboutComponent` to the list of `declarations` in the `NgModule` in `main.ts`. The full file should now look like this:
 
 ``` TypeScript
-import {RouterConfig} from "@angular/router";
-import {nsProvideRouter} from "nativescript-angular/router"
+import { platformNativeScriptDynamic, NativeScriptModule } from "nativescript-angular/platform";
+import { NativeScriptFormsModule } from "nativescript-angular/forms";
+import { NativeScriptRouterModule } from "nativescript-angular/router";
+import { NgModule } from "@angular/core";
 
-import {AboutComponent} from "./about/about.component";
-import {GroceriesComponent} from "./groceries/groceries.component";
+import { appRoutes } from "./app.routing";
+import { AppComponent } from "./app.component";
+import { GroceriesComponent } from "./groceries/groceries.component";
+import { AboutComponent } from "./about/about.component";
 
-export const routes: RouterConfig = [
+@NgModule({
+  declarations: [
+    AppComponent,
+    GroceriesComponent,
+    AboutComponent
+  ],
+  bootstrap: [AppComponent],
+  imports: [
+    NativeScriptModule,
+    NativeScriptFormsModule,
+    NativeScriptRouterModule,
+    NativeScriptRouterModule.forRoot(appRoutes)
+  ]
+})
+class AppComponentModule {}
+
+platformNativeScriptDynamic().bootstrapModule(AppComponentModule);
+```
+
+And finally, replace the contents of `app.routing.ts` with the code below, which registers the new about route.
+
+``` TypeScript
+import { Routes } from "@angular/router";
+
+import { GroceriesComponent } from "./groceries/groceries.component";
+import { AboutComponent } from "./about/about.component";
+
+export const appRoutes: Routes = [
   { path: "", component: GroceriesComponent },
-  { path: "about", component: AboutComponent },
-];
-
-export const APP_ROUTER_PROVIDERS = [
-  nsProvideRouter(routes, {})
+  { path: "about", component: AboutComponent }
 ];
 ```
 
