@@ -13,7 +13,7 @@ We’ll start with navigation patterns, as they’re one of the most important d
 Go ahead and start up a new NativeScript app for this workshop:
 
 ```
-tns create WorkshopFour --ng
+tns create WorkshopFour --template https://github.com/NativeScript/template-hello-world-ng
 ```
 
 Next, change directories into your new project:
@@ -22,7 +22,7 @@ Next, change directories into your new project:
 cd WorkshopFour
 ```
 
-After that, open the new project in Visual Studio Code, and replace the contents of `app.component.ts` with the code below:
+After that, open your new project in Visual Studio Code, and replace the contents of `app.component.ts` with the code below:
 
 ``` TypeScript
 import { Component } from "@angular/core";
