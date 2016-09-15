@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -1217,39 +1217,12 @@ export class GroceryService {
 			</div>
 			<hr>
 			<div class="chapter">
-				<h2 id="forms">Forms</h2>
-<p>Forms are the basis of many mobile applications. In this challenge-based section, you’ll build a form to submit data to a backend system. Plus, there are rewards if you can complete the challenges 😀.</p>
-<h4 class="exercise-start">
-    <b>Exercise</b>: Start up a new app
-</h4>
-
-<p>Go ahead and start up a new NativeScript app for this workshop:</p>
-<pre><code>tns create NativeScriptForms --ng
-</code></pre><p>Next, change directories into your new project:</p>
-<pre><code>cd NativeScriptForms
-</code></pre><div class="exercise-end"></div>
-
-<p>To earn a gift card:</p>
-<ul>
-<li>Allow the user to submit the form with the four fields on the screenshots. Don’t worry how the data is formatted when you send it the backend—just get the thing to submit.</li>
-</ul>
-<p>Bonus points:</p>
-<ul>
-<li>Improve on our very basic design, perhaps using the new NativeScript core theme.</li>
-<li>Disable the form when you submit.</li>
-<li>Show an activity indicator while submitting.</li>
-<li>Show an alert after the form successfully submits.</li>
-<li>Make all fields mandatory.</li>
-</ul>
-
-			</div>
-			<hr>
-			<div class="chapter">
 				<h2 id="extensibility-and-plugins">Extensibility and plugins</h2>
 <p>In this workshop you will learn how to create your own UI components and also how to create plugins which will use native iOS and Android functionality.</p>
 <h3 id="your-first-ui-custom-ui-component">Your first UI Custom UI Component</h3>
 <p>Start by creating a new ng project.</p>
-<pre><code>tns create test-ng-rc7 --template https://github.com/NativeScript/template-hello-world-ng
+<pre><code>tns create WorkshopFive --ng
+cd WorkshopFive
 </code></pre><p>We will start be creating a <code>hello world</code> type component first, then add it to the <code>app.component</code>.</p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Set up the first component
@@ -1282,8 +1255,8 @@ First add this import line to the rest of the imports.</p>
 <pre><code class="lang-TypeScript">declarations: [AppComponent, FunLabel],
 </code></pre>
 <div class="solution-start"></div>
-<code>TypeScript
-import { platformNativeScriptDynamic, NativeScriptModule } from &quot;nativescript-angular/platform&quot;;
+
+<pre><code class="lang-TypeScript">import { platformNativeScriptDynamic, NativeScriptModule } from &quot;nativescript-angular/platform&quot;;
 import { NgModule } from &quot;@angular/core&quot;;
 import { AppComponent } from &quot;./app.component&quot;;
 import {FunLabel} from &quot;./fun-label&quot;;
@@ -1295,7 +1268,8 @@ import {FunLabel} from &quot;./fun-label&quot;;
 })
 class AppComponentModule {}
 
-platformNativeScriptDynamic().bootstrapModule(AppComponentModule);</code>
+platformNativeScriptDynamic().bootstrapModule(AppComponentModule);
+</code></pre>
 <div class="solution-end"></div>
 
 <p>Now build the app and you should see the nice and shiny <code>FunLabel</code>.</p>
@@ -1325,9 +1299,9 @@ We will call the new property <code>line</code> and bind it to the <code>text</c
 }
 </code></pre>
 <div class="solution-start"></div>
-This is how the <code>fun-label.ts</code> should look now.
-<code>TypeScript
-import {Component, Input} from &quot;@angular/core&quot;;
+
+<p>This is how the <code>fun-label.ts</code> should look now.</p>
+<pre><code class="lang-TypeScript">import {Component, Input} from &quot;@angular/core&quot;;
 
 @Component({
     selector: &quot;FunLabel&quot;,
@@ -1339,7 +1313,8 @@ import {Component, Input} from &quot;@angular/core&quot;;
 })
 export class FunLabel {
     @Input() public line: string = &quot;&quot;;
-}</code>
+}
+</code></pre>
 <div class="solution-end"></div>
 
 <p>To test it out, update the <code>FunLabel</code> in app.component.html to the below code and run the app.</p>
@@ -1404,9 +1379,9 @@ Add the following code to the <code>FunLabel</code> class</p>
     }
 </code></pre>
 <div class="solution-start"></div>
-This is how <code>fun-label.ts</code> should look at this point.
-<code>TypeScript
-import {Component, Input, ViewChild, ElementRef} from &quot;@angular/core&quot;;
+
+<p>This is how <code>fun-label.ts</code> should look at this point.</p>
+<pre><code class="lang-TypeScript">import {Component, Input, ViewChild, ElementRef} from &quot;@angular/core&quot;;
 import {View} from &quot;ui/core/view&quot;;
 
 @Component({
@@ -1442,7 +1417,8 @@ export class FunLabel {
                 this.view.animate({ scale: { x: 1, y: 1 }, duration: 2000  })
             )
     }
-}</code>
+}
+</code></pre>
 <div class="solution-end"></div>
 
 <div class="exercise-end"></div>
@@ -1502,9 +1478,9 @@ Now the <code>animate</code> function should play one of the below functions.</p
     &lt;/FunLabel&gt;
 </code></pre>
 <div class="solution-start"></div>
-Here is the full solution:
-<code>TypeScript
-import {Component, Input, ViewChild, ElementRef} from &quot;@angular/core&quot;;
+
+<p>Here is the full solution:</p>
+<pre><code class="lang-TypeScript">import {Component, Input, ViewChild, ElementRef} from &quot;@angular/core&quot;;
 import {View} from &quot;ui/core/view&quot;;
 
 @Component({
@@ -1582,7 +1558,8 @@ export class FunLabel {
                 this.view.animate({ opacity: 1  })
             )
     }
-}</code>
+}
+</code></pre>
 <div class="solution-end"></div>
 
 <div class="exercise-end"></div>
@@ -1626,9 +1603,9 @@ And your task is to do the same for the rest of them (zoom, move and fade).</p>
     }
 </code></pre>
 <div class="solution-start"></div>
-The <code>FunLabel</code> class should look like this:
-<code>TypeScript
-import {Component, Input, ViewChild, ElementRef, Output, EventEmitter} from &quot;@angular/core&quot;;
+
+<p>The <code>FunLabel</code> class should look like this:</p>
+<pre><code class="lang-TypeScript">import {Component, Input, ViewChild, ElementRef, Output, EventEmitter} from &quot;@angular/core&quot;;
 import {View} from &quot;ui/core/view&quot;;
 
 @Component({
@@ -1727,7 +1704,8 @@ export class FunLabel {
                 this.emitAnimateFinished()
             )
     }
-}</code>
+}
+</code></pre>
 <div class="solution-end"></div>
 
 <p>To put the new event property to test we need to:</p>
@@ -1750,14 +1728,16 @@ Notice the <code>$event</code> attribute passed in as the parameter. This is how
 
 
 <p>NativeScript UI components can respond to other events like <code>Double Tap</code>, <code>Long Press</code>, <code>Swipe</code>, <code>Pan</code>, <code>Pinch</code>, <code>Rotation</code>, <code>Touch</code></p>
-<p><h4 class="exercise-start">
+<h4 class="exercise-start">
     <b>Bonus Exercise</b>: Animate on swipe
 </h4>
-Read in the documenation how <a href="https://docs.nativescript.org/ui/gestures#swipe">Swipe</a> works and implement different animation for swipe left, right, up and down.</p>
+
+<p>Read in the documenation how <a href="https://docs.nativescript.org/ui/gestures#swipe">Swipe</a> works and implement different animation for swipe left, right, up and down.</p>
 <div class="solution-start"></div>
-Here is the full solution. Have fun.
-<code>TypeScript
-import {Component, Input, ViewChild, ElementRef, Output, EventEmitter} from &quot;@angular/core&quot;;
+
+
+<p>Here is the full solution. Have fun.</p>
+<pre><code class="lang-TypeScript">import {Component, Input, ViewChild, ElementRef, Output, EventEmitter} from &quot;@angular/core&quot;;
 import {View} from &quot;ui/core/view&quot;;
 import {SwipeGestureEventData} from &quot;ui/gestures&quot;;
 
@@ -1888,7 +1868,8 @@ export class FunLabel {
         }
     }
 
-}</code>
+}
+</code></pre>
 <div class="solution-end"></div>
 
 <div class="exercise-end"></div>
@@ -2299,6 +2280,34 @@ t.describe(&#39;Home&#39;, function () {
 </blockquote>
 
 <p>Congratulations! You have built a service, customized a web and mobile app at the same time, tweaked its UI, and tested it! Just think of all the amazing web sites and apps you&#39;ll be able to spin up in the near future.</p>
+
+			</div>
+			<hr>
+			<div class="chapter">
+				<h2 id="super-ultimate-challenge">SUPER ULTIMATE CHALLENGE</h2>
+<p>Forms are the basis of many mobile applications. In this challenge-based section, you’ll build a form to submit data to a backend system. Plus, there are rewards if you can complete the challenges 😀.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Start up a new app
+</h4>
+
+<p>Go ahead and start up a new NativeScript app for this workshop:</p>
+<pre><code>tns create NativeScriptForms --ng
+</code></pre><p>Next, change directories into your new project:</p>
+<pre><code>cd NativeScriptForms
+</code></pre><div class="exercise-end"></div>
+
+<p>To earn a gift card:</p>
+<ul>
+<li>Allow the user to submit the form with the four fields on the screenshots. Don’t worry how the data is formatted when you send it the backend—just get the thing to submit.</li>
+</ul>
+<p>Bonus points:</p>
+<ul>
+<li>Improve on our very basic design, perhaps using the new NativeScript core theme.</li>
+<li>Disable the form when you submit.</li>
+<li>Show an activity indicator while submitting.</li>
+<li>Show an alert after the form successfully submits.</li>
+<li>Make all fields mandatory.</li>
+</ul>
 
 			</div>
 			<hr>
