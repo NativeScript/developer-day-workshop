@@ -1,6 +1,8 @@
 ## SUPER ULTIMATE CHALLENGE
 
-Forms are the basis of many mobile applications. In this challenge-based section, you’ll build a form to submit data to a backend system. Plus, there are rewards if you can complete the challenges 😀.
+It’s the end of the day, therefore you’re more ready than ever for the SUPER MEGA ULTIMATE CHALLENGE. That’s right, get ready to test your NativeScript skills against the biggest and baddest four-field form that we can reaslistically tackle in an hour.
+
+Before we introduce the challenge, let’s get a few of the logical things out of the way.
 
 <h4 class="exercise-start">
     <b>Exercise</b>: Start up a new app
@@ -9,13 +11,13 @@ Forms are the basis of many mobile applications. In this challenge-based section
 Go ahead and start up a new NativeScript app for this workshop:
 
 ```
-tns create NativeScriptForms --ng
+tns create CHALLENGE --ng
 ```
 
 Next, change directories into your new project:
 
 ```
-cd NativeScriptForms
+cd CHALLENGE
 ```
 
 <div class="exercise-end"></div>
