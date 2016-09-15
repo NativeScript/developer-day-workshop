@@ -8,7 +8,8 @@ In this workshop you will learn how to create your own UI components and also ho
 Start by creating a new ng project.
 
 ```
-tns create test-ng-rc7 --template https://github.com/NativeScript/template-hello-world-ng
+tns create WorkshopFive --ng
+cd WorkshopFive
 ```
 
 We will start be creating a `hello world` type component first, then add it to the `app.component`.
@@ -18,6 +19,7 @@ We will start be creating a `hello world` type component first, then add it to t
 </h4>
 
 First create a new file called `fun-label.ts` in the `app` and add the following code. 
+
 ``` TypeScript
 import {Component} from "@angular/core";
 
@@ -36,6 +38,7 @@ export class FunLabel {
 This component is a simple @Component that contains NativeScript label saying "FunLabel".
 
 Now let's add `FunLabel` to app.component.html. Add the following line below the label
+
 ``` html
 <FunLabel> </FunLabel>
 ```
@@ -43,16 +46,19 @@ Now let's add `FunLabel` to app.component.html. Add the following line below the
 But that is not enough to make it work just yet.
 The final step is to add the `FunLabel` declaration to the `@NgModule` in `main.ts`
 First add this import line to the rest of the imports.
+
 ``` TypeScript
 import {FunLabel} from "./fun-label";
 ```
 
 and now add `FunLabel` to declarations
+
 ``` TypeScript
 declarations: [AppComponent, FunLabel],
 ```
 
 <div class="solution-start"></div>
+
 ``` TypeScript
 import { platformNativeScriptDynamic, NativeScriptModule } from "nativescript-angular/platform";
 import { NgModule } from "@angular/core";
@@ -68,6 +74,7 @@ class AppComponentModule {}
 
 platformNativeScriptDynamic().bootstrapModule(AppComponentModule);
 ```
+
 <div class="solution-end"></div>
 
 Now build the app and you should see the nice and shiny `FunLabel`.
@@ -86,11 +93,13 @@ We will call the new property `line` and bind it to the `text` of the underlying
 This can be accomplished in three steps.
 
 1) Add Input to the imports
+
 ``` TypeScript
 import {Component, Input} from "@angular/core
 ```
 
 2) Change the `text="FunLabel"` to
+
 ``` TypeScript
     <Label 
         [text]="line">
@@ -99,6 +108,7 @@ import {Component, Input} from "@angular/core
 
 3) Add @Input property ins
  (you can read more about @Inputs properties in the [Angular docs](https://angular.io/docs/ts/latest/guide/template-syntax.html#!#inputs-outputs)) 
+
 ``` TypeScript
 export class FunLabel {
     @Input() public line: string = "";
@@ -106,7 +116,9 @@ export class FunLabel {
 ```
 
 <div class="solution-start"></div>
+
 This is how the `fun-label.ts` should look now.
+
 ``` TypeScript
 import {Component, Input} from "@angular/core";
 
@@ -122,6 +134,7 @@ export class FunLabel {
     @Input() public line: string = "";
 }
 ```
+
 <div class="solution-end"></div>
 
 To test it out, update the `FunLabel` in app.component.html to the below code and run the app.
@@ -203,6 +216,7 @@ Add the following code to the `FunLabel` class
 ```
 
 <div class="solution-start"></div>
+
 This is how `fun-label.ts` should look at this point.
 ``` TypeScript
 import {Component, Input, ViewChild, ElementRef} from "@angular/core";
@@ -243,6 +257,7 @@ export class FunLabel {
     }
 }
 ```
+
 <div class="solution-end"></div>
 
 <div class="exercise-end"></div>
@@ -308,6 +323,7 @@ This is how the property should be set in `app.component.html`
 ```
 
 <div class="solution-start"></div>
+
 Here is the full solution:
 ``` TypeScript
 import {Component, Input, ViewChild, ElementRef} from "@angular/core";
@@ -390,6 +406,7 @@ export class FunLabel {
     }
 }
 ```
+
 <div class="solution-end"></div>
 
 <div class="exercise-end"></div>
@@ -443,6 +460,7 @@ And your task is to do the same for the rest of them (zoom, move and fade).
 ```
 
 <div class="solution-start"></div>
+
 The `FunLabel` class should look like this:
 ``` TypeScript
 import {Component, Input, ViewChild, ElementRef, Output, EventEmitter} from "@angular/core";
@@ -546,6 +564,7 @@ export class FunLabel {
     }
 }
 ```
+
 <div class="solution-end"></div>
 
 To put the new event property to test we need to:
@@ -570,6 +589,7 @@ Notice the `$event` attribute passed in as the parameter. This is how you pass t
 ```
 
 Now run the app. Each time an animation is complete you should get a nice popup with a counter.
+
 <div class="exercise-end"></div>
 
 
@@ -578,9 +598,12 @@ NativeScript UI components can respond to other events like `Double Tap`, `Long 
 <h4 class="exercise-start">
     <b>Bonus Exercise</b>: Animate on swipe
 </h4>
+
 Read in the documenation how [Swipe](https://docs.nativescript.org/ui/gestures#swipe) works and implement different animation for swipe left, right, up and down.
 
 <div class="solution-start"></div>
+
+
 Here is the full solution. Have fun.
 ``` TypeScript
 import {Component, Input, ViewChild, ElementRef, Output, EventEmitter} from "@angular/core";
@@ -716,6 +739,7 @@ export class FunLabel {
 
 }
 ```
+
 <div class="solution-end"></div>
 
 <div class="exercise-end"></div>
