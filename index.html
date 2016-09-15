@@ -632,7 +632,7 @@ The app should refresh and the cards will fade in.
 </h4>
 
 <p>Go ahead and start up a new NativeScript app for this workshop:</p>
-<pre><code>tns create WorkshopThree --template https://github.com/NativeScript/template-hello-world-ng
+<pre><code>tns create WorkshopThree --ng
 </code></pre><p>Next, change directories into your new project:</p>
 <pre><code>cd WorkshopThree
 </code></pre><div class="exercise-end"></div>
@@ -1217,57 +1217,16 @@ export class GroceryService {
 			</div>
 			<hr>
 			<div class="chapter">
-				<h2 id="user-interface-deep-dive">User interface deep dive</h2>
-<p>Now that you have the basics down, as well as the basics of Angular, let’s look at some more advanced user interface concepts you can use to build your applications.</p>
-<h3 id="working-with-tabs-views">Working with tabs views</h3>
-<p>Tab views are one of the most common mobile navigation patterns in mobile apps. Let’s look at how to implement one in NativeScript.</p>
+				<h2 id="forms">Forms</h2>
+<p>Forms are the basis of many mobile applications. In this challenge-based section, you’ll build a form to submit data to a backend system. Plus, there are rewards if you can complete the challenges 😀.</p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Start up a new app
 </h4>
 
 <p>Go ahead and start up a new NativeScript app for this workshop:</p>
-<pre><code>tns create WorkshopFour --template https://github.com/NativeScript/template-hello-world-ng
+<pre><code>tns create NativeScriptForms --ng
 </code></pre><p>Next, change directories into your new project:</p>
-<pre><code>cd WorkshopFour
-</code></pre><p>After that, open your new project in Visual Studio Code, and replace the contents of <code>app.component.ts</code> with the code below:</p>
-<pre><code class="lang-TypeScript">import { Component } from &quot;@angular/core&quot;;
-
-@Component({
-  selector: &quot;my-app&quot;,
-  template: `
-&lt;ActionBar title=&quot;Account Management&quot;&gt;&lt;/ActionBar&gt;
-&lt;TabView&gt;
-  &lt;StackLayout *tabItem=&quot;{title: &#39;Account&#39;}&quot;&gt;
-    &lt;Label text=&quot;This is account tab&quot;&gt;&lt;/Label&gt;
-  &lt;/StackLayout&gt;
-  &lt;StackLayout *tabItem=&quot;{title: &#39;Settings&#39;}&quot;&gt;
-    &lt;Label text=&quot;This is Label in Tab 2&quot;&gt;&lt;/Label&gt;
-  &lt;/StackLayout&gt;
-&lt;/TabView&gt;
-`
-})
-export class AppComponent {}
-</code></pre>
-<div class="exercise-end"></div>
-
-<p>This is what a very basic tab view looks like in an app built with NativeScript and Angular 2. Next, let’s add a side drawer to this same app so you can see each in action.</p>
-<h4 class="exercise-start">
-    <b>Exercise</b>: Start up a new app
-</h4>
-
-<p>In NativeScript, drawer navigation is implemented as part of <a href="http://www.telerik.com/nativescript-ui">UI for NativeSrcipt</a>. UI for NativeScript contains a variety of high-quality components for using in NativeScript applications. The two components we’ll use today are the SideDrawer and ListView controls, both of which are free to use.</p>
-<blockquote>
-<p><strong>NOTE</strong>: UI for NativeScript also features premium chart, calendar, and data form components, which we will not be covering today.</p>
-</blockquote>
-<p>To install UI for NativeScript, run the following command in your workshop four project:</p>
-<pre><code>tns plugin add nativescript-telerik-ui
-</code></pre><blockquote>
-<p><strong>TIP</strong>: You might need to hit <code>Ctrl</code> + <code>C</code> to kill the previous file watcher.</p>
-</blockquote>
-<p>Next, rerun your app using the <code>tns run</code> command.</p>
-<pre><code>tns run ios --watch
-</code></pre><p>Or</p>
-<pre><code>tns run android --watch
+<pre><code>cd NativeScriptForms
 </code></pre><div class="exercise-end"></div>
 
 <p>To earn a gift card:</p>
@@ -1276,7 +1235,7 @@ export class AppComponent {}
 </ul>
 <p>Bonus points:</p>
 <ul>
-<li>Improve on our very basic design.</li>
+<li>Improve on our very basic design, perhaps using the new NativeScript core theme.</li>
 <li>Disable the form when you submit.</li>
 <li>Show an activity indicator while submitting.</li>
 <li>Show an alert after the form successfully submits.</li>
@@ -1287,6 +1246,656 @@ export class AppComponent {}
 			<hr>
 			<div class="chapter">
 				<h2 id="extensibility-and-plugins">Extensibility and plugins</h2>
+<p>In this workshop you will learn how to create your own UI components and also how to create plugins which will use native iOS and Android functionality.</p>
+<h3 id="your-first-ui-custom-ui-component">Your first UI Custom UI Component</h3>
+<p>Start by creating a new ng project.</p>
+<pre><code>tns create test-ng-rc7 --template https://github.com/NativeScript/template-hello-world-ng
+</code></pre><p>We will start be creating a <code>hello world</code> type component first, then add it to the <code>app.component</code>.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Set up the first component
+</h4>
+
+<p>First create a new file called <code>fun-label.ts</code> in the <code>app</code> and add the following code. </p>
+<pre><code class="lang-TypeScript">import {Component} from &quot;@angular/core&quot;;
+
+@Component({
+    selector: &quot;FunLabel&quot;,
+    template: `
+    &lt;Label text=&quot;FunLabel&quot;&gt;
+    &lt;/Label&gt;
+    `
+})
+export class FunLabel {
+
+}
+</code></pre>
+<p>This component is a simple @Component that contains NativeScript label saying &quot;FunLabel&quot;.</p>
+<p>Now let&#39;s add <code>FunLabel</code> to app.component.html. Add the following line below the label</p>
+<pre><code class="lang-html">&lt;FunLabel&gt; &lt;/FunLabel&gt;
+</code></pre>
+<p>But that is not enough to make it work just yet.
+The final step is to add the <code>FunLabel</code> declaration to the <code>@NgModule</code> in <code>main.ts</code>
+First add this import line to the rest of the imports.</p>
+<pre><code class="lang-TypeScript">import {FunLabel} from &quot;./fun-label&quot;;
+</code></pre>
+<p>and now add <code>FunLabel</code> to declarations</p>
+<pre><code class="lang-TypeScript">declarations: [AppComponent, FunLabel],
+</code></pre>
+<div class="solution-start"></div>
+<code>TypeScript
+import { platformNativeScriptDynamic, NativeScriptModule } from &quot;nativescript-angular/platform&quot;;
+import { NgModule } from &quot;@angular/core&quot;;
+import { AppComponent } from &quot;./app.component&quot;;
+import {FunLabel} from &quot;./fun-label&quot;;
+
+@NgModule({
+    declarations: [AppComponent, FunLabel],
+    bootstrap: [AppComponent],
+    imports: [NativeScriptModule],
+})
+class AppComponentModule {}
+
+platformNativeScriptDynamic().bootstrapModule(AppComponentModule);</code>
+<div class="solution-end"></div>
+
+<p>Now build the app and you should see the nice and shiny <code>FunLabel</code>.</p>
+<div class="exercise-end"></div>
+
+
+<p>The next step is to add binding property to our FunLabel.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Property Binding
+</h4>
+
+<p>Open <code>fun-label.ts</code>
+We will call the new property <code>line</code> and bind it to the <code>text</code> of the underlying `<Label>&#39;.</p>
+<p>This can be accomplished in three steps.</p>
+<p>1) Add Input to the imports</p>
+<pre><code class="lang-TypeScript">import {Component, Input} from &quot;@angular/core
+</code></pre>
+<p>2) Change the <code>text=&quot;FunLabel&quot;</code> to</p>
+<pre><code class="lang-TypeScript">    &lt;Label 
+        [text]=&quot;line&quot;&gt;
+    &lt;/Label&gt;
+</code></pre>
+<p>3) Add @Input property ins
+ (you can read more about @Inputs properties in the <a href="https://angular.io/docs/ts/latest/guide/template-syntax.html#!#inputs-outputs">Angular docs</a>) </p>
+<pre><code class="lang-TypeScript">export class FunLabel {
+    @Input() public line: string = &quot;&quot;;
+}
+</code></pre>
+<div class="solution-start"></div>
+This is how the <code>fun-label.ts</code> should look now.
+<code>TypeScript
+import {Component, Input} from &quot;@angular/core&quot;;
+
+@Component({
+    selector: &quot;FunLabel&quot;,
+    template: `
+    &lt;Label 
+        [text]=&quot;line&quot;&gt;
+    &lt;/Label&gt;
+    `
+})
+export class FunLabel {
+    @Input() public line: string = &quot;&quot;;
+}</code>
+<div class="solution-end"></div>
+
+<p>To test it out, update the <code>FunLabel</code> in app.component.html to the below code and run the app.</p>
+<pre><code class="lang-html">    &lt;FunLabel 
+        [line]=&quot;message&quot;
+        class=&quot;message&quot;&gt;
+    &lt;/FunLabel&gt;
+</code></pre>
+<div class="exercise-end"></div>
+
+
+<p>Now let&#39;s make the FunLabel a bit fun and add some animations.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Add animations
+</h4>
+
+<p>To perform animations we need to get hold of the <code>Label</code> object first.</p>
+<p>We will do it in few steps:</p>
+<p>1) Add the required imports for ViewChild, ElementRef and View.</p>
+<pre><code class="lang-TypeScript">import {Component, Input, ViewChild, ElementRef} from &quot;@angular/core&quot;;
+import {View} from &quot;ui/core/view&quot;;
+</code></pre>
+<p>2) Add variable <code>#myLabel</code> definion to the label and call animate on tap</p>
+<pre><code class="lang-TypeScript">    &lt;Label #myLabel
+        [text]=&quot;line&quot;
+        (tap)=&quot;animate()&quot;&gt;
+    &lt;/Label&gt;
+</code></pre>
+<p>3) Add the label reference to the call</p>
+<pre><code class="lang-TypeScript">export class FunLabel {
+    @Input() public line: string = &quot;&quot;;
+    @ViewChild(&quot;myLabel&quot;) labelRef: ElementRef;
+}
+</code></pre>
+<p>4) Next we can create a getter that will return the NativeScript label object</p>
+<pre><code class="lang-TypeScript">export class FunLabel {
+    @Input() public line: string = &quot;&quot;;
+    @ViewChild(&quot;myLabel&quot;) labelRef: ElementRef;
+
+    private get view() : View {
+        return &lt;View&gt;this.labelRef.nativeElement;
+    }    
+}
+</code></pre>
+<p>5) Finally we need the function to animate.
+Add the following code to the <code>FunLabel</code> class</p>
+<pre><code class="lang-TypeScript">    private animate() {
+        this.zoom();
+    }
+
+    public zoom() {
+        this.view.animate({ scale: { x: 0.5, y: 0.5 }  })
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 2, y: 2 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 0, y: 0 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 1, y: 1 }, duration: 2000  })
+            )
+    }
+</code></pre>
+<div class="solution-start"></div>
+This is how <code>fun-label.ts</code> should look at this point.
+<code>TypeScript
+import {Component, Input, ViewChild, ElementRef} from &quot;@angular/core&quot;;
+import {View} from &quot;ui/core/view&quot;;
+
+@Component({
+    selector: &quot;FunLabel&quot;,
+    template: `
+    &lt;Label #myLabel
+        [text]=&quot;line&quot;
+        (tap)=&quot;animate()&quot;&gt;
+    &lt;/Label&gt;
+    `
+})
+export class FunLabel {
+    @Input() public line: string = &quot;&quot;;
+    @ViewChild(&quot;myLabel&quot;) labelRef: ElementRef;
+
+    private get view() : View {
+        return &lt;View&gt;this.labelRef.nativeElement;
+    }
+
+    private animate() {
+        this.zoom();
+    }
+
+    public zoom() {
+        this.view.animate({ scale: { x: 0.5, y: 0.5 }  })
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 2, y: 2 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 0, y: 0 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 1, y: 1 }, duration: 2000  })
+            )
+    }
+}</code>
+<div class="solution-end"></div>
+
+<div class="exercise-end"></div>
+
+
+<p>descrition of the exercise</p>
+<h4 class="exercise-start">
+    <b>Bonus Exercise</b>: Add animationType property
+</h4>
+
+<p>Using the below animation functions, add <code>animationType</code> @Input property.
+Now the <code>animate</code> function should play one of the below functions.</p>
+<pre><code class="lang-TypeScript">    public zoom() {
+        this.view.animate({ scale: { x: 0.5, y: 0.5 }  })
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 2, y: 2 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 0, y: 0 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 1, y: 1 }, duration: 2000  })
+            )
+    }
+
+    public spin() {
+        this.view.animate({ rotate: 1080, duration: 750 })
+            .then(() =&gt; 
+                this.view.animate({ rotate: 0, duration: 750 } )
+            )
+    }
+
+    public move() {
+        this.view.animate({ translate: { x: 100, y: 0 }  })
+            .then(() =&gt; 
+                this.view.animate({ translate: { x: 100, y: 100 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ translate: { x: 0, y: 100 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ translate: { x: 0, y: 0 }  })
+            )
+    }
+    public fade() {
+        this.view.animate({ opacity: 0  })
+            .then(() =&gt; 
+                this.view.animate({ opacity: 1  })
+            )
+    }
+</code></pre>
+<p>This is how the property should be set in <code>app.component.html</code></p>
+<pre><code class="lang-html">    &lt;FunLabel 
+        [line]=&quot;message&quot;
+        class=&quot;message&quot;
+        animationType=&quot;fade&quot;&gt;
+    &lt;/FunLabel&gt;
+</code></pre>
+<div class="solution-start"></div>
+Here is the full solution:
+<code>TypeScript
+import {Component, Input, ViewChild, ElementRef} from &quot;@angular/core&quot;;
+import {View} from &quot;ui/core/view&quot;;
+
+@Component({
+    selector: &quot;FunLabel&quot;,
+    template: `
+    &lt;Label #myLabel
+        [text]=&quot;line&quot;
+        (tap)=&quot;animate()&quot;&gt;
+    &lt;/Label&gt;
+    `
+})
+export class FunLabel {
+    @Input() public line: string = &quot;&quot;;
+    @ViewChild(&quot;myLabel&quot;) labelRef: ElementRef;
+    @Input() public animationType: string = &quot;fade&quot;;
+
+    private get view() : View {
+        return &lt;View&gt;this.labelRef.nativeElement;
+    }
+
+    private animate() {
+        switch(this.animationType.toLowerCase()) {
+            case &quot;spin&quot;:
+                this.spin();
+                break;
+            case &quot;zoom&quot;:
+                this.zoom();
+                break;
+            case &quot;move&quot;:
+                this.move();
+                break;
+            case &quot;fade&quot;:
+                this.fade();
+                break;
+            default:
+                this.spin();
+        }
+    }
+
+    public zoom() {
+        this.view.animate({ scale: { x: 0.5, y: 0.5 }  })
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 2, y: 2 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 0, y: 0 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 1, y: 1 }, duration: 2000  })
+            )
+    }
+
+    public spin() {
+        this.view.animate({ rotate: 1080, duration: 750 })
+            .then(() =&gt; 
+                this.view.animate({ rotate: 0, duration: 750 } )
+            )
+    }
+
+    public move() {
+        this.view.animate({ translate: { x: 100, y: 0 }  })
+            .then(() =&gt; 
+                this.view.animate({ translate: { x: 100, y: 100 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ translate: { x: 0, y: 100 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ translate: { x: 0, y: 0 }  })
+            )
+    }
+    public fade() {
+        this.view.animate({ opacity: 0  })
+            .then(() =&gt; 
+                this.view.animate({ opacity: 1  })
+            )
+    }
+}</code>
+<div class="solution-end"></div>
+
+<div class="exercise-end"></div>
+
+
+<p>The final part of creating the <code>FunLabel</code> is to raise an event every time the animation is finished.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Adding event handlers
+</h4>
+
+<p>1) Let&#39;s start with the usual of adding new imports <code>Output</code> and <code>EventEmitter</code></p>
+<pre><code class="lang-TypeScript">import {Component, Input, ViewChild, ElementRef, Output, EventEmitter} from &quot;@angular/core&quot;;
+</code></pre>
+<p>2) Now we need to add <code>@Output</code> event property.
+When defining an Output property, you can give it a <code>prop-name</code> (this is how it will referenced in the parent component) and <code>return-type</code> (this is the type that is expected to be returned)
+@Output public <code>prop-name</code>: EventEmitter&lt;<code>return-type</code>&gt; = new EventEmitter&lt;<code>return-type</code>&gt;();</p>
+<p>Add the following <code>@Output</code> property below all the <code>@Input</code> properties. Btw. the order is not really important.</p>
+<pre><code class="lang-TypeScript">@Output() public animateFinished: EventEmitter&lt;number&gt; = new EventEmitter&lt;number&gt;();
+</code></pre>
+<p>3) In order to raise the event we just need to call <code>eventname.next(param)</code>.
+For this exercise we will add a <code>counter</code> property and return a new value each time an animation is complete.
+Then we will wrap it nicely in <code>emitAnimateFinished()</code> function </p>
+<pre><code class="lang-TypeScript">    private counter: number = 0;
+    private emitAnimateFinished() {
+        this.counter++;
+        this.animateFinished.next(this.counter);
+    }
+</code></pre>
+<p>4) Now the only thing that we have left is to call <code>this.emitAnimateFinished()</code> each time the <code>animation()</code> function is complete.
+Here is how to do it for <code>spin()</code>
+And your task is to do the same for the rest of them (zoom, move and fade).</p>
+<pre><code class="lang-TypeScript">
+    public spin() {
+        this.view.animate({ rotate: 1080, duration: 750 })
+            .then(() =&gt; 
+                this.view.animate({ rotate: 0, duration: 750 } )
+            )
+            .then(() =&gt; 
+                this.emitAnimateFinished()
+            )
+    }
+</code></pre>
+<div class="solution-start"></div>
+The <code>FunLabel</code> class should look like this:
+<code>TypeScript
+import {Component, Input, ViewChild, ElementRef, Output, EventEmitter} from &quot;@angular/core&quot;;
+import {View} from &quot;ui/core/view&quot;;
+
+@Component({
+    selector: &quot;FunLabel&quot;,
+    template: `
+    &lt;Label #myLabel
+        [text]=&quot;line&quot;
+        (tap)=&quot;animate()&quot;&gt;
+    &lt;/Label&gt;
+    `
+})
+export class FunLabel {
+    @Input() public line: string = &quot;&quot;;
+    @ViewChild(&quot;myLabel&quot;) labelRef: ElementRef;
+    @Input() public animationType: string = &quot;fade&quot;;
+    @Output() public animateFinished: EventEmitter&lt;number&gt; = new EventEmitter&lt;number&gt;();
+
+    private get view() : View {
+        return &lt;View&gt;this.labelRef.nativeElement;
+    }
+
+    private counter: number = 0;
+    private emitAnimateFinished() {
+        this.counter++;
+        this.animateFinished.next(this.counter);
+    }
+
+    private animate() {
+        switch(this.animationType.toLowerCase()) {
+            case &quot;spin&quot;:
+                this.spin();
+                break;
+            case &quot;zoom&quot;:
+                this.zoom();
+                break;
+            case &quot;move&quot;:
+                this.move();
+                break;
+            case &quot;fade&quot;:
+                this.fade();
+                break;
+            default:
+                this.spin();
+        }
+    }
+
+
+
+    public spin() {
+        this.view.animate({ rotate: 1080, duration: 750 })
+            .then(() =&gt; 
+                this.view.animate({ rotate: 0, duration: 750 } )
+            )
+            .then(() =&gt; 
+                this.emitAnimateFinished()
+            )
+    }
+
+    public move() {
+        this.view.animate({ translate: { x: 100, y: 0 }  })
+            .then(() =&gt; 
+                this.view.animate({ translate: { x: 100, y: 100 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ translate: { x: 0, y: 100 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ translate: { x: 0, y: 0 }  })
+            )
+            .then(() =&gt; 
+                this.emitAnimateFinished()
+            )
+    }
+
+    public zoom() {
+        this.view.animate({ scale: { x: 0.5, y: 0.5 }  })
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 2, y: 2 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 0, y: 0 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 1, y: 1 }, duration: 2000  })
+            )
+            .then(() =&gt; 
+                this.emitAnimateFinished()
+            )
+    }
+    public fade() {
+        this.view.animate({ opacity: 0  })
+            .then(() =&gt; 
+                this.view.animate({ opacity: 1  })
+            )
+            .then(() =&gt; 
+                this.emitAnimateFinished()
+            )
+    }
+}</code>
+<div class="solution-end"></div>
+
+<p>To put the new event property to test we need to:</p>
+<p>a) add an <code>onFinished(val)</code> function to <code>AppComponent</code> in <code>app.component.ts</code></p>
+<pre><code class="lang-TypeScript">    public onFinished(val: boolean) {
+        alert(&quot;Finished Animation:&quot; + val);
+    }
+</code></pre>
+<p>b) add <code>animateFinished</code> handler to <code>FunLabel</code> in  <code>app.compnent.html</code>
+Notice the <code>$event</code> attribute passed in as the parameter. This is how you pass the value returned by the component.</p>
+<pre><code class="lang-html">    &lt;FunLabel 
+        [line]=&quot;message&quot;
+        class=&quot;message&quot;
+        animationType=&quot;fade&quot;
+        (animateFinished)=&quot;onFinished($event)&quot;&gt;
+    &lt;/FunLabel&gt;
+</code></pre>
+<p>Now run the app. Each time an animation is complete you should get a nice popup with a counter.</p>
+<div class="exercise-end"></div>
+
+
+<p>NativeScript UI components can respond to other events like <code>Double Tap</code>, <code>Long Press</code>, <code>Swipe</code>, <code>Pan</code>, <code>Pinch</code>, <code>Rotation</code>, <code>Touch</code></p>
+<p><h4 class="exercise-start">
+    <b>Bonus Exercise</b>: Animate on swipe
+</h4>
+Read in the documenation how <a href="https://docs.nativescript.org/ui/gestures#swipe">Swipe</a> works and implement different animation for swipe left, right, up and down.</p>
+<div class="solution-start"></div>
+Here is the full solution. Have fun.
+<code>TypeScript
+import {Component, Input, ViewChild, ElementRef, Output, EventEmitter} from &quot;@angular/core&quot;;
+import {View} from &quot;ui/core/view&quot;;
+import {SwipeGestureEventData} from &quot;ui/gestures&quot;;
+
+@Component({
+    selector: &quot;FunLabel&quot;,
+    template: `
+    &lt;Label #myLabel
+        [text]=&quot;line&quot;
+        (tap)=&quot;animate()&quot;
+        (swipe)=&quot;onSwipe($event)&quot;&gt;
+    &lt;/Label&gt;
+    `
+})
+export class FunLabel {
+    @Input() public line: string = &quot;&quot;;
+    @ViewChild(&quot;myLabel&quot;) labelRef: ElementRef;
+    @Input() public animationType: string = &quot;fade&quot;;
+    @Output() public animateFinished: EventEmitter&lt;number&gt; = new EventEmitter&lt;number&gt;();
+
+    private get view() : View {
+        return &lt;View&gt;this.labelRef.nativeElement;
+    }
+
+    private counter: number = 0;
+    private emitAnimateFinished() {
+        this.counter++;
+        this.animateFinished.next(this.counter);
+    }
+
+    private animate() {
+        switch(this.animationType.toLowerCase()) {
+            case &quot;spin&quot;:
+                this.spin();
+                break;
+            case &quot;zoom&quot;:
+                this.zoom();
+                break;
+            case &quot;move&quot;:
+                this.move();
+                break;
+            case &quot;fade&quot;:
+                this.fade();
+                break;
+            default:
+                this.spin();
+        }
+    }
+
+
+
+    public spin() {
+        this.view.animate({ rotate: 1080, duration: 750 })
+            .then(() =&gt; 
+                this.view.animate({ rotate: 0, duration: 750 } )
+            )
+            .then(() =&gt; 
+                this.emitAnimateFinished()
+            )
+    }
+
+    public move() {
+        this.view.animate({ translate: { x: 100, y: 0 }  })
+            .then(() =&gt; 
+                this.view.animate({ translate: { x: 100, y: 100 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ translate: { x: 0, y: 100 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ translate: { x: 0, y: 0 }  })
+            )
+            .then(() =&gt; 
+                this.emitAnimateFinished()
+            )
+    }
+
+    public zoom() {
+        this.view.animate({ scale: { x: 0.5, y: 0.5 }  })
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 2, y: 2 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 0, y: 0 }  })
+            )
+            .then(() =&gt; 
+                this.view.animate({ scale: { x: 1, y: 1 }, duration: 2000  })
+            )
+            .then(() =&gt; 
+                this.emitAnimateFinished()
+            )
+    }
+    public fade() {
+        this.view.animate({ opacity: 0  })
+            .then(() =&gt; 
+                this.view.animate({ opacity: 1  })
+            )
+            .then(() =&gt; 
+                this.emitAnimateFinished()
+            )
+    }
+
+    private onSwipe(args: SwipeGestureEventData) {
+        switch(args.direction) {
+            case 1: //Right
+                this.view.animate({ translate: { x: 100, y: 0 }, rotate: 90  })
+                .then(() =&gt; 
+                    this.view.animate({ translate: { x: 0, y: 0 }, rotate: 0  })
+                )
+                break;
+            case 2: //Left
+                this.view.animate({ translate: { x: -100, y: 0 }, rotate: -90  })
+                .then(() =&gt; 
+                    this.view.animate({ translate: { x: 0, y: 0 }, rotate: 0  })
+                )
+                break;
+            case 4: //Up
+                this.view.animate({ translate: { x: 0, y: -100 }, scale: { x: 1, y: 3}  })
+                .then(() =&gt; 
+                    this.view.animate({ translate: { x: 0, y: 0 }, scale: { x: 1, y: 1}   })
+                )
+                break;
+            case 8: //Down
+                this.view.animate({ translate: { x: 0, y: 100 }, scale: { x: 1, y: -1}   })
+                .then(() =&gt; 
+                    this.view.animate({ translate: { x: 0, y: 0 }, scale: { x: 1, y: 1}   })
+                )
+                break;
+        }
+    }
+
+}</code>
+<div class="solution-end"></div>
+
+<div class="exercise-end"></div>
+
+
+<h3 id="creating-a-two-way-binding-component">Creating a two way binding component</h3>
+<h3 id="creating-a-native-plugin">Creating a Native plugin</h3>
 
 			</div>
 			<hr>
