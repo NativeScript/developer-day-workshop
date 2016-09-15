@@ -13,7 +13,7 @@ In this workshop you’ll be building a simple grocery-management application. L
 Go ahead and start up a new NativeScript app for this workshop:
 
 ```
-tns create WorkshopThree --template https://github.com/NativeScript/template-hello-world-ng
+tns create WorkshopThree --ng
 ```
 
 Next, change directories into your new project:

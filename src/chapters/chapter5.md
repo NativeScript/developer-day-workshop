@@ -2,9 +2,9 @@
 
 Now that you have the basics down, as well as the basics of Angular, let’s look at some more advanced user interface concepts you can use to build your applications.
 
-### Implementing navigation patterns
+### Working with tabs views
 
-We’ll start with navigation patterns, as they’re one of the most important decisions you have to make when you start your applications. In this section we’ll cover the two most navigation patterns, tab bars and drawers, and show how to implement them in NativeScript.
+Tab views are one of the most common mobile navigation patterns in mobile apps. Let’s look at how to implement one in NativeScript.
 
 <h4 class="exercise-start">
     <b>Exercise</b>: Start up a new app
@@ -13,7 +13,7 @@ We’ll start with navigation patterns, as they’re one of the most important d
 Go ahead and start up a new NativeScript app for this workshop:
 
 ```
-tns create WorkshopFour --template https://github.com/NativeScript/template-hello-world-ng
+tns create WorkshopFour --ng
 ```
 
 Next, change directories into your new project:
@@ -30,11 +30,12 @@ import { Component } from "@angular/core";
 @Component({
   selector: "my-app",
   template: `
+<ActionBar title="Account Management"></ActionBar>
 <TabView>
-  <StackLayout *tabItem="{title: 'Tab1'}">
-    <Label text="This is Label in Tab 1"></Label>
+  <StackLayout *tabItem="{title: 'Account'}">
+    <Label text="This is account tab"></Label>
   </StackLayout>
-  <StackLayout *tabItem="{title: 'Tab2'}">
+  <StackLayout *tabItem="{title: 'Settings'}">
     <Label text="This is Label in Tab 2"></Label>
   </StackLayout>
 </TabView>
@@ -77,4 +78,15 @@ tns run android --watch
 
 
 
+
 <div class="exercise-end"></div>
+
+To earn a gift card:
+  - Allow the user to submit the form with the four fields on the screenshots. Don’t worry how the data is formatted when you send it the backend—just get the thing to submit.
+
+Bonus points:
+  - Improve on our very basic design.
+  - Disable the form when you submit.
+  - Show an activity indicator while submitting.
+  - Show an alert after the form successfully submits.
+  - Make all fields mandatory.

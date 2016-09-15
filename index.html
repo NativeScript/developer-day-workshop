@@ -1219,8 +1219,8 @@ export class GroceryService {
 			<div class="chapter">
 				<h2 id="user-interface-deep-dive">User interface deep dive</h2>
 <p>Now that you have the basics down, as well as the basics of Angular, let’s look at some more advanced user interface concepts you can use to build your applications.</p>
-<h3 id="implementing-navigation-patterns">Implementing navigation patterns</h3>
-<p>We’ll start with navigation patterns, as they’re one of the most important decisions you have to make when you start your applications. In this section we’ll cover the two most navigation patterns, tab bars and drawers, and show how to implement them in NativeScript.</p>
+<h3 id="working-with-tabs-views">Working with tabs views</h3>
+<p>Tab views are one of the most common mobile navigation patterns in mobile apps. Let’s look at how to implement one in NativeScript.</p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Start up a new app
 </h4>
@@ -1235,11 +1235,12 @@ export class GroceryService {
 @Component({
   selector: &quot;my-app&quot;,
   template: `
+&lt;ActionBar title=&quot;Account Management&quot;&gt;&lt;/ActionBar&gt;
 &lt;TabView&gt;
-  &lt;StackLayout *tabItem=&quot;{title: &#39;Tab1&#39;}&quot;&gt;
-    &lt;Label text=&quot;This is Label in Tab 1&quot;&gt;&lt;/Label&gt;
+  &lt;StackLayout *tabItem=&quot;{title: &#39;Account&#39;}&quot;&gt;
+    &lt;Label text=&quot;This is account tab&quot;&gt;&lt;/Label&gt;
   &lt;/StackLayout&gt;
-  &lt;StackLayout *tabItem=&quot;{title: &#39;Tab2&#39;}&quot;&gt;
+  &lt;StackLayout *tabItem=&quot;{title: &#39;Settings&#39;}&quot;&gt;
     &lt;Label text=&quot;This is Label in Tab 2&quot;&gt;&lt;/Label&gt;
   &lt;/StackLayout&gt;
 &lt;/TabView&gt;
@@ -1268,6 +1269,19 @@ export class AppComponent {}
 </code></pre><p>Or</p>
 <pre><code>tns run android --watch
 </code></pre><div class="exercise-end"></div>
+
+<p>To earn a gift card:</p>
+<ul>
+<li>Allow the user to submit the form with the four fields on the screenshots. Don’t worry how the data is formatted when you send it the backend—just get the thing to submit.</li>
+</ul>
+<p>Bonus points:</p>
+<ul>
+<li>Improve on our very basic design.</li>
+<li>Disable the form when you submit.</li>
+<li>Show an activity indicator while submitting.</li>
+<li>Show an alert after the form successfully submits.</li>
+<li>Make all fields mandatory.</li>
+</ul>
 
 			</div>
 			<hr>
