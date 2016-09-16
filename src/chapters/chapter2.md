@@ -72,7 +72,7 @@ The same applies to building and running iOS apps. Just swap `android` for `ios`
 tns platform add ios --emulator
 ```
 
-As a side note. If you want to stop the build process just press `CTRL+C`
+> As a side note. If you want to stop the build process just press `CTRL+C`
 
 <div class="exercise-end"></div>
 
@@ -128,52 +128,6 @@ tns debug android --watch
 <div class="exercise-end"></div>
 
 
-Now that we know how to build the apps, let's add an npm module to the project to help us with getting additional functionality.
-
-If you go to [`npmjs` and search for `nativescript`](https://www.npmjs.com/search?q=nativescript) you will get a long list of NativeScript specific npm modules that might come in handy when building an app.
-
-Here we will learn how to add an npm module.
-
-<h4 class="exercise-start">
-    <b>Exercise</b>: Installing a NativeScript plugin from npm
-</h4>
-
-The usual way to add an npm module would be to call `npm i module-name`, however when it comes to installing NativeScript specific plugins it is better to call `tns plugin add module-name`. That is because `tns plugin add` will do all that `npm install` does plus it configures any native dependencies that the plugin may need to use. This might include installing additional native iOS and/or components.
-
-Let's add the [appinfo plugin](https://www.npmjs.com/package/nativescript-appinfo), which will allow us to get info like the `version name`, `build number` and `app ID`.
-
-Run the following CLI command:
-```
-tns plugin add nativescript-appinfo
-```
-
-Once you run this command you should be able to see the `nativescript-appinfo` module inside the `node_modules` folder and also the dependency to the module should be added to the `package.json` at the root of the project (not the one in the `app` folder)
-
-Now let's try to use the `nativescript-appinfo` module.
-
-Open `app.component.ts` and add the following line to the top of the file (or anywhere before `@Component` starts):
-```
-var appinfo = require("nativescript-appinfo");
-```
-
-This will give us access to the appinfo module in this area of code.
-
-Now we can call the `appinfo` instance to get some app information. Add the following piece of code inside the `onTap()` function:
-
-``` TypeScript
-appinfo.getAppId()
-    .then((id) => {
-        alert("Your app's id is: " + id);
-    });
-```
-
-Now build the app and see what happens when you tap the button.
-
-As a bonus exercise: run this app in the `debug mode` and add a break point at `getAppId()` and try to step in to getAppId function to see what happens.
-
-<div class="exercise-end"></div>
-
-
 ### NativeScript folder structure
 
 At the root of the project we have `package.json`, which contains all npm dependencies and project configuration.
@@ -201,42 +155,6 @@ You should also refrain from pushing the folder into `github` or any source cont
 This is the build folder for each of your platforms.
 
 Just like the `node_modules` folder, this folder can be regenared at will, so you should never add it to your source control.
-
-### Managing `platforms` and `node_modules`
-
-When you clone an existing github project, the project will already contain a list of required npm modules (which you can view the `package.json` file) together with selected platforms (Android and/or iOS) it is designed to work for.
-
-These will get automatically downloaded when you build the project, however until the modules get loaded TypeScript won't be able to provide you with the support for these modules.
-
-The best thing to do at this stage is to call:
-```
-tns install
-```
-Which will download and configure all the required modules and platforms.
-
-#### Changing npm module version
-
-When you want to change the version of an npm module, just find it in `package.json` change the version to the one you need, then delete it from the `node_modules` folder and finally run `tns install`.
-
-#### Trouble shooting new npm installs not working as expected.
-
-Sometimes freshly installed modules with Native dependencies don't seem to work.
-This usually happens when you built your app once already. Then you add a new npm module (which requires native Android or iOS support). And you are trying to use the module and run the app again. 
-
-The best thing to do is to either delete the `platforms` folder and rerun the build or you could use the CLI to help you with the task by calling `tns platform add` and then `remove`.
-Just like this:
-
-For Android:
-```
-tns platform remove android
-tns platform add android
-```
-
-For iOS:
-```
-tns platform remove ios
-tns platform add ios
-```
 
 ### Working in Visual Studio Code
 There are a number of IDEs that you might be used to work with, however for the purpose of this workshop we will focus on working with VS Code, which has a lot of really good features that can help you build NativeScript apps.
