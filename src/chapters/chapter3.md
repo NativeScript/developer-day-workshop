@@ -268,7 +268,7 @@ Now we have a wrapping layout of cards dynamically loaded onto the screen!
 The final thing we want to do to these cards is to add a caption underneath the image. Add a caption of your own under the image:
 
 ```
-<Label text="p'tit minou" horizontalAlignment="center"></Label>
+<Label text="p'tit minou" horizontalAlignment="center" class="text"></Label>
 ```
 
 <div class="exercise-end"></div>
@@ -308,13 +308,15 @@ Style the card by adding a css class to the StackLayout in `app.component.html`:
 <StackLayout width="40%" *ngFor="let kitten of kittens" horizontalAlignment="center" class="card">
 ```
 
-Finally, add styles to the card itself by adding this style to `app.css`:
+Finally, add styles to the card and its label by adding these styles to `app.css`:
 
 ```
 .card {
     background-color: #DA4167;
     margin: 10;
     border-radius: 5;
+}
+.text {
     color: #EBEBD3;
 }
 ```
@@ -375,7 +377,7 @@ As you can see, we are chaining several animations together using promises. When
     <p><strong>CHALLENGE!</strong>: Create a different animation using the Animation library as documented here: [https://docs.nativescript.org/ui/animation](https://docs.nativescript.org/ui/animation)</p>
 </blockquote>
 
-<!--Now, let's take a look at the other way of animating elements on the screen; by using CSS keyframe animation. Let's make the cards fade in during the page loading process. 
+Now, let's take a look at the other way of animating elements on the screen; by using CSS keyframe animation. Let's make the cards fade in during the page loading process. 
 
 <h4 class="exercise-start">
     <b>Exercise</b>: Add a keyframe animation
@@ -403,4 +405,3 @@ The app should refresh and the cards will fade in.
 <blockquote>
     <p><strong>CHALLENGE!</strong>: What else can you do with CSS animations?</p>
 </blockquote>
--->

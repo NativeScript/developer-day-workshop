@@ -473,7 +473,7 @@ The debugger should stop at your breakpoint.</p>
 <pre><code>&lt;WrapLayout horizontalAlignment=&quot;center&quot;&gt;
 </code></pre><p>Now we have a wrapping layout of cards dynamically loaded onto the screen!</p>
 <p>The final thing we want to do to these cards is to add a caption underneath the image. Add a caption of your own under the image:</p>
-<pre><code>&lt;Label text=&quot;p&#39;tit minou&quot; horizontalAlignment=&quot;center&quot;&gt;&lt;/Label&gt;
+<pre><code>&lt;Label text=&quot;p&#39;tit minou&quot; horizontalAlignment=&quot;center&quot; class=&quot;text&quot;&gt;&lt;/Label&gt;
 </code></pre><div class="exercise-end"></div>
 
 <blockquote>
@@ -499,11 +499,13 @@ ActionBar {
 }
 </code></pre><p>Style the card by adding a css class to the StackLayout in <code>app.component.html</code>:</p>
 <pre><code>&lt;StackLayout width=&quot;40%&quot; *ngFor=&quot;let kitten of kittens&quot; horizontalAlignment=&quot;center&quot; class=&quot;card&quot;&gt;
-</code></pre><p>Finally, add styles to the card itself by adding this style to <code>app.css</code>:</p>
+</code></pre><p>Finally, add styles to the card and its label by adding these styles to <code>app.css</code>:</p>
 <pre><code>.card {
     background-color: #DA4167;
     margin: 10;
     border-radius: 5;
+}
+.text {
     color: #EBEBD3;
 }
 </code></pre><div class="exercise-end"></div>
@@ -547,35 +549,27 @@ ActionBar {
     <p><strong>CHALLENGE!</strong>: Create a different animation using the Animation library as documented here: <a href="https://docs.nativescript.org/ui/animation">https://docs.nativescript.org/ui/animation</a></p>
 </blockquote>
 
-<!--Now, let's take a look at the other way of animating elements on the screen; by using CSS keyframe animation. Let's make the cards fade in during the page loading process. 
-
+<p>Now, let&#39;s take a look at the other way of animating elements on the screen; by using CSS keyframe animation. Let&#39;s make the cards fade in during the page loading process. </p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Add a keyframe animation
 </h4>
 
-To do this, we simply need to tweak the CSS, so open `app.css` and add a `@keyframes` rule named `card`:
-
-```
-@keyframes card {
+<p>To do this, we simply need to tweak the CSS, so open <code>app.css</code> and add a <code>@keyframes</code> rule named <code>card</code>:</p>
+<pre><code>@keyframes card {
     from { opacity: 0 }
     to { opacity: 1}
 }
-```
-Then, add these lines to the `.card` class:
-
-```
-    animation-name: card;
+</code></pre><p>Then, add these lines to the <code>.card</code> class:</p>
+<pre><code>    animation-name: card;
     animation-duration: 4s;
     opacity: 0;
-```
-The app should refresh and the cards will fade in. 
-
+</code></pre><p>The app should refresh and the cards will fade in. </p>
 <div class="exercise-end"></div>
 
 <blockquote>
     <p><strong>CHALLENGE!</strong>: What else can you do with CSS animations?</p>
 </blockquote>
--->
+
 			</div>
 			<hr>
 			<div class="chapter">
