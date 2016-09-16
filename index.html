@@ -94,7 +94,9 @@ Now we need add the platforms we want to build this app for.</p>
 <pre><code>tns run android --emulator
 </code></pre><p>The same applies to building and running iOS apps. Just swap <code>android</code> for <code>ios</code></p>
 <pre><code>tns platform add ios --emulator
-</code></pre><p>As a side note. If you want to stop the build process just press <code>CTRL+C</code></p>
+</code></pre><blockquote>
+<p>As a side note. If you want to stop the build process just press <code>CTRL+C</code></p>
+</blockquote>
 <div class="exercise-end"></div>
 
 
@@ -128,33 +130,6 @@ You can run the debugger in the livesync mode by adding <code>--watch</code> at 
 </code></pre><div class="exercise-end"></div>
 
 
-<p>Now that we know how to build the apps, let&#39;s add an npm module to the project to help us with getting additional functionality.</p>
-<p>If you go to <a href="https://www.npmjs.com/search?q=nativescript"><code>npmjs</code> and search for <code>nativescript</code></a> you will get a long list of NativeScript specific npm modules that might come in handy when building an app.</p>
-<p>Here we will learn how to add an npm module.</p>
-<h4 class="exercise-start">
-    <b>Exercise</b>: Installing a NativeScript plugin from npm
-</h4>
-
-<p>The usual way to add an npm module would be to call <code>npm i module-name</code>, however when it comes to installing NativeScript specific plugins it is better to call <code>tns plugin add module-name</code>. That is because <code>tns plugin add</code> will do all that <code>npm install</code> does plus it configures any native dependencies that the plugin may need to use. This might include installing additional native iOS and/or components.</p>
-<p>Let&#39;s add the <a href="https://www.npmjs.com/package/nativescript-appinfo">appinfo plugin</a>, which will allow us to get info like the <code>version name</code>, <code>build number</code> and <code>app ID</code>.</p>
-<p>Run the following CLI command:</p>
-<pre><code>tns plugin add nativescript-appinfo
-</code></pre><p>Once you run this command you should be able to see the <code>nativescript-appinfo</code> module inside the <code>node_modules</code> folder and also the dependency to the module should be added to the <code>package.json</code> at the root of the project (not the one in the <code>app</code> folder)</p>
-<p>Now let&#39;s try to use the <code>nativescript-appinfo</code> module.</p>
-<p>Open <code>app.component.ts</code> and add the following line to the top of the file (or anywhere before <code>@Component</code> starts):</p>
-<pre><code>var appinfo = require(&quot;nativescript-appinfo&quot;);
-</code></pre><p>This will give us access to the appinfo module in this area of code.</p>
-<p>Now we can call the <code>appinfo</code> instance to get some app information. Add the following piece of code inside the <code>onTap()</code> function:</p>
-<pre><code class="lang-TypeScript">appinfo.getAppId()
-    .then((id) =&gt; {
-        alert(&quot;Your app&#39;s id is: &quot; + id);
-    });
-</code></pre>
-<p>Now build the app and see what happens when you tap the button.</p>
-<p>As a bonus exercise: run this app in the <code>debug mode</code> and add a break point at <code>getAppId()</code> and try to step in to getAppId function to see what happens.</p>
-<div class="exercise-end"></div>
-
-
 <h3 id="nativescript-folder-structure">NativeScript folder structure</h3>
 <p>At the root of the project we have <code>package.json</code>, which contains all npm dependencies and project configuration.
 This is where you can change the id of the project or the app version.</p>
@@ -175,26 +150,7 @@ This is where you can change the id of the project or the app version.</p>
 <h4 id="the-platforms-folder">the <code>platforms</code> folder</h4>
 <p>This is the build folder for each of your platforms.</p>
 <p>Just like the <code>node_modules</code> folder, this folder can be regenared at will, so you should never add it to your source control.</p>
-<h3 id="managing-platforms-and-node_modules-">Managing <code>platforms</code> and <code>node_modules</code></h3>
-<p>When you clone an existing github project, the project will already contain a list of required npm modules (which you can view the <code>package.json</code> file) together with selected platforms (Android and/or iOS) it is designed to work for.</p>
-<p>These will get automatically downloaded when you build the project, however until the modules get loaded TypeScript won&#39;t be able to provide you with the support for these modules.</p>
-<p>The best thing to do at this stage is to call:</p>
-<pre><code>tns install
-</code></pre><p>Which will download and configure all the required modules and platforms.</p>
-<h4 id="changing-npm-module-version">Changing npm module version</h4>
-<p>When you want to change the version of an npm module, just find it in <code>package.json</code> change the version to the one you need, then delete it from the <code>node_modules</code> folder and finally run <code>tns install</code>.</p>
-<h4 id="trouble-shooting-new-npm-installs-not-working-as-expected-">Trouble shooting new npm installs not working as expected.</h4>
-<p>Sometimes freshly installed modules with Native dependencies don&#39;t seem to work.
-This usually happens when you built your app once already. Then you add a new npm module (which requires native Android or iOS support). And you are trying to use the module and run the app again. </p>
-<p>The best thing to do is to either delete the <code>platforms</code> folder and rerun the build or you could use the CLI to help you with the task by calling <code>tns platform add</code> and then <code>remove</code>.
-Just like this:</p>
-<p>For Android:</p>
-<pre><code>tns platform remove android
-tns platform add android
-</code></pre><p>For iOS:</p>
-<pre><code>tns platform remove ios
-tns platform add ios
-</code></pre><h3 id="working-in-visual-studio-code">Working in Visual Studio Code</h3>
+<h3 id="working-in-visual-studio-code">Working in Visual Studio Code</h3>
 <p>There are a number of IDEs that you might be used to work with, however for the purpose of this workshop we will focus on working with VS Code, which has a lot of really good features that can help you build NativeScript apps.</p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Setting up the IDE
@@ -1244,7 +1200,7 @@ export class FunLabel {
 </code></pre>
 <p>This component is a simple @Component that contains NativeScript label saying &quot;FunLabel&quot;.</p>
 <p>Now let&#39;s add <code>FunLabel</code> to app.component.html. Add the following line below the label</p>
-<pre><code class="lang-html">&lt;FunLabel&gt; &lt;/FunLabel&gt;
+<pre><code class="lang-XML">&lt;FunLabel&gt; &lt;/FunLabel&gt;
 </code></pre>
 <p>But that is not enough to make it work just yet.
 The final step is to add the <code>FunLabel</code> declaration to the <code>@NgModule</code> in <code>main.ts</code>
@@ -1282,7 +1238,7 @@ platformNativeScriptDynamic().bootstrapModule(AppComponentModule);
 </h4>
 
 <p>Open <code>fun-label.ts</code>
-We will call the new property <code>line</code> and bind it to the <code>text</code> of the underlying `<Label>&#39;.</p>
+We will call the new property <code>line</code> and bind it to the <code>text</code> of the underlying <code>&lt;Label&gt;</code>.</p>
 <p>This can be accomplished in three steps.</p>
 <p>1) Add Input to the imports</p>
 <pre><code class="lang-TypeScript">import {Component, Input} from &quot;@angular/core
@@ -1292,8 +1248,10 @@ We will call the new property <code>line</code> and bind it to the <code>text</c
         [text]=&quot;line&quot;&gt;
     &lt;/Label&gt;
 </code></pre>
-<p>3) Add @Input property ins
- (you can read more about @Inputs properties in the <a href="https://angular.io/docs/ts/latest/guide/template-syntax.html#!#inputs-outputs">Angular docs</a>) </p>
+<p>3) Add @Input property inside the <code>FunLabel</code> class.</p>
+<blockquote>
+<p>You can read more about @Inputs properties in the <a href="https://angular.io/docs/ts/latest/guide/template-syntax.html#!#inputs-outputs">Angular docs</a></p>
+</blockquote>
 <pre><code class="lang-TypeScript">export class FunLabel {
     @Input() public line: string = &quot;&quot;;
 }
@@ -1318,7 +1276,7 @@ export class FunLabel {
 <div class="solution-end"></div>
 
 <p>To test it out, update the <code>FunLabel</code> in app.component.html to the below code and run the app.</p>
-<pre><code class="lang-html">    &lt;FunLabel 
+<pre><code class="lang-XML">    &lt;FunLabel 
         [line]=&quot;message&quot;
         class=&quot;message&quot;&gt;
     &lt;/FunLabel&gt;
@@ -1359,8 +1317,8 @@ import {View} from &quot;ui/core/view&quot;;
     }    
 }
 </code></pre>
-<p>5) Finally we need the function to animate.
-Add the following code to the <code>FunLabel</code> class</p>
+<p>5) Finally we need the function to animate.</p>
+<p>Add the following code to the <code>FunLabel</code> class</p>
 <pre><code class="lang-TypeScript">    private animate() {
         this.zoom();
     }
@@ -1471,7 +1429,7 @@ Now the <code>animate</code> function should play one of the below functions.</p
     }
 </code></pre>
 <p>This is how the property should be set in <code>app.component.html</code></p>
-<pre><code class="lang-html">    &lt;FunLabel 
+<pre><code class="lang-XML">    &lt;FunLabel 
         [line]=&quot;message&quot;
         class=&quot;message&quot;
         animationType=&quot;fade&quot;&gt;
@@ -1573,24 +1531,24 @@ export class FunLabel {
 <p>1) Let&#39;s start with the usual of adding new imports <code>Output</code> and <code>EventEmitter</code></p>
 <pre><code class="lang-TypeScript">import {Component, Input, ViewChild, ElementRef, Output, EventEmitter} from &quot;@angular/core&quot;;
 </code></pre>
-<p>2) Now we need to add <code>@Output</code> event property.
-When defining an Output property, you can give it a <code>prop-name</code> (this is how it will referenced in the parent component) and <code>return-type</code> (this is the type that is expected to be returned)
-@Output public <code>prop-name</code>: EventEmitter&lt;<code>return-type</code>&gt; = new EventEmitter&lt;<code>return-type</code>&gt;();</p>
+<p>2) Now we need to add <code>@Output</code> event property.</p>
+<p>When defining an Output property, you can give it a <code>prop-name</code> (this is how it will referenced in the parent component) and <code>return-type</code> (this is the type that is expected to be returned)</p>
+<p>@Output public <code>prop-name</code>: EventEmitter&lt;<code>return-type</code>&gt; = new EventEmitter&lt;<code>return-type</code>&gt;();</p>
 <p>Add the following <code>@Output</code> property below all the <code>@Input</code> properties. Btw. the order is not really important.</p>
 <pre><code class="lang-TypeScript">@Output() public animateFinished: EventEmitter&lt;number&gt; = new EventEmitter&lt;number&gt;();
 </code></pre>
-<p>3) In order to raise the event we just need to call <code>eventname.next(param)</code>.
-For this exercise we will add a <code>counter</code> property and return a new value each time an animation is complete.
-Then we will wrap it nicely in <code>emitAnimateFinished()</code> function </p>
+<p>3) In order to raise the event we just need to call <code>eventname.next(param)</code>.</p>
+<p>For this exercise we will add a <code>counter</code> property and return a new value each time an animation is complete.</p>
+<p>Then we will wrap it nicely in <code>emitAnimateFinished()</code> function </p>
 <pre><code class="lang-TypeScript">    private counter: number = 0;
     private emitAnimateFinished() {
         this.counter++;
         this.animateFinished.next(this.counter);
     }
 </code></pre>
-<p>4) Now the only thing that we have left is to call <code>this.emitAnimateFinished()</code> each time the <code>animation()</code> function is complete.
-Here is how to do it for <code>spin()</code>
-And your task is to do the same for the rest of them (zoom, move and fade).</p>
+<p>4) Now the only thing that we have left is to call <code>this.emitAnimateFinished()</code> each time the <code>animation()</code> function is complete.</p>
+<p>Here is how to do it for <code>spin()</code></p>
+<p>And your task is to do the same for the rest of them (zoom, move and fade).</p>
 <pre><code class="lang-TypeScript">
     public spin() {
         this.view.animate({ rotate: 1080, duration: 750 })
@@ -1714,9 +1672,9 @@ export class FunLabel {
         alert(&quot;Finished Animation:&quot; + val);
     }
 </code></pre>
-<p>b) add <code>animateFinished</code> handler to <code>FunLabel</code> in  <code>app.compnent.html</code>
-Notice the <code>$event</code> attribute passed in as the parameter. This is how you pass the value returned by the component.</p>
-<pre><code class="lang-html">    &lt;FunLabel 
+<p>b) add <code>animateFinished</code> handler to <code>FunLabel</code> in  <code>app.compnent.html</code></p>
+<p>Notice the <code>$event</code> attribute passed in as the parameter. This is how you pass the value returned by the component.</p>
+<pre><code class="lang-XML">    &lt;FunLabel 
         [line]=&quot;message&quot;
         class=&quot;message&quot;
         animationType=&quot;fade&quot;
@@ -1874,10 +1832,138 @@ export class FunLabel {
 
 <div class="exercise-end"></div>
 
-
 <h3 id="creating-a-two-way-binding-component">Creating a two way binding component</h3>
-<h3 id="creating-a-native-plugin">Creating a Native plugin</h3>
+<h3 id="using-npm-modules">Using npm modules</h3>
+<p>Now that we know how to create our own components, let&#39;s learn how to one created by someone else.
+In this exercise you will learn how to add an npm module to the project to get access to additional functionality.</p>
+<p>But how do you go about finding one that could work for you?
+You can go to:</p>
+<ul>
+<li><a href="http://plugins.telerik.com/nativescript">NativeScript Plugins page</a>, which contains a set of plugins that have been verified by Telerik. </li>
+<li><a href="https://www.npmjs.com/search?q=nativescript"><code>npmjs</code> and search for <code>nativescript</code></a>, which contains a much bigger list of community-written plugins for NativeScript.</li>
+</ul>
+<p>Let&#39;s learn how to add an npm module.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Installing a NativeScript plugin from npm
+</h4>
 
+<p>The usual way to add an npm module would be to call <code>npm i module-name</code>, however when it comes to installing NativeScript specific plugins it is better to call <code>tns plugin add module-name</code>. That is because <code>tns plugin add</code> will do all that <code>npm install</code> does plus it configures any native dependencies that the plugin may need to use. This might include installing additional native iOS and/or components.</p>
+<p>Let&#39;s add the <a href="https://www.npmjs.com/package/nativescript-appinfo">appinfo plugin</a>, which will allow us to get info like the <code>version name</code>, <code>build number</code> and <code>app ID</code>.</p>
+<p>Run the following CLI command:</p>
+<pre><code>tns plugin add nativescript-appinfo
+</code></pre><p>Once you run this command you should be able to see the <code>nativescript-appinfo</code> module inside the <code>node_modules</code> folder and also the dependency to the module should be added to the <code>package.json</code> at the root of the project (not the one in the <code>app</code> folder)</p>
+<p>Now let&#39;s try to use the <code>nativescript-appinfo</code> module.</p>
+<p>Open <code>app.component.ts</code> and add the following line to the top of the file (or anywhere before <code>@Component</code> starts):</p>
+<pre><code>var appinfo = require(&quot;nativescript-appinfo&quot;);
+</code></pre><p>This will give us access to the appinfo module in this area of code.</p>
+<p>Now we can call the <code>appinfo</code> instance to get some app information. Add the following piece of code inside the <code>onTap()</code> function:</p>
+<pre><code class="lang-TypeScript">appinfo.getAppId()
+    .then((id) =&gt; {
+        alert(&quot;Your app&#39;s id is: &quot; + id);
+    });
+</code></pre>
+<p>Now build the app and see what happens when you tap the button.</p>
+<p>As a bonus exercise: run this app in the <code>debug mode</code> and add a break point at <code>getAppId()</code> and try to step in to getAppId function to see what happens.</p>
+<div class="exercise-end"></div>
+
+<p>There are also visual modules that you could use in your app.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Use ColorPicker
+</h4>
+
+<p>For this exercise we will use <code>ColorPicker</code>, for more info go to <a href="https://www.npmjs.com/package/nativescript-color-picker">npmjs</a>.</p>
+<p>First we need to import it nativescript-color-picker. To do so run the following command in the CLI:</p>
+<pre><code>tns plugin add nativescript-color-picker
+</code></pre><p>Next open <code>app.components.ts</code> and add a couple of imports. One for the <code>ColorPicker</code> and the other for the <code>Color</code> component.</p>
+<pre><code class="lang-TypeScript">import {ColorPicker} from &quot;nativescript-color-picker&quot;;
+import {Color} from &quot;color&quot;;
+</code></pre>
+<p>Then let&#39;s add few bits to the <code>AppComponent</code> class.
+We need an instance of the <code>ColorPicker</code> and a <code>selectedColor</code> property.</p>
+<pre><code class="lang-TypeScript">    private picker = new ColorPicker();
+    private selectedColor: Color = new Color(&quot;Red&quot;);
+</code></pre>
+<p>We also need a function that will show the <code>ColorPicker</code> and then assing the result to the <code>selectedColor</code>.</p>
+<pre><code class="lang-TypeScript">    public showColorPicker() {
+        this.picker.show(&#39;#3489db&#39;, &#39;ARGB&#39;)
+            .then( (result: number) =&gt; {
+                this.selectedColor = new Color(result);
+            });
+    }
+</code></pre>
+<p>Finally add a Button to <code>app.component.html</code>, which will call <code>showColorPicker()</code> and also with a <code>backgroundColor</code> bound to <code>selectedColor</code>. </p>
+<pre><code class="lang-XML">    &lt;Button
+        text=&quot;ColorPicker Demo&quot;
+        (tap)=&quot;showColorPicker()&quot;
+        [backgroundColor]=&quot;selectedColor&quot;&gt;
+    &lt;/Button&gt;
+</code></pre>
+<p>Now build the app and enjoy the new plugin.</p>
+<div class="exercise-end"></div>
+
+
+<p>The final exercise is to use a UI Component which can be added in html by using its tag.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Use DropDown
+</h4>
+
+<p>For this exercise we will use <a href="https://www.npmjs.com/package/nativescript-drop-down">nativescript-drop-down</a>.
+Let&#39;s add the plugin by calling </p>
+<pre><code>tns plugin add nativescript-drop-down
+</code></pre><p>Now in order to make the UI Compoent available in html we need to register it as an element.
+This needs to be done in <code>main.ts</code>. We need to import <code>registerElement</code> function and then register the UI component we need.</p>
+<p>The first parameter we pass in is the name we want to use for the component, in this case let&#39;s use <code>NSDropDown</code>.
+The second parameter we pass is a callback that requires the UI component we want to use.</p>
+<pre><code class="lang-TypeScript">import {registerElement} from &quot;nativescript-angular/element-registry&quot;;
+registerElement(&quot;NSDropDown&quot;, () =&gt; require(&quot;nativescript-drop-down/drop-down&quot;).DropDown);
+</code></pre>
+<p>Next let&#39;s add the necessary bits to <code>app.component.ts</code></p>
+<pre><code class="lang-TypeScript">    public fruits: Array&lt;string&gt; = [
+        &quot;apple&quot;, &quot;banana&quot;, &quot;coconut&quot;, &quot;date&quot;, &quot;elderberry&quot;
+    ];
+
+    public selectedFruitIndex = 0;
+    public get selectedFruit() {
+        return this.fruits[this.selectedFruitIndex];
+    }
+
+    public itemChanged(selectedIndex){
+        this.selectedFruitIndex = selectedIndex;
+    }
+</code></pre>
+<p>And now we can use the new component in <code>app.component.html</code>
+Notice how we use <code>NSDropDown</code>, as it is defined in <code>main.ts</code></p>
+<pre><code class="lang-XML">    &lt;Label [text]=&quot;selectedFruit&quot;&gt;&lt;/Label&gt;
+    &lt;NSDropDown #fruitDropDown
+        backroundColor=&quot;red&quot;
+        [items]=&quot;fruits&quot;
+        (selectedIndexChange)=&quot;itemChanged(fruitDropDown.selectedIndex)&quot;&gt;
+    &lt;/NSDropDown&gt;
+</code></pre>
+<p>Now build the app and enjoy.</p>
+<div class="exercise-end"></div>
+
+
+<h3 id="managing-platforms-and-node_modules-">Managing <code>platforms</code> and <code>node_modules</code></h3>
+<p>When you clone an existing github project, the project will already contain a list of required npm modules (which you can view the <code>package.json</code> file) together with selected platforms (Android and/or iOS) it is designed to work for.</p>
+<p>These will get automatically downloaded when you build the project, however until the modules get loaded TypeScript won&#39;t be able to provide you with the support for these modules.</p>
+<p>The best thing to do at this stage is to call:</p>
+<pre><code>tns install
+</code></pre><p>Which will download and configure all the required modules and platforms.</p>
+<h4 id="changing-npm-module-version">Changing npm module version</h4>
+<p>When you want to change the version of an npm module, just find it in <code>package.json</code> change the version to the one you need, then delete it from the <code>node_modules</code> folder and finally run <code>tns install</code>.</p>
+<h4 id="trouble-shooting-new-npm-installs-not-working-as-expected-">Trouble shooting new npm installs not working as expected.</h4>
+<p>Sometimes freshly installed modules with Native dependencies don&#39;t seem to work.
+This usually happens when you built your app once already. Then you add a new npm module (which requires native Android or iOS support). And you are trying to use the module and run the app again. </p>
+<p>The best thing to do is to either delete the <code>platforms</code> folder and rerun the build or you could use the CLI to help you with the task by calling <code>tns platform add</code> and then <code>remove</code>.
+Just like this:</p>
+<p>For Android:</p>
+<pre><code>tns platform remove android
+tns platform add android
+</code></pre><p>For iOS:</p>
+<pre><code>tns platform remove ios
+tns platform add ios
+</code></pre>
 			</div>
 			<hr>
 			<div class="chapter">
