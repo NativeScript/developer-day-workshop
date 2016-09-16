@@ -69,10 +69,10 @@ tns run android --emulator
 
 The same applies to building and running iOS apps. Just swap `android` for `ios`
 ```
-tns platform add ios --emulator
+tns run ios --emulator
 ```
 
-> As a side note. If you want to stop the build process just press `CTRL+C`
+> Note: If you want to stop the build process just press `CTRL+C`
 
 <div class="exercise-end"></div>
 
