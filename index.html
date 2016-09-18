@@ -2619,34 +2619,7 @@ class AppComponentModule {}
 
 platformNativeScriptDynamic().bootstrapModule(AppComponentModule);
 </code></pre>
-<p>And with that, you’re ready to get started.</p>
-<div class="exercise-end"></div>
-
-<p>Your challenge, should you choose to accept it, is to build a form that collects four pieces of information from the user: a name, an email address, a date of birth, and whether they’d like to sign up for a newsletter. You’re welcome to design this form however you’d like, and you totally might want to use the <a href="https://docs.nativescript.org/ui/theme">new NativeScript theme</a>, but here’s one lackluster UI you can try to replicate:</p>
-<p><img src="images/ios-form.png" style="height: 450px; border: 0;">
-<img src="images/android-form.png" style="height: 450px; border: 0;"></p>
-<p>The form should send a POST request to the following endpoint:</p>
-<pre><code>https://api.everlive.com/v1/GWfRtXi1Lwt4jcqK/Accounts
-</code></pre><p>The body of the request should be a JSON stringified object that has the following four keys: <code>Name</code>, <code>Email</code>, <code>DOB</code>, and <code>Newsletter</code>. (Don’t worry about the specific formatting of the individual paramters; aka, send an date format you’d like for <code>DOB</code>, and any boolean format you’d like for <code>Newsletter</code>.)</p>
-<p>There’s a simple listing of all data that has come through hosted at <a href="https://jsfiddle.net/dLvz083w/">https://jsfiddle.net/dLvz083w/</a>. If you see your data on this list you’ve completed the challenge successfully.</p>
-<p>Below you’ll find a few tips if you find yourself getting stuck, and a few suggestions for how you improve this little app if you have some extra time. Towards the end of the hour we’ll share a full solution that you can refer to later.</p>
-<h4 class="exercise-start">
-    <b>Exercise</b>: TIPS
-</h4>
-
-<p>Stuck? Here are a few tips that might help you get this form up and running.</p>
-<div class="solution-start"></div>
-
-<ul>
-<li><strong>Tip #1</strong>: You can use <code>[(ngModel)]</code> to bind to <code>&lt;TextField&gt;</code>, <code>&lt;DatePicker&gt;</code>, and <code>&lt;Switch&gt;</code> UI components. You’re going to want to use something like this:</li>
-</ul>
-<pre><code class="lang-XML">&lt;TextField [(ngModel)]=&quot;account.name&quot;&gt;&lt;/TextField&gt;
-&lt;DatePicker [(ngModel)]=&quot;account.dob&quot;&gt;&lt;/DatePicker&gt;
-&lt;Switch [(ngModel)]=&quot;account.newsletter&quot;&gt;&lt;/Switch&gt;
-</code></pre>
-<ul>
-<li><strong>Tip #2</strong>: RxJS can be tricky. Here’s a full service that you can use to hit the backend. One note: calling <code>add()</code> alone won’t be enough to actually invoke the <code>http.post()</code>. If you need further help than that ask around.</li>
-</ul>
+<p>Finally, create a <code>account.service.ts</code> file in your <code>app</code> folder and paste in the following code. You’ll need this service to hit this challenge’s backend that we’ll discuss momentarily. You’ll have to figure out how to use this service like you did in <a href="#chapter4.0">chapter 4.0</a>. </p>
 <pre><code class="lang-TypeScript">import { Injectable } from &quot;@angular/core&quot;;
 import { Http, Headers } from &quot;@angular/http&quot;;
 import { Observable } from &quot;rxjs/Rx&quot;;
@@ -2679,8 +2652,33 @@ export class AccountService {
   }
 }
 </code></pre>
+<p>And with that, you’re ready to get started.</p>
+<div class="exercise-end"></div>
+
+<p>Your challenge, should you choose to accept it, is to build a form that collects four pieces of information from the user: a name, an email address, a date of birth, and whether they’d like to sign up for a newsletter. You’re welcome to design this form however you’d like, and you totally might want to use the <a href="https://docs.nativescript.org/ui/theme">new NativeScript theme</a>, but here’s one lackluster UI you can try to replicate:</p>
+<p><img src="images/ios-form.png" style="height: 450px; border: 0;">
+<img src="images/android-form.png" style="height: 450px; border: 0;"></p>
+<p>The form should send a POST request to the following endpoint:</p>
+<pre><code>https://api.everlive.com/v1/GWfRtXi1Lwt4jcqK/Accounts
+</code></pre><p>The body of the request should be a JSON stringified object that has the following four keys: <code>Name</code>, <code>Email</code>, <code>DOB</code>, and <code>Newsletter</code>. (Don’t worry about the specific formatting of the individual paramters; aka, send an date format you’d like for <code>DOB</code>, and any boolean format you’d like for <code>Newsletter</code>.)</p>
+<p>There’s a simple listing of all data that has come through hosted at <a href="https://jsfiddle.net/dLvz083w/">https://jsfiddle.net/dLvz083w/</a>. If you see your data on this list you’ve completed the challenge successfully.</p>
+<p>Below you’ll find a few tips if you find yourself getting stuck, and a few suggestions for how you improve this little app if you have some extra time. Towards the end of the hour we’ll share a full solution that you can refer to later.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: TIPS
+</h4>
+
+<p>Stuck? Here are a few tips that might help you get this form up and running.</p>
+<div class="solution-start"></div>
+
 <ul>
-<li><strong>Tip #3</strong>: You can create a divider in your UI with the following bit of XML and CSS.</li>
+<li><strong>Tip #1</strong>: You can use <code>[(ngModel)]</code> to bind to <code>&lt;TextField&gt;</code>, <code>&lt;DatePicker&gt;</code>, and <code>&lt;Switch&gt;</code> UI components. You’re going to want to use something like this:</li>
+</ul>
+<pre><code class="lang-XML">&lt;TextField [(ngModel)]=&quot;account.name&quot;&gt;&lt;/TextField&gt;
+&lt;DatePicker [(ngModel)]=&quot;account.dob&quot;&gt;&lt;/DatePicker&gt;
+&lt;Switch [(ngModel)]=&quot;account.newsletter&quot;&gt;&lt;/Switch&gt;
+</code></pre>
+<ul>
+<li><strong>Tip #2</strong>: You can create a divider in your UI with the following bit of XML and CSS.</li>
 </ul>
 <pre><code class="lang-XML">&lt;StackLayout class=&quot;divider&quot;&gt;&lt;/StackLayout&gt;
 </code></pre>

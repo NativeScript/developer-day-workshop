@@ -41,7 +41,42 @@ import { AppComponent } from "./app.component";
 class AppComponentModule {}
 
 platformNativeScriptDynamic().bootstrapModule(AppComponentModule);
+```
 
+Finally, create a `account.service.ts` file in your `app` folder and paste in the following code. You’ll need this service to hit this challenge’s backend that we’ll discuss momentarily. You’ll have to figure out how to use this service like you did in [chapter 4.0](#chapter4.0). 
+
+``` TypeScript
+import { Injectable } from "@angular/core";
+import { Http, Headers } from "@angular/http";
+import { Observable } from "rxjs/Rx";
+import "rxjs/add/operator/catch";
+import "rxjs/add/operator/map";
+import { Account } from "./account";
+
+@Injectable()
+export class AccountService {
+  constructor(private http: Http) {}
+
+  add(account: Account) {
+    let headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    return this.http.post(
+      "https://api.everlive.com/v1/GWfRtXi1Lwt4jcqK/Accounts",
+      JSON.stringify({
+        "Name": account.name,
+        "Email": account.email,
+        "DOB": account.dob,
+        "Newsletter": account.newsletter
+      }),
+      { headers: headers }
+    )
+    .catch((error) => {
+      console.log(error);
+      return Observable.throw(error);
+    })
+  }
+}
 ```
 
 And with that, you’re ready to get started.
@@ -81,43 +116,7 @@ Stuck? Here are a few tips that might help you get this form up and running.
 <Switch [(ngModel)]="account.newsletter"></Switch>
 ```
 
-* **Tip #2**: RxJS can be tricky. Here’s a full service that you can use to hit the backend. One note: calling `add()` alone won’t be enough to actually invoke the `http.post()`. If you need further help than that ask around.
-
-``` TypeScript
-import { Injectable } from "@angular/core";
-import { Http, Headers } from "@angular/http";
-import { Observable } from "rxjs/Rx";
-import "rxjs/add/operator/catch";
-import "rxjs/add/operator/map";
-import { Account } from "./account";
-
-@Injectable()
-export class AccountService {
-  constructor(private http: Http) {}
-
-  add(account: Account) {
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
-
-    return this.http.post(
-      "https://api.everlive.com/v1/GWfRtXi1Lwt4jcqK/Accounts",
-      JSON.stringify({
-        "Name": account.name,
-        "Email": account.email,
-        "DOB": account.dob,
-        "Newsletter": account.newsletter
-      }),
-      { headers: headers }
-    )
-    .catch((error) => {
-      console.log(error);
-      return Observable.throw(error);
-    })
-  }
-}
-```
-
-* **Tip #3**: You can create a divider in your UI with the following bit of XML and CSS.
+* **Tip #2**: You can create a divider in your UI with the following bit of XML and CSS.
 
 ``` XML
 <StackLayout class="divider"></StackLayout>
