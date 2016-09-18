@@ -1826,7 +1826,7 @@ export class FunLabel {
 
 <div class="exercise-end"></div>
 
-<h3 id="creating-a-two-way-binding-component">Creating a two way binding component</h3>
+
 <h3 id="using-npm-modules">Using npm modules</h3>
 <p>Now that we know how to create our own components, let&#39;s learn how to one created by someone else.
 In this exercise you will learn how to add an npm module to the project to get access to additional functionality.</p>
@@ -1957,7 +1957,188 @@ tns platform add android
 </code></pre><p>For iOS:</p>
 <pre><code>tns platform remove ios
 tns platform add ios
+</code></pre><h3 id="creating-a-component-with-two-way-binding">Creating a component with two way binding</h3>
+<p>The final task will be to create a custom component with a two way binding.
+How many times do you get tired of creating a Label and a TextField to capture data?
+How about we create a component that will contain both a Label and a TextField in one go.</p>
+<p>Let&#39;s first scaffold the component.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Scaffold LabelTextField.
+</h4>
+
+<p>Create a new file called <code>label-text-field.ts</code> and add the following code. By now this code should be self explanatory.</p>
+<pre><code class="lang-TypeScript">import { Component, Input } from &#39;@angular/core&#39;;
+
+@Component({
+    selector: &quot;LabelTxt&quot;,
+    template: `
+    &lt;StackLayout orientation=&quot;horizontal&quot;&gt;
+        &lt;Label
+            [text]=&quot;label&quot;
+            width=&quot;30%&quot;&gt;
+        &lt;/Label&gt;
+        &lt;TextField #tf
+            [text]=&quot;text&quot;
+            width=&quot;60%&quot;&gt;&lt;/TextField&gt;
+    &lt;/StackLayout&gt;
+    `
+})
+export class LabelTextField {
+    @Input() public label: string;
+    @Input() public text: string;
+}
 </code></pre>
+<p>Now let&#39;s register the component in <code>main.ts</code>.
+First we need to import the new component.
+Since <code>LabelTextField</code> is meant to provide two way binding we also need to import <code>NativeScriptFormsModule</code>.</p>
+<pre><code class="lang-TypeScript">import {LabelTextField} from &quot;./label-text-field&quot;;
+import {NativeScriptFormsModule} from &quot;nativescript-angular/forms&quot;;
+</code></pre>
+<p>Next we need to add <code>LabelTextField</code> to declarations and <code>NativeScriptFormsModule</code> add to imports.</p>
+<p>Replace the current <code>@NgModule</code> with:</p>
+<pre><code class="lang-TypeScript">@NgModule({
+    declarations: [AppComponent, FunLabel, LabelTextField],
+    bootstrap: [AppComponent],
+    imports: [NativeScriptModule, NativeScriptFormsModule],
+})
+</code></pre>
+<p>Finally let&#39;s add the few <code>LabelTextFields</code> to the UI.
+Add a couple of properties to the <code>AppComponent</code> class in <code>app.component.ts</code>: </p>
+<pre><code class="lang-TypeScript">    public name: string = &quot;annonymous&quot;;
+    public telephone: string =&quot;0123456789&quot;;
+</code></pre>
+<p>Open <code>app.components.html</code> and add the following code.
+Note that our compenent uses <code>LabelTxt</code> tag.</p>
+<pre><code class="lang-xml">    &lt;LabelTxt
+        label=&quot;Name&quot;
+        [text]=&quot;name&quot;&gt;
+    &lt;/LabelTxt&gt;
+    &lt;LabelTxt
+        label=&quot;Telephone&quot;
+        [text]=&quot;telephone&quot;&gt;
+    &lt;/LabelTxt&gt;
+
+    &lt;FunLabel
+        [line]=&quot;name&quot;&gt;
+    &lt;/FunLabel&gt;
+    &lt;FunLabel
+        [line]=&quot;telephone&quot;&gt;
+    &lt;/FunLabel&gt;
+</code></pre>
+<p>Build the app and you should be able to see a bunch of Labels with TextFields next to them, together with the FunLabels, which display the same value. However if you edit any of the TextFields the FunLabels won&#39;t get updated.</p>
+<div class="exercise-end"></div>
+
+<p>Now let&#39;s add two way binding on <code>TextField.text</code> property to <code>LabelTextField</code>.
+Add the end of this exercise you will be able to use <code>LabelTextField</code> with <code>[(ngModel)]</code>.</p>
+<h4 class="exercise-start">
+    <b>Exercise</b>: Implement ControlValueAccessor
+</h4>
+
+<p>Open <code>label-text-field.ts</code>.</p>
+<p>Let&#39;s start with adding the necessary imports.</p>
+<pre><code class="lang-TypeScript">import { Component, Input, Inject, Optional } from &#39;@angular/core&#39;;
+import { NgControl, ControlValueAccessor } from &#39;@angular/forms&#39;;
+</code></pre>
+<p>Next we need to extend <code>LabelTextField</code> class so that it implements <code>ControlValueAccessor</code></p>
+<pre><code class="lang-TypeScript">export class LabelTextField implements ControlValueAccessor {
+</code></pre>
+<blockquote>
+<p>At this point VisualStudio code will complain that <code>writeValue</code> (it is called when the bound property is changed outside of this component), <code>registerOnChange</code> (it is called at the beginning to provide an onChange function) and <code>registerOnTouched</code> (it is called at the beginning to provide onTouched function) functions are missing. Also in order to use <code>LabelTextField</code> with <code>[(ngModel)]</code> we need to set up a value accessor in the constructor.</p>
+</blockquote>
+<p>Update <code>LabelTextField</code> class to:</p>
+<pre><code class="lang-TypeScript">export class LabelTextField implements ControlValueAccessor {
+    private _changeFn: any;
+
+    @Input() public label: string;
+    @Input() public text: string;
+
+    constructor(@Inject(NgControl) @Optional() ngc: NgControl) {
+        if (ngc) {
+            ngc.valueAccessor = this;
+        }
+    }
+
+    // Write a new value to the element.
+    writeValue(obj: any): void {
+        this.text = obj;
+    }
+
+    // Set the function to be called when the control receives a change event.
+    registerOnChange(fn: any): void {
+        this._changeFn = fn;
+    }
+
+    // Set the function to be called when the control receives a touch event.
+    registerOnTouched(fn: any): void {
+    }
+}
+</code></pre>
+<p>At this point you should be able to update <code>LabelTxt</code> components in html to use <code>[(ngModel)]</code> instead of <code>[text]</code>, but still editing the <code>TextField</code> won&#39;t update the bound properties.
+That is because we need to add change detection to the TextField -&gt; Text.</p>
+<p>We will do it in two steps.</p>
+<p>1) Add the following function to <code>LabelTextField</code> class, which will call <code>_changeFn</code> (ngModel&#39;s onChanged function provided through <code>registerOnChange</code> ).</p>
+<pre><code class="lang-TypeScript">    updateTextProperty(newText) {
+        if (this._changeFn) {
+            if (this.text + &quot;&quot; !== newText + &quot;&quot;) {
+                this._changeFn(newText);
+            }
+        }
+    }
+</code></pre>
+<p>2) Add <code>textChange</code> handler to TextField in the <code>template</code>, so that every time the user types something in the <code>TextField</code> this will call <code>updateTextProperty</code> and ultimately update <code>ngModel</code>.</p>
+<pre><code class="lang-xml">        &lt;TextField #tf
+            [text]=&quot;text&quot;
+            (textChange)=&quot;updateTextProperty(tf.text)&quot;
+            width=&quot;60%&quot;&gt;
+        &lt;/TextField&gt;
+</code></pre>
+<p>Now let&#39;s just update <code>LabelTxt</code> in <code>app.component.html</code> to use <code>ngModel</code></p>
+<pre><code class="lang-xml">    &lt;LabelTxt
+        label=&quot;Name&quot;
+        [(ngModel)]=&quot;name&quot;&gt;
+    &lt;/LabelTxt&gt;
+    &lt;LabelTxt
+        label=&quot;Telephone&quot;
+        [(ngModel]=&quot;telephone&quot;&gt;
+    &lt;/LabelTxt&gt;
+</code></pre>
+<p>Build the app and enjoy.</p>
+<div class="exercise-end"></div>
+
+
+<h4 class="exercise-start">
+    <b>Bonus Exercise</b>: Derive TextField hint from label text property
+</h4>
+
+<p>TextField has a <code>hint</code> property, which provides a hint to the user as to what they could type. Which you can you like this:</p>
+<pre><code class="lang-xml">&lt;TextField #tf
+    [text]=&quot;text&quot;
+    (textChange)=&quot;updateTextProperty(tf.text)&quot;
+    [hint]=&quot;label&quot;
+    width=&quot;60%&quot;&gt;
+&lt;/TextField&gt;
+</code></pre>
+<p>Can you update <code>LabelTextField</code> so that it automatically takes value of <code>label</code> puts it to lower case and appends ... ?
+For example if the <code>label</code> value is &quot;Email&quot; then the <code>hint</code> value should be <code>email...</code>.</p>
+<div class="solution-start"></div>
+
+<p>In order to solve this puzzle we need a property getter, which will return the transformed label value</p>
+<pre><code class="lang-TypeScript">    public get simpleHint() {
+        return this.label.toLowerCase() + &quot;...&quot;;
+    }
+</code></pre>
+<p>And then bind <code>hint</code> of the <code>TextField</code> to <code>simplehint</code></p>
+<pre><code class="lang-xml">        &lt;TextField #tf
+            [text]=&quot;text&quot;
+            (textChange)=&quot;updateTextProperty(tf.text)&quot;
+            [hint]=&quot;simplehint&quot;
+            width=&quot;60%&quot;&gt;
+        &lt;/TextField&gt;
+</code></pre>
+<div class="solution-end"></div>
+
+
+<div class="exercise-end"></div>
 			</div>
 			<hr>
 			<div class="chapter">
