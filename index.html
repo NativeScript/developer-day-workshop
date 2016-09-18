@@ -52,33 +52,29 @@
 			<div class="chapter">
 				<h2 id="the-basics">The basics</h2>
 <p>For our first hands-on workshop, you’ll learn how to build and manage NativeScript apps, as well as how to make simple changes and debug your code.</p>
-<h3 id="prerequisites">Prerequisites</h3>
-<p>In order to complete all of todays&#39; workshops you need the NativeScript CLI installed on your machine.</p>
-<p><a href="https://docs.nativescript.org/start/quick-setup">Here are the instructions on how to do it</a></p>
 <h3 id="how-the-cli-works">How the CLI works</h3>
-<p>The CLI allows you to perform various tasks from creating a new project, building an app to importing plugins.
-All the CLI commands start with a prefix <code>tns</code></p>
+<p>The CLI allows you to perform various tasks from creating a new project, to building an app, to importing plugins, and a whole lot more. All the CLI commands start with a prefix <code>tns</code>.</p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Create your first project
 </h4>
 
-<p>Open your terminal (Mac) or command line console (Windows) and navigate to the folder where you want to create your first project. Now run the following command:</p>
+<p>Open your terminal (Mac) or command-line console (Windows) and navigate to the folder where you want to create your first project. Now run the following command:</p>
 <pre><code>tns create WorkshopOne --ng
 </code></pre><p><code>WorkshopOne</code> is the name of the project, while <code>--ng</code> tells the CLI to create an ng2 type of project.</p>
-<p>When complete navigate into the created project folder:</p>
+<p>When complete, navigate into the created project folder:</p>
 <pre><code>cd WorkshopOne
 </code></pre><div class="exercise-end"></div>
 
 
 <p>At this point we have a hello world type of project, with a bit of simple logic.
-Now we need add the platforms we want to build this app for.</p>
+Now we need to add the platforms for which we want to build this app.</p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Adding mobile platforms
 </h4>
 
 <p>To add Android to your project run:</p>
 <pre><code>tns platform add android
-</code></pre><p>For iOS run:</p>
+</code></pre><p>If you’re on a Mac, add iOS with</p>
 <pre><code>tns platform add ios
 </code></pre><div class="exercise-end"></div>
 
@@ -88,81 +84,101 @@ Now we need add the platforms we want to build this app for.</p>
     <b>Exercise</b>: Running the app
 </h4>
 
-<p>To build an Android app and run it on a connected device or Genymotion instance call: </p>
+<p>To build an Android app, and run it on a connected device or Genymotion instance, call: </p>
 <pre><code>tns run android
-</code></pre><p>However if you want to run the app in an emulator you should call</p>
+</code></pre><p>However, if you want to run the app in an emulator you should call</p>
 <pre><code>tns run android --emulator
-</code></pre><p>The same applies to building and running iOS apps. Just swap <code>android</code> for <code>ios</code></p>
+</code></pre><p>The same applies to building and running iOS apps—just swap <code>android</code> for <code>ios</code></p>
 <pre><code>tns run ios --emulator
 </code></pre><blockquote>
-<p>Note: If you want to stop the build process just press <code>CTRL+C</code></p>
+<p>Note: If you want to stop the build process just press <code>CTRL+C</code>.</p>
 </blockquote>
 <div class="exercise-end"></div>
 
 
-<p>Sometimes waiting for the build process can be a bit painful, especially when you need to rebuild the app every time you make a tiny change to the code.</p>
-<p>This is why the CLI has the <code>livesync</code> command, which allows you to build the app in such way, so that whenever you make a change in your code the app will get refreshed really quickly.</p>
-<p>To make it more insteresting, if you make a change to your <code>TypeScript</code> code, the CLI will transpile it to <code>JavaScript</code> first and then refresh the app.</p>
+<p>Sometimes waiting for the build process can take some time, especially when you need to rebuild the app every time you make a tiny change to the code.</p>
+<p>This is why the CLI has the <code>livesync</code> command, which allows you to build the app in a way that whenever you make a change in your code the app will get refreshed really quickly.</p>
+<p>To make it more insteresting, if you make a change to your TypeScript code, the CLI will transpile it to JavaScript first, and then refresh the app.</p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Livesync
 </h4>
 
-<p>Build your app using the <code>livesync</code> command and then open <code>app.css</code>, make some changes to the styling and save the file.</p>
+<p>Build your app using the <code>livesync</code> command and then open your <code>app.css</code> file, such as adding <code>color: red</code> to the <code>.title</code> selector, and save the file.</p>
+<blockquote>
+<p>Note: You’ll need to stop the previous <code>run</code> command with <code>CTRL+C</code>.</p>
+</blockquote>
 <pre><code>tns livesync android --watch
 </code></pre><p>or </p>
 <pre><code>tns livesync ios --emulator --watch
 </code></pre><div class="exercise-end"></div>
 
-
+<!--
 <h4 class="exercise-start">
     <b>Exercise</b>: Debugging
 </h4>
 
-<p>Build your app in the debug mode using the following command.
-This should launch debugging tools for you. Once that is ready find app.component.js add a breakpoint to <code>onTap()</code> then tap on the button and try to explore what you can do with it.</p>
-<pre><code>tns debug android
-</code></pre><p>or</p>
-<pre><code>tns debug ios --emulator
-</code></pre><p>You probably noticed that when you debug your app, the debugging tools operate on the JavaScript not TypeScript. This is because NativeScript runs on JavaScript code, which is transpiled from TypeScript.</p>
-<p>Here is an interesting thing. Launching a debugger is a very slow process, but yet again <code>livesync</code> comes in to save the day.
-You can run the debugger in the livesync mode by adding <code>--watch</code> at the end of the command, like this:</p>
-<pre><code>tns debug android --watch
-</code></pre><div class="exercise-end"></div>
+Build your app in debug mode using the following command.
+This should launch debugging tools for you. Once that is ready find app.component.js add a breakpoint to `onTap()` then tap on the button and try to explore what you can do with it.
 
+```
+tns debug android
+```
 
+or
+```
+tns debug ios --emulator
+```
+
+You probably noticed that when you debug your app, the debugging tools operate on JavaScript, not TypeScript. This is because NativeScript runs on JavaScript code, which is transpiled from TypeScript.
+
+Here is an interesting thing. Launching a debugger is a very slow process, but yet again `livesync` comes in to save the day.
+You can run the debugger in the livesync mode by adding `--watch` at the end of the command, like this:
+
+```
+tns debug android --watch
+```
+
+or
+
+```
+tns debug ios --watch --emulator
+```
+
+<div class="exercise-end"></div>
+-->
 <h3 id="nativescript-folder-structure">NativeScript folder structure</h3>
 <p>At the root of the project we have <code>package.json</code>, which contains all npm dependencies and project configuration.
 This is where you can change the id of the project or the app version.</p>
 <p>On top of that NativeScript project is made of a number of folders, however you should mainly pay attention to 3 of them.</p>
-<h4 id="the-app-folder">the <code>app</code> folder</h4>
-<p>This is where the code of the application goes.</p>
+<p><strong> the <code>app</code> folder</strong> 
+This is where the code of the application goes.</p>
 <p>Some of the most notable files here are:</p>
 <ul>
 <li><code>main.ts</code> - is where the application starts. It is also the file where you can initialize the routing configuration for page navigation.</li>
 <li><code>app.css</code> - is the global css file, the styling contained here is applied accross the whole of the application</li>
-<li><code>app.component</code> - by default it contains the firts angular component that get&#39;s loaded when you run the app, however most apps that you will work on will probably use a different component as the starting one.  </li>
-<li><code>App_Resources\Android\app.gradle</code> - this file contains Android build configuration options. Whenever your app requires permissions to access specific functionality (like contacts or GPS), this is where the necessary configuration goes</li>
+<li><code>app.component.ts</code> - by default it contains the first angular component that gets loaded when you run the app, however most apps that you will work on will probably use a different component as the starting one.  </li>
+<li><code>App_Resources</code> - this folder contains platform-specific files, such as icons, splash screens, and Android and iOS configuration files.</li>
 </ul>
-<h4 id="the-node_modules-folder">the <code>node_modules</code> folder</h4>
+<p><strong>the <code>node_modules</code> folder</strong></p>
 <p>This folder contains all npm modules specified in the <code>package.json</code>.</p>
 <p>This folder can be easily regenerated, this means that you can safely delete it whenever you feel like.</p>
-<p>You should also refrain from pushing the folder into <code>github</code> or any source control.</p>
-<h4 id="the-platforms-folder">the <code>platforms</code> folder</h4>
+<p>You should also refrain from pushing the folder into git or any source control.</p>
+<p><strong>the <code>platforms</code> folder</strong></p>
 <p>This is the build folder for each of your platforms.</p>
-<p>Just like the <code>node_modules</code> folder, this folder can be regenared at will, so you should never add it to your source control.</p>
+<p>Just like the <code>node_modules</code> folder, this folder can be regenerated at will, so you should never add it to your source control.</p>
 <h3 id="working-in-visual-studio-code">Working in Visual Studio Code</h3>
 <p>There are a number of IDEs that you might be used to work with, however for the purpose of this workshop we will focus on working with VS Code, which has a lot of really good features that can help you build NativeScript apps.</p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Setting up the IDE
 </h4>
 
-<p>Download Visual Studio Code <a href="https://code.visualstudio.com/download">from it&#39;s official download page</a> and install it.</p>
+<p>Download Visual Studio Code <a href="https://code.visualstudio.com/download">from its official download page</a> and install it.</p>
 <p>Now we will add NativeScript extensions to Visual Studio Code.
-Just run VS Code and go to the Extensions tab (on mac press <code>shift + command + x</code> on windows press <code>shift + ctrl + x</code>). 
-From here search for &#39;nativescript&#39;, once the search returns reults install <code>NativeScript</code> and <code>NativeScript + Angular 2 Snippets</code></p>
-<p><img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-nsext-install.png" alt="Search result and install"></p>
-<p>Installing each them shouldn&#39;t take too long, once ready you will be prompted to enable the extensions, just click on enable next to one of the modules, which will restart VS Code and you will be ready to go</p>
-<p><img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-nsext-enable.png" alt="Search result and install"></p>
+Just run VS Code and go to the Extensions tab (on Cac press <code>shift</code> + <code>command</code> + <code>x</code> on windows press <code>shift</code> + <code>ctrl</code> + <code>x</code>). 
+From here search for &#39;nativescript&#39;, once the search returns reults install <code>NativeScript</code> and <code>NativeScript + Angular 2 Snippets</code>.</p>
+<p><img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-nsext-install.png?raw=true" alt="Search result and install"></p>
+<p>Installing each them shouldn&#39;t take too long, once ready you will be prompted to enable the extensions, just click on “enable” next to one of the modules, which will restart VS Code and you will be ready to go.</p>
+<p><img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-nsext-enable.png?raw=true" alt="Search result and install"></p>
 <div class="exercise-end"></div>
 
 <p>Now that VS Code is ready, let&#39;s see how it can be of service.
@@ -171,27 +187,29 @@ We will start by playing with code snippets.</p>
     <b>Exercise</b>: Using code snippets
 </h4>
 
-<p>First open the <code>WorkshopOne</code> project folder in VS Code by using <code>file-&gt;open</code>.
+<p>First open the <code>WorkshopOne</code> project folder in VS Code by using <code>File</code> -&gt; <code>Open</code>.
 Then find <code>app\app.component.html</code> (this file contains the UI definition of app.component).</p>
 <p>Add a new line just before the closing <code>&lt;/StackLayout&gt;</code> tag and start typing <code>ns</code> immediately you will get a list of available snippets. If you keep typing the list of available snippets will narrow down.</p>
 <p>When you select one of the snippets and hit <code>enter</code> the text you were typing will be replaced with a snippet. Some snippets will have more than one place where you can type, you can <code>tab</code> through them.</p>
-<p>For this exercise add the following componenents using code snippets.</p>
+<p>For this exercise add the following components using code snippets.</p>
 <ul>
 <li>Label with the <code>text</code> set to <code>Email:</code> -&gt; <code>nslabel</code></li>
-<li>TextField with the <code>hint</code> set to <code>email...</code> -&gt; <code>nstestfield</code></li>
+<li>TextField with the <code>hint</code> set to <code>email...</code> -&gt; <code>nstextfield</code></li>
 <li>Label with the <code>text</code> set to <code>Passowrd</code> -&gt; <code>nslabel</code></li>
 <li>TextField with the <code>hint</code> set to <code>password...</code> -&gt; <code>nstextfield</code></li>
 <li>Button with the <code>text</code> set <code>Sign In</code> and <code>tap</code> set to <code>signIn()</code> -&gt; <code>nsbtn</code></li>
 </ul>
-<p><img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-using-snippets.gif" alt="Creating login screen"></p>
+<p><img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-using-snippets.gif?raw=true" alt="Creating login screen"></p>
+<p>Try to add the snippets on your own, but if you need help show the solution below.</p>
 <div class="solution-start"></div>
-<code>XML
-    &lt;Label [text]=&quot;message&quot; class=&quot;message&quot; textWrap=&quot;true&quot;&gt;&lt;/Label&gt;
-    &lt;Label text=&quot;Email:&quot; textWrap=&quot;true&quot;&gt;&lt;/Label&gt;
-    &lt;TextField hint=&quot;email...&quot; text=&quot;&quot;&gt;&lt;/TextField&gt;
-    &lt;Label text=&quot;Password:&quot; textWrap=&quot;true&quot;&gt;&lt;/Label&gt;
-    &lt;TextField hint=&quot;password...&quot; text=&quot;&quot;&gt;&lt;/TextField&gt;
-    &lt;Button text=&quot;Sign In&quot; (tap)=&quot;signIn()&quot;&gt;&lt;/Button&gt;</code>
+
+<pre><code class="lang-XML">&lt;Label [text]=&quot;message&quot; class=&quot;message&quot; textWrap=&quot;true&quot;&gt;&lt;/Label&gt;
+&lt;Label text=&quot;Email:&quot; textWrap=&quot;true&quot;&gt;&lt;/Label&gt;
+&lt;TextField hint=&quot;email...&quot; text=&quot;&quot;&gt;&lt;/TextField&gt;
+&lt;Label text=&quot;Password:&quot; textWrap=&quot;true&quot;&gt;&lt;/Label&gt;
+&lt;TextField hint=&quot;password...&quot; text=&quot;&quot;&gt;&lt;/TextField&gt;
+&lt;Button text=&quot;Sign In&quot; (tap)=&quot;signIn()&quot;&gt;&lt;/Button&gt;
+</code></pre>
 <div class="solution-end"></div>
 
 <p>Now open <code>app.component.ts</code> and add the following function to the <code>AppComponent</code> class:</p>
@@ -202,90 +220,99 @@ Then find <code>app\app.component.html</code> (this file contains the UI definit
 <p>When done, run the app and see what you got.</p>
 <div class="exercise-end"></div>
 
+<!--
 
-<p>You can also create your own snippets</p>
+You can also create your own snippets.
+
 <h4 class="exercise-start">
     <b>Bonus Exercise</b>: Create your own snippet 
 </h4>
 
-<p>Open <code>User Sippets</code> editor and select <code>TypeScript</code></p>
-<p>On Mac: <code>Code-&gt;Preferences-&gt;User Snippets</code></p>
-<p><img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-snippets-mac.png" alt="User Snippets on Mac"> </p>
-<p>On Windows: <code>File-&gt;Preferences-&gt;User Snippets</code></p>
-<p><img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-snippets-win.png" alt="User Snippets on"> </p>
-<p>Now add the following snippet</p>
-<pre><code class="lang-TypeScript">    &quot;shorthand for console.log&quot;: {
-        &quot;prefix&quot;: &quot;tsprint&quot;,
-        &quot;body&quot;: [
-            &quot;console.log(&#39;${text}&#39;)&quot;,
-            &quot;$2&quot;
-        ]
-    }
-</code></pre>
-<p>This snippet will serve us as a shorthand for <code>console.log</code>, you can trigger it by expanding <code>tsprint</code> in your TypeScript code.</p>
-<p>In <code>app.Component.ts</code> go to <code>onTap</code> function and start typing <code>tsp</code> and press <code>Enter</code>.
-Straight away the cursor will be placed on top of the <code>text</code> placeholder. Change it to <code>hello</code> and press <code>tab</code> which will take you to the new line (<code>$2</code>);</p>
-<p>You can learn more about VS Code snippets <a href="https://code.visualstudio.com/docs/customization/userdefinedsnippets">here</a></p>
+Open the `User Snippets` editor and select `TypeScript`.
+
+On a Mac: `Code->Preferences->User Snippets`
+
+![User Snippets on Mac](https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-snippets-mac.png?raw=true) 
+
+On Windows: `File->Preferences->User Snippets`
+
+![User Snippets on](https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-snippets-win.png?raw=true) 
+
+Now add the following snippet
+``` TypeScript
+"shorthand for console.log": {
+    "prefix": "tsprint",
+    "body": [
+        "console.log('${text}')",
+        "$2"
+    ]
+}
+```
+
+This snippet will serve us as a shorthand for `console.log`, you can trigger it by expanding `tsprint` in your TypeScript code.
+
+In `app.component.ts` go to `onTap` function and start typing `tsp` and press `Enter`.
+Straight away the cursor will be placed on top of the `text` placeholder. Change it to `hello` and press `tab` which will take you to the new line (`$2`);
+
+You can learn more about VS Code snippets [here](https://code.visualstudio.com/docs/customization/userdefinedsnippets)
+
 <div class="exercise-end"></div>
 
 
-<p>VS Code can be really helpful with code prediction when you try to work your TypeScript magic.
-The Intellisense not only knows about the attributes and functions of your current class, but it can also help you with code predition for any TypeScript based module you use.</p>
-<h4 class="exercise-start">
-    <b>Exercise</b>: Using Intellisense
-</h4>
-
-<p>As you start typing TypeScript code </p>
-<div class="exercise-end"></div>
+VS Code can be really helpful with code prediction when you try to work your TypeScript magic.
+The Intellisense not only knows about the attributes and functions of your current class, but it can also help you with code predition for any TypeScript based module you use.
 
 
-<p>You can enhance your Intellisense experience by adding comments to your functions</p>
+You can enhance your Intellisense experience by adding comments to your functions
 <h4 class="exercise-start">
     <b>Bonus Exercise</b>: Add Intellisense friendly comments
 </h4>
 
-<p>Add the following function at the bottom of <code>app.componenents.ts</code> (otside the <code>AppComponent</code> class).</p>
-<pre><code class="lang-TypeScript">/**
+Add the following function at the bottom of `app.componenents.ts` (outside the `AppComponent` class).
+``` TypeScript
+/**
  * Prints the provided text in uppercase
  * @param text text to be printed 
  */
 function largePrint(text: string) {
     console.log(text.toUpperCase());
 }
-</code></pre>
-<p>Now you can use the <code>largePrint</code> function, which will provide you with the description of the function and it&#39;s parameter. </p>
+```
+
+Now you can use the `largePrint` function, which will provide you with the description of the function and its parameter. 
+
 <div class="exercise-end"></div>
-
-
-<p>VS Code also provides support for debugging NativeScript code, to make it even more interesting it let&#39;s you debug directly in TypeScript. </p>
+-->
+<p>VS Code also provides support for debugging NativeScript code, and to make it even more interesting, the extension also lets you debug directly in TypeScript. </p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Debugging in VS Code
 </h4>
 
-<p>Open the debug tab - click the debug icon on the right hand side: <img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-icon-debug.png" alt="Debug View icon"></p>
-<p>From here press the litte <code>Gear icon</code> to <code>Select the build environment</code> and choose <code>NativeScript</code>
-<img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-icon-gear.png" alt="Select the build environment icon"></p>
-<p>When the IDE is ready click on the drop down next to the <code>Gear icon</code> and select:
-<code>Launch on Android</code> or <code>Launch on iOS</code> and press <code>play</code>.</p>
+<p>Open the debug tab - click the debug icon on the left-hand side: <img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-icon-debug.png?raw=true" alt="Debug View icon"></p>
+<p>From here press the little gear icon to <code>Select the build environment</code> and choose <code>NativeScript</code>
+<img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-icon-gear.png?raw=true" alt="Select the build environment icon"></p>
+<p>When the IDE is ready, click on the drop down next to the gear icon and select:
+<code>Attach on Android</code> or <code>Attach on iOS</code> and press the green play button.</p>
 <p>This might take a minute or two, especially when you run it for the first time.</p>
-<p>Sometimes the iOS debugger detaches after the app started. When that happens just select <code>Attach on iOS</code> and press play. This should fix the problem.</p>
-<p>After the debugger starts you will notice that the app will stop at the very first line of the app.
-This is so that you could add the necessary breakpoints before the app crashes, if you have some issues that break the app at the startup.</p>
-<p>As part of this exercise open <code>app.component.ts</code> and add a breakpoint to the <code>onTap</code> function and then tap on the button in your app.
+<blockquote>
+<p><strong>NOTE</strong>: If the debugger detaches after the app started, re-select <code>Attach on iOS</code> and press play. This should fix the problem.</p>
+</blockquote>
+<p>As part of this exercise open <code>app.component.ts</code> and add a breakpoint to the <code>onTap</code> function by clicking to the left of the line number where you’d like to add the breakpoint. And then tap on the tap button in your app.
 The debugger should stop at your breakpoint.</p>
 <p>Here is how I did it:
-<img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-configure-debugger.gif" alt="Using the debugger in VS Code"></p>
+<img src="https://github.com/NativeScript/developer-day-workshop/blob/gh-pages/images/vscode-configure-debugger.gif?raw=true" alt="Using the debugger in VS Code"></p>
 <p>When you are in debug mode you can:</p>
 <ul>
 <li>hover over variables to check their value or add them to the watch list</li>
 <li>step in or step over the code</li>
-<li><p>use the <code>Debug Console</code> to run commands or read/edit variables</p>
-<p>Try to change the value of the <code>counter</code> by running the following command in the <code>Debug Console</code> </p>
+<li><p>use the <code>Debug Console</code> on the bottom of the screen to run commands or read/edit variables.</p>
+<p>Try to change the value of the <code>counter</code> by running the following command in the <code>Debug Console</code>.</p>
 <pre><code class="lang-TypeScript">this.counter = 100;
 </code></pre>
 </li>
 </ul>
 <div class="exercise-end"></div>
+
 
 			</div>
 			<hr>
