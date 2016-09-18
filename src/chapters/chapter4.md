@@ -1,8 +1,8 @@
 ## Beyond the basics
 
-You now know how to start NativeScript apps, and how to scaffold out a basic user interface. Now let’s dig deeper. In this workshop you’ll learn how to create Angular services, how to deal with data, how to setup routing, and how to access native code. Let’s start by building an Angular service.
+You now know how to start NativeScript apps, and how to scaffold out a basic user interface. Now let’s dig deeper. In this workshop you’ll learn how to create Angular services, how to deal with data, and how to setup routing. Let’s start by building an Angular service.
 
-### Learning Angular 2 data binding, events, and servicess
+### Learning Angular 2 data binding, events, and services
 
 In this workshop you’ll be building a simple grocery-management application. Let’s dive right in.
 
@@ -20,6 +20,18 @@ Next, change directories into your new project:
 
 ```
 cd WorkshopThree
+```
+
+After that, start a livesync watcher with either
+
+```
+tns livesync ios --watch
+```
+
+or
+
+```
+tns livesync android --watch
 ```
 
 <div class="exercise-end"></div>
@@ -280,6 +292,8 @@ export class AppComponent {
 }
 ```
 
+Test your changes by adding a few items to the list.
+
 <div class="exercise-end"></div>
 
 You now have a very basic list, but there’s a big problem: this list isn’t persisted. Let’s look at how to change that.
@@ -306,7 +320,7 @@ add(name) {
 }
 ```
 
-Your data is now being saved, but it’s up to you to determine how load this data when the application loads. A challenge!
+Your data is now being saved, but it’s up to you to determine how to load this data when the application loads. A challenge!
 
 <div class="exercise-end"></div>
 
@@ -337,7 +351,7 @@ constructor() {
 <div class="solution-end"></div>
 <div class="exercise-end"></div>
 
-There are many ways to store data in NativeScript apps, in addition to using the application settings module, you may wish to use one of the options listed below.
+There are many ways to store data in NativeScript apps. In addition to using the application settings module, you may wish to use one of the options listed below.
 
 Reference:
 
@@ -472,7 +486,7 @@ platformNativeScriptDynamic().bootstrapModule(AppComponentModule);
 With that your app hasn’t changed, but you’ve moved files around so that you’re setup to add additional routes. Let’s do that!
 
 <h4 class="exercise-start">
-    <b>Exercise</b>: Scafold out a new route
+    <b>Exercise</b>: Scaffold out a new route
 </h4>
 
 Create a new `about` folder within the `app` folder, and add two files named `about.component.html` and `about.component.ts`.

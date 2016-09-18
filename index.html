@@ -616,8 +616,8 @@ opacity: 0;
 			<hr>
 			<div class="chapter">
 				<h2 id="beyond-the-basics">Beyond the basics</h2>
-<p>You now know how to start NativeScript apps, and how to scaffold out a basic user interface. Now let’s dig deeper. In this workshop you’ll learn how to create Angular services, how to deal with data, how to setup routing, and how to access native code. Let’s start by building an Angular service.</p>
-<h3 id="learning-angular-2-data-binding-events-and-servicess">Learning Angular 2 data binding, events, and servicess</h3>
+<p>You now know how to start NativeScript apps, and how to scaffold out a basic user interface. Now let’s dig deeper. In this workshop you’ll learn how to create Angular services, how to deal with data, and how to setup routing. Let’s start by building an Angular service.</p>
+<h3 id="learning-angular-2-data-binding-events-and-services">Learning Angular 2 data binding, events, and services</h3>
 <p>In this workshop you’ll be building a simple grocery-management application. Let’s dive right in.</p>
 <h4 class="exercise-start">
     <b>Exercise</b>: Start up a new app
@@ -627,6 +627,10 @@ opacity: 0;
 <pre><code>tns create WorkshopThree --ng
 </code></pre><p>Next, change directories into your new project:</p>
 <pre><code>cd WorkshopThree
+</code></pre><p>After that, start a livesync watcher with either</p>
+<pre><code>tns livesync ios --watch
+</code></pre><p>or</p>
+<pre><code>tns livesync android --watch
 </code></pre><div class="exercise-end"></div>
 
 <p>Open this new project up in Visual Studio Code and let’s start working with Angular services.</p>
@@ -845,6 +849,7 @@ export class AppComponent {
   }
 }
 </code></pre>
+<p>Test your changes by adding a few items to the list.</p>
 <div class="exercise-end"></div>
 
 <p>You now have a very basic list, but there’s a big problem: this list isn’t persisted. Let’s look at how to change that.</p>
@@ -864,7 +869,7 @@ export class AppComponent {
   setString(&quot;groceries&quot;, names.toString());
 }
 </code></pre>
-<p>Your data is now being saved, but it’s up to you to determine how load this data when the application loads. A challenge!</p>
+<p>Your data is now being saved, but it’s up to you to determine how to load this data when the application loads. A challenge!</p>
 <div class="exercise-end"></div>
 
 <h4 class="exercise-start">
@@ -891,7 +896,7 @@ export class AppComponent {
 <div class="solution-end"></div>
 <div class="exercise-end"></div>
 
-<p>There are many ways to store data in NativeScript apps, in addition to using the application settings module, you may wish to use one of the options listed below.</p>
+<p>There are many ways to store data in NativeScript apps. In addition to using the application settings module, you may wish to use one of the options listed below.</p>
 <p>Reference:</p>
 <ul>
 <li><a href="https://github.com/EddyVerbruggen/nativescript-plugin-firebase">NativeScript Firebase plugin</a></li>
@@ -1004,7 +1009,7 @@ platformNativeScriptDynamic().bootstrapModule(AppComponentModule);
 
 <p>With that your app hasn’t changed, but you’ve moved files around so that you’re setup to add additional routes. Let’s do that!</p>
 <h4 class="exercise-start">
-    <b>Exercise</b>: Scafold out a new route
+    <b>Exercise</b>: Scaffold out a new route
 </h4>
 
 <p>Create a new <code>about</code> folder within the <code>app</code> folder, and add two files named <code>about.component.html</code> and <code>about.component.ts</code>.</p>
@@ -1220,8 +1225,8 @@ cd WorkshopFive
     <b>Exercise</b>: Set up the first component
 </h4>
 
-<p>First create a new file called <code>fun-label.ts</code> in the <code>app</code> and add the following code. </p>
-<pre><code class="lang-TypeScript">import {Component} from &quot;@angular/core&quot;;
+<p>First create a new file called <code>fun-label.ts</code> in your <code>app</code> folder and add the following code. </p>
+<pre><code class="lang-TypeScript">import { Component } from &quot;@angular/core&quot;;
 
 @Component({
     selector: &quot;FunLabel&quot;,
@@ -1234,14 +1239,14 @@ export class FunLabel {
 
 }
 </code></pre>
-<p>This component is a simple @Component that contains NativeScript label saying &quot;FunLabel&quot;.</p>
-<p>Now let&#39;s add <code>FunLabel</code> to app.component.html. Add the following line below the label</p>
+<p>This component is a simple <code>@Component</code> that contains NativeScript label saying &quot;FunLabel&quot;.</p>
+<p>Now let&#39;s add <code>FunLabel</code> to <code>app.component.html</code>. Add the following line below the label:</p>
 <pre><code class="lang-XML">&lt;FunLabel&gt; &lt;/FunLabel&gt;
 </code></pre>
 <p>But that is not enough to make it work just yet.
 The final step is to add the <code>FunLabel</code> declaration to the <code>@NgModule</code> in <code>main.ts</code>
 First add this import line to the rest of the imports.</p>
-<pre><code class="lang-TypeScript">import {FunLabel} from &quot;./fun-label&quot;;
+<pre><code class="lang-TypeScript">import { FunLabel } from &quot;./fun-label&quot;;
 </code></pre>
 <p>and now add <code>FunLabel</code> to declarations</p>
 <pre><code class="lang-TypeScript">declarations: [AppComponent, FunLabel],
@@ -1251,7 +1256,7 @@ First add this import line to the rest of the imports.</p>
 <pre><code class="lang-TypeScript">import { platformNativeScriptDynamic, NativeScriptModule } from &quot;nativescript-angular/platform&quot;;
 import { NgModule } from &quot;@angular/core&quot;;
 import { AppComponent } from &quot;./app.component&quot;;
-import {FunLabel} from &quot;./fun-label&quot;;
+import { FunLabel } from &quot;./fun-label&quot;;
 
 @NgModule({
     declarations: [AppComponent, FunLabel],
@@ -1277,16 +1282,16 @@ platformNativeScriptDynamic().bootstrapModule(AppComponentModule);
 We will call the new property <code>line</code> and bind it to the <code>text</code> of the underlying <code>&lt;Label&gt;</code>.</p>
 <p>This can be accomplished in three steps.</p>
 <p>1) Add Input to the imports</p>
-<pre><code class="lang-TypeScript">import {Component, Input} from &quot;@angular/core
+<pre><code class="lang-TypeScript">import { Component, Input } from &quot;@angular/core
 </code></pre>
 <p>2) Change the <code>text=&quot;FunLabel&quot;</code> to</p>
-<pre><code class="lang-TypeScript">    &lt;Label 
-        [text]=&quot;line&quot;&gt;
-    &lt;/Label&gt;
+<pre><code class="lang-XML">&lt;Label 
+    [text]=&quot;line&quot;&gt;
+&lt;/Label&gt;
 </code></pre>
-<p>3) Add @Input property inside the <code>FunLabel</code> class.</p>
+<p>3) Add <code>@Input</code> property inside the <code>FunLabel</code> class.</p>
 <blockquote>
-<p>You can read more about @Inputs properties in the <a href="https://angular.io/docs/ts/latest/guide/template-syntax.html#!#inputs-outputs">Angular docs</a></p>
+<p>You can read more about <code>@Input</code>s properties in the <a href="https://angular.io/docs/ts/latest/guide/template-syntax.html#!#inputs-outputs">Angular docs</a></p>
 </blockquote>
 <pre><code class="lang-TypeScript">export class FunLabel {
     @Input() public line: string = &quot;&quot;;
@@ -1295,7 +1300,7 @@ We will call the new property <code>line</code> and bind it to the <code>text</c
 <div class="solution-start"></div>
 
 <p>This is how the <code>fun-label.ts</code> should look now.</p>
-<pre><code class="lang-TypeScript">import {Component, Input} from &quot;@angular/core&quot;;
+<pre><code class="lang-TypeScript">import { Component, Input } from &quot;@angular/core&quot;;
 
 @Component({
     selector: &quot;FunLabel&quot;,
@@ -1311,7 +1316,7 @@ export class FunLabel {
 </code></pre>
 <div class="solution-end"></div>
 
-<p>To test it out, update the <code>FunLabel</code> in app.component.html to the below code and run the app.</p>
+<p>To test it out, update the <code>FunLabel</code> in <code>app.component.html</code> to the below code and run the app.</p>
 <pre><code class="lang-XML">    &lt;FunLabel 
         [line]=&quot;message&quot;
         class=&quot;message&quot;&gt;
@@ -1328,14 +1333,14 @@ export class FunLabel {
 <p>To perform animations we need to get hold of the <code>Label</code> object first.</p>
 <p>We will do it in few steps:</p>
 <p>1) Add the required imports for ViewChild, ElementRef and View.</p>
-<pre><code class="lang-TypeScript">import {Component, Input, ViewChild, ElementRef} from &quot;@angular/core&quot;;
-import {View} from &quot;ui/core/view&quot;;
+<pre><code class="lang-TypeScript">import { Component, Input, ViewChild, ElementRef } from &quot;@angular/core&quot;;
+import { View } from &quot;ui/core/view&quot;;
 </code></pre>
-<p>2) Add variable <code>#myLabel</code> definion to the label and call animate on tap</p>
-<pre><code class="lang-TypeScript">    &lt;Label #myLabel
-        [text]=&quot;line&quot;
-        (tap)=&quot;animate()&quot;&gt;
-    &lt;/Label&gt;
+<p>2) Add a variable <code>#myLabel</code> definion to the label and call animate on tap</p>
+<pre><code class="lang-XML">&lt;Label #myLabel
+    [text]=&quot;line&quot;
+    (tap)=&quot;animate()&quot;&gt;
+&lt;/Label&gt;
 </code></pre>
 <p>3) Add the label reference to the call</p>
 <pre><code class="lang-TypeScript">export class FunLabel {
@@ -1355,28 +1360,28 @@ import {View} from &quot;ui/core/view&quot;;
 </code></pre>
 <p>5) Finally we need the function to animate.</p>
 <p>Add the following code to the <code>FunLabel</code> class</p>
-<pre><code class="lang-TypeScript">    private animate() {
-        this.zoom();
-    }
+<pre><code class="lang-TypeScript">private animate() {
+    this.zoom();
+}
 
-    public zoom() {
-        this.view.animate({ scale: { x: 0.5, y: 0.5 }  })
-            .then(() =&gt; 
-                this.view.animate({ scale: { x: 2, y: 2 }  })
-            )
-            .then(() =&gt; 
-                this.view.animate({ scale: { x: 0, y: 0 }  })
-            )
-            .then(() =&gt; 
-                this.view.animate({ scale: { x: 1, y: 1 }, duration: 2000  })
-            )
-    }
+public zoom() {
+    this.view.animate({ scale: { x: 0.5, y: 0.5 }  })
+        .then(() =&gt; 
+            this.view.animate({ scale: { x: 2, y: 2 }  })
+        )
+        .then(() =&gt; 
+            this.view.animate({ scale: { x: 0, y: 0 }  })
+        )
+        .then(() =&gt; 
+            this.view.animate({ scale: { x: 1, y: 1 }, duration: 2000  })
+        )
+}
 </code></pre>
 <div class="solution-start"></div>
 
 <p>This is how <code>fun-label.ts</code> should look at this point.</p>
-<pre><code class="lang-TypeScript">import {Component, Input, ViewChild, ElementRef} from &quot;@angular/core&quot;;
-import {View} from &quot;ui/core/view&quot;;
+<pre><code class="lang-TypeScript">import { Component, Input, ViewChild, ElementRef } from &quot;@angular/core&quot;;
+import { View } from &quot;ui/core/view&quot;;
 
 @Component({
     selector: &quot;FunLabel&quot;,
@@ -1417,65 +1422,63 @@ export class FunLabel {
 
 <div class="exercise-end"></div>
 
-
-<p>descrition of the exercise</p>
 <h4 class="exercise-start">
     <b>Bonus Exercise</b>: Add animationType property
 </h4>
 
 <p>Using the below animation functions, add <code>animationType</code> @Input property.
 Now the <code>animate</code> function should play one of the below functions.</p>
-<pre><code class="lang-TypeScript">    public zoom() {
-        this.view.animate({ scale: { x: 0.5, y: 0.5 }  })
-            .then(() =&gt; 
-                this.view.animate({ scale: { x: 2, y: 2 }  })
-            )
-            .then(() =&gt; 
-                this.view.animate({ scale: { x: 0, y: 0 }  })
-            )
-            .then(() =&gt; 
-                this.view.animate({ scale: { x: 1, y: 1 }, duration: 2000  })
-            )
-    }
+<pre><code class="lang-TypeScript">public zoom() {
+    this.view.animate({ scale: { x: 0.5, y: 0.5 }  })
+        .then(() =&gt; 
+            this.view.animate({ scale: { x: 2, y: 2 }  })
+        )
+        .then(() =&gt; 
+            this.view.animate({ scale: { x: 0, y: 0 }  })
+        )
+        .then(() =&gt; 
+            this.view.animate({ scale: { x: 1, y: 1 }, duration: 2000  })
+        )
+}
 
-    public spin() {
-        this.view.animate({ rotate: 1080, duration: 750 })
-            .then(() =&gt; 
-                this.view.animate({ rotate: 0, duration: 750 } )
-            )
-    }
+public spin() {
+    this.view.animate({ rotate: 1080, duration: 750 })
+        .then(() =&gt; 
+            this.view.animate({ rotate: 0, duration: 750 } )
+        )
+}
 
-    public move() {
-        this.view.animate({ translate: { x: 100, y: 0 }  })
-            .then(() =&gt; 
-                this.view.animate({ translate: { x: 100, y: 100 }  })
-            )
-            .then(() =&gt; 
-                this.view.animate({ translate: { x: 0, y: 100 }  })
-            )
-            .then(() =&gt; 
-                this.view.animate({ translate: { x: 0, y: 0 }  })
-            )
-    }
-    public fade() {
-        this.view.animate({ opacity: 0  })
-            .then(() =&gt; 
-                this.view.animate({ opacity: 1  })
-            )
-    }
+public move() {
+    this.view.animate({ translate: { x: 100, y: 0 }  })
+        .then(() =&gt; 
+            this.view.animate({ translate: { x: 100, y: 100 }  })
+        )
+        .then(() =&gt; 
+            this.view.animate({ translate: { x: 0, y: 100 }  })
+        )
+        .then(() =&gt; 
+            this.view.animate({ translate: { x: 0, y: 0 }  })
+        )
+}
+public fade() {
+    this.view.animate({ opacity: 0  })
+        .then(() =&gt; 
+            this.view.animate({ opacity: 1  })
+        )
+}
 </code></pre>
-<p>This is how the property should be set in <code>app.component.html</code></p>
-<pre><code class="lang-XML">    &lt;FunLabel 
-        [line]=&quot;message&quot;
-        class=&quot;message&quot;
-        animationType=&quot;fade&quot;&gt;
-    &lt;/FunLabel&gt;
+<p>This is how the property should be set in <code>app.component.html</code>:</p>
+<pre><code class="lang-XML">&lt;FunLabel 
+    [line]=&quot;message&quot;
+    class=&quot;message&quot;
+    animationType=&quot;fade&quot;&gt;
+&lt;/FunLabel&gt;
 </code></pre>
 <div class="solution-start"></div>
 
 <p>Here is the full solution:</p>
-<pre><code class="lang-TypeScript">import {Component, Input, ViewChild, ElementRef} from &quot;@angular/core&quot;;
-import {View} from &quot;ui/core/view&quot;;
+<pre><code class="lang-TypeScript">import { Component, Input, ViewChild, ElementRef } from &quot;@angular/core&quot;;
+import { View } from &quot;ui/core/view&quot;;
 
 @Component({
     selector: &quot;FunLabel&quot;,
@@ -1565,42 +1568,41 @@ export class FunLabel {
 </h4>
 
 <p>1) Let&#39;s start with the usual of adding new imports <code>Output</code> and <code>EventEmitter</code></p>
-<pre><code class="lang-TypeScript">import {Component, Input, ViewChild, ElementRef, Output, EventEmitter} from &quot;@angular/core&quot;;
+<pre><code class="lang-TypeScript">import { Component, Input, ViewChild, ElementRef, Output, EventEmitter } from &quot;@angular/core&quot;;
 </code></pre>
 <p>2) Now we need to add <code>@Output</code> event property.</p>
 <p>When defining an Output property, you can give it a <code>prop-name</code> (this is how it will referenced in the parent component) and <code>return-type</code> (this is the type that is expected to be returned)</p>
 <p>@Output public <code>prop-name</code>: EventEmitter&lt;<code>return-type</code>&gt; = new EventEmitter&lt;<code>return-type</code>&gt;();</p>
-<p>Add the following <code>@Output</code> property below all the <code>@Input</code> properties. Btw. the order is not really important.</p>
+<p>Add the following <code>@Output</code> property below all the <code>@Input</code> properties—the order is not really important.</p>
 <pre><code class="lang-TypeScript">@Output() public animateFinished: EventEmitter&lt;number&gt; = new EventEmitter&lt;number&gt;();
 </code></pre>
 <p>3) In order to raise the event we just need to call <code>eventname.next(param)</code>.</p>
 <p>For this exercise we will add a <code>counter</code> property and return a new value each time an animation is complete.</p>
-<p>Then we will wrap it nicely in <code>emitAnimateFinished()</code> function </p>
-<pre><code class="lang-TypeScript">    private counter: number = 0;
-    private emitAnimateFinished() {
-        this.counter++;
-        this.animateFinished.next(this.counter);
-    }
+<p>Then we will wrap it nicely in an <code>emitAnimateFinished()</code> function:</p>
+<pre><code class="lang-TypeScript">private counter: number = 0;
+private emitAnimateFinished() {
+    this.counter++;
+    this.animateFinished.next(this.counter);
+}
 </code></pre>
 <p>4) Now the only thing that we have left is to call <code>this.emitAnimateFinished()</code> each time the <code>animation()</code> function is complete.</p>
 <p>Here is how to do it for <code>spin()</code></p>
 <p>And your task is to do the same for the rest of them (zoom, move and fade).</p>
-<pre><code class="lang-TypeScript">
-    public spin() {
-        this.view.animate({ rotate: 1080, duration: 750 })
-            .then(() =&gt; 
-                this.view.animate({ rotate: 0, duration: 750 } )
-            )
-            .then(() =&gt; 
-                this.emitAnimateFinished()
-            )
-    }
+<pre><code class="lang-TypeScript">public spin() {
+    this.view.animate({ rotate: 1080, duration: 750 })
+        .then(() =&gt; 
+            this.view.animate({ rotate: 0, duration: 750 } )
+        )
+        .then(() =&gt; 
+            this.emitAnimateFinished()
+        )
+}
 </code></pre>
 <div class="solution-start"></div>
 
 <p>The <code>FunLabel</code> class should look like this:</p>
-<pre><code class="lang-TypeScript">import {Component, Input, ViewChild, ElementRef, Output, EventEmitter} from &quot;@angular/core&quot;;
-import {View} from &quot;ui/core/view&quot;;
+<pre><code class="lang-TypeScript">import { Component, Input, ViewChild, ElementRef, Output, EventEmitter } from &quot;@angular/core&quot;;
+import { View } from &quot;ui/core/view&quot;;
 
 @Component({
     selector: &quot;FunLabel&quot;,
@@ -1720,7 +1722,6 @@ export class FunLabel {
 <p>Now run the app. Each time an animation is complete you should get a nice popup with a counter.</p>
 <div class="exercise-end"></div>
 
-
 <p>NativeScript UI components can respond to other events like <code>Double Tap</code>, <code>Long Press</code>, <code>Swipe</code>, <code>Pan</code>, <code>Pinch</code>, <code>Rotation</code>, <code>Touch</code></p>
 <h4 class="exercise-start">
     <b>Bonus Exercise</b>: Animate on swipe
@@ -1731,9 +1732,9 @@ export class FunLabel {
 
 
 <p>Here is the full solution. Have fun.</p>
-<pre><code class="lang-TypeScript">import {Component, Input, ViewChild, ElementRef, Output, EventEmitter} from &quot;@angular/core&quot;;
-import {View} from &quot;ui/core/view&quot;;
-import {SwipeGestureEventData} from &quot;ui/gestures&quot;;
+<pre><code class="lang-TypeScript">import { Component, Input, ViewChild, ElementRef, Output, EventEmitter } from &quot;@angular/core&quot;;
+import { View } from &quot;ui/core/view&quot;;
+import { SwipeGestureEventData } from &quot;ui/gestures&quot;;
 
 @Component({
     selector: &quot;FunLabel&quot;,
@@ -1883,15 +1884,16 @@ You can go to:</p>
     <b>Exercise</b>: Installing a NativeScript plugin from npm
 </h4>
 
-<p>The usual way to add an npm module would be to call <code>npm i module-name</code>, however when it comes to installing NativeScript specific plugins it is better to call <code>tns plugin add module-name</code>. That is because <code>tns plugin add</code> will do all that <code>npm install</code> does plus it configures any native dependencies that the plugin may need to use. This might include installing additional native iOS and/or components.</p>
+<p>The usual way to add an npm module would be to call <code>npm i module-name</code>, however when it comes to installing NativeScript-specific plugins it is better to call <code>tns plugin add module-name</code>. That is because <code>tns plugin add</code> will do all that <code>npm install</code> does plus it configures any native dependencies that the plugin may need to use. This might include installing additional native iOS and/or components.</p>
 <p>Let&#39;s add the <a href="https://www.npmjs.com/package/nativescript-appinfo">appinfo plugin</a>, which will allow us to get info like the <code>version name</code>, <code>build number</code> and <code>app ID</code>.</p>
 <p>Run the following CLI command:</p>
 <pre><code>tns plugin add nativescript-appinfo
 </code></pre><p>Once you run this command you should be able to see the <code>nativescript-appinfo</code> module inside the <code>node_modules</code> folder and also the dependency to the module should be added to the <code>package.json</code> at the root of the project (not the one in the <code>app</code> folder)</p>
 <p>Now let&#39;s try to use the <code>nativescript-appinfo</code> module.</p>
 <p>Open <code>app.component.ts</code> and add the following line to the top of the file (or anywhere before <code>@Component</code> starts):</p>
-<pre><code>var appinfo = require(&quot;nativescript-appinfo&quot;);
-</code></pre><p>This will give us access to the appinfo module in this area of code.</p>
+<pre><code class="lang-TypeScript">var appinfo = require(&quot;nativescript-appinfo&quot;);
+</code></pre>
+<p>This will give us access to the appinfo module in this area of code.</p>
 <p>Now we can call the <code>appinfo</code> instance to get some app information. Add the following piece of code inside the <code>onTap()</code> function:</p>
 <pre><code class="lang-TypeScript">appinfo.getAppId()
     .then((id) =&gt; {
@@ -1899,7 +1901,7 @@ You can go to:</p>
     });
 </code></pre>
 <p>Now build the app and see what happens when you tap the button.</p>
-<p>As a bonus exercise: run this app in the <code>debug mode</code> and add a break point at <code>getAppId()</code> and try to step in to getAppId function to see what happens.</p>
+<p>As a bonus exercise: run this app in the <code>debug mode</code> and add a break point at <code>getAppId()</code> and try to step in to <code>getAppId()</code> function to see what happens.</p>
 <div class="exercise-end"></div>
 
 <p>There are also visual modules that you could use in your app.</p>
@@ -1911,28 +1913,28 @@ You can go to:</p>
 <p>First we need to import it nativescript-color-picker. To do so run the following command in the CLI:</p>
 <pre><code>tns plugin add nativescript-color-picker
 </code></pre><p>Next open <code>app.components.ts</code> and add a couple of imports. One for the <code>ColorPicker</code> and the other for the <code>Color</code> component.</p>
-<pre><code class="lang-TypeScript">import {ColorPicker} from &quot;nativescript-color-picker&quot;;
-import {Color} from &quot;color&quot;;
+<pre><code class="lang-TypeScript">import { ColorPicker } from &quot;nativescript-color-picker&quot;;
+import { Color } from &quot;color&quot;;
 </code></pre>
 <p>Then let&#39;s add few bits to the <code>AppComponent</code> class.
 We need an instance of the <code>ColorPicker</code> and a <code>selectedColor</code> property.</p>
-<pre><code class="lang-TypeScript">    private picker = new ColorPicker();
-    private selectedColor: Color = new Color(&quot;Red&quot;);
+<pre><code class="lang-TypeScript">private picker = new ColorPicker();
+private selectedColor: Color = new Color(&quot;Red&quot;);
 </code></pre>
-<p>We also need a function that will show the <code>ColorPicker</code> and then assing the result to the <code>selectedColor</code>.</p>
-<pre><code class="lang-TypeScript">    public showColorPicker() {
-        this.picker.show(&#39;#3489db&#39;, &#39;ARGB&#39;)
-            .then( (result: number) =&gt; {
-                this.selectedColor = new Color(result);
-            });
-    }
+<p>We also need a function that will show the <code>ColorPicker</code> and then passing the result to the <code>selectedColor</code>.</p>
+<pre><code class="lang-TypeScript">public showColorPicker() {
+    this.picker.show(&#39;#3489db&#39;, &#39;ARGB&#39;)
+        .then( (result: number) =&gt; {
+            this.selectedColor = new Color(result);
+        });
+}
 </code></pre>
 <p>Finally add a Button to <code>app.component.html</code>, which will call <code>showColorPicker()</code> and also with a <code>backgroundColor</code> bound to <code>selectedColor</code>. </p>
-<pre><code class="lang-XML">    &lt;Button
-        text=&quot;ColorPicker Demo&quot;
-        (tap)=&quot;showColorPicker()&quot;
-        [backgroundColor]=&quot;selectedColor&quot;&gt;
-    &lt;/Button&gt;
+<pre><code class="lang-XML">&lt;Button
+    text=&quot;ColorPicker Demo&quot;
+    (tap)=&quot;showColorPicker()&quot;
+    [backgroundColor]=&quot;selectedColor&quot;&gt;
+&lt;/Button&gt;
 </code></pre>
 <p>Now build the app and enjoy the new plugin.</p>
 <div class="exercise-end"></div>
@@ -1950,46 +1952,45 @@ Let&#39;s add the plugin by calling </p>
 This needs to be done in <code>main.ts</code>. We need to import <code>registerElement</code> function and then register the UI component we need.</p>
 <p>The first parameter we pass in is the name we want to use for the component, in this case let&#39;s use <code>NSDropDown</code>.
 The second parameter we pass is a callback that requires the UI component we want to use.</p>
-<pre><code class="lang-TypeScript">import {registerElement} from &quot;nativescript-angular/element-registry&quot;;
+<pre><code class="lang-TypeScript">import { registerElement } from &quot;nativescript-angular/element-registry&quot;;
 registerElement(&quot;NSDropDown&quot;, () =&gt; require(&quot;nativescript-drop-down/drop-down&quot;).DropDown);
 </code></pre>
 <p>Next let&#39;s add the necessary bits to <code>app.component.ts</code></p>
-<pre><code class="lang-TypeScript">    public fruits: Array&lt;string&gt; = [
-        &quot;apple&quot;, &quot;banana&quot;, &quot;coconut&quot;, &quot;date&quot;, &quot;elderberry&quot;
-    ];
+<pre><code class="lang-TypeScript">public fruits: Array&lt;string&gt; = [
+    &quot;apple&quot;, &quot;banana&quot;, &quot;coconut&quot;, &quot;date&quot;, &quot;elderberry&quot;
+];
 
-    public selectedFruitIndex = 0;
-    public get selectedFruit() {
-        return this.fruits[this.selectedFruitIndex];
-    }
+public selectedFruitIndex = 0;
+public get selectedFruit() {
+    return this.fruits[this.selectedFruitIndex];
+}
 
-    public itemChanged(selectedIndex){
-        this.selectedFruitIndex = selectedIndex;
-    }
+public itemChanged(selectedIndex){
+    this.selectedFruitIndex = selectedIndex;
+}
 </code></pre>
-<p>And now we can use the new component in <code>app.component.html</code>
-Notice how we use <code>NSDropDown</code>, as it is defined in <code>main.ts</code></p>
-<pre><code class="lang-XML">    &lt;Label [text]=&quot;selectedFruit&quot;&gt;&lt;/Label&gt;
-    &lt;NSDropDown #fruitDropDown
-        backroundColor=&quot;red&quot;
-        [items]=&quot;fruits&quot;
-        (selectedIndexChange)=&quot;itemChanged(fruitDropDown.selectedIndex)&quot;&gt;
-    &lt;/NSDropDown&gt;
+<p>And now we can use the new component in <code>app.component.html</code>. Notice how we use <code>NSDropDown</code>, as it is defined in <code>main.ts</code>.</p>
+<pre><code class="lang-XML">&lt;Label [text]=&quot;selectedFruit&quot;&gt;&lt;/Label&gt;
+&lt;NSDropDown #fruitDropDown
+    backroundColor=&quot;red&quot;
+    [items]=&quot;fruits&quot;
+    (selectedIndexChange)=&quot;itemChanged(fruitDropDown.selectedIndex)&quot;&gt;
+&lt;/NSDropDown&gt;
 </code></pre>
 <p>Now build the app and enjoy.</p>
 <div class="exercise-end"></div>
 
 
 <h3 id="managing-platforms-and-node_modules-">Managing <code>platforms</code> and <code>node_modules</code></h3>
-<p>When you clone an existing github project, the project will already contain a list of required npm modules (which you can view the <code>package.json</code> file) together with selected platforms (Android and/or iOS) it is designed to work for.</p>
+<p>When you clone an existing NativeScript app from GitHub, the project will already contain a list of required npm modules (which you can view the <code>package.json</code> file) together with selected platforms (Android and/or iOS) it is designed to work for.</p>
 <p>These will get automatically downloaded when you build the project, however until the modules get loaded TypeScript won&#39;t be able to provide you with the support for these modules.</p>
 <p>The best thing to do at this stage is to call:</p>
 <pre><code>tns install
 </code></pre><p>Which will download and configure all the required modules and platforms.</p>
-<h4 id="changing-npm-module-version">Changing npm module version</h4>
+<p><strong>Changing npm module version</strong></p>
 <p>When you want to change the version of an npm module, just find it in <code>package.json</code> change the version to the one you need, then delete it from the <code>node_modules</code> folder and finally run <code>tns install</code>.</p>
-<h4 id="trouble-shooting-new-npm-installs-not-working-as-expected-">Trouble shooting new npm installs not working as expected.</h4>
-<p>Sometimes freshly installed modules with Native dependencies don&#39;t seem to work.
+<p><strong>Trouble shooting new npm installs not working as expected.</strong></p>
+<p>Sometimes freshly installed modules with native dependencies don&#39;t seem to work.
 This usually happens when you built your app once already. Then you add a new npm module (which requires native Android or iOS support). And you are trying to use the module and run the app again. </p>
 <p>The best thing to do is to either delete the <code>platforms</code> folder and rerun the build or you could use the CLI to help you with the task by calling <code>tns platform add</code> and then <code>remove</code>.
 Just like this:</p>
@@ -1999,8 +2000,8 @@ tns platform add android
 </code></pre><p>For iOS:</p>
 <pre><code>tns platform remove ios
 tns platform add ios
-</code></pre><h3 id="creating-a-component-with-two-way-binding">Creating a component with two way binding</h3>
-<p>The final task will be to create a custom component with a two way binding.
+</code></pre><h3 id="creating-a-component-with-two-way-binding">Creating a component with two-way binding</h3>
+<p>The final task will be to create a custom component with a two-way binding.
 How many times do you get tired of creating a Label and a TextField to capture data?
 How about we create a component that will contain both a Label and a TextField in one go.</p>
 <p>Let&#39;s first scaffold the component.</p>
@@ -2009,7 +2010,7 @@ How about we create a component that will contain both a Label and a TextField i
 </h4>
 
 <p>Create a new file called <code>label-text-field.ts</code> and add the following code. By now this code should be self explanatory.</p>
-<pre><code class="lang-TypeScript">import { Component, Input } from &#39;@angular/core&#39;;
+<pre><code class="lang-TypeScript">import { Component, Input } from &quot;@angular/core&quot;;
 
 @Component({
     selector: &quot;LabelTxt&quot;,
@@ -2032,11 +2033,11 @@ export class LabelTextField {
 </code></pre>
 <p>Now let&#39;s register the component in <code>main.ts</code>.
 First we need to import the new component.
-Since <code>LabelTextField</code> is meant to provide two way binding we also need to import <code>NativeScriptFormsModule</code>.</p>
-<pre><code class="lang-TypeScript">import {LabelTextField} from &quot;./label-text-field&quot;;
-import {NativeScriptFormsModule} from &quot;nativescript-angular/forms&quot;;
+Since <code>LabelTextField</code> is meant to provide two-way binding we also need to import <code>NativeScriptFormsModule</code>.</p>
+<pre><code class="lang-TypeScript">import { LabelTextField } from &quot;./label-text-field&quot;;
+import { NativeScriptFormsModule } from &quot;nativescript-angular/forms&quot;;
 </code></pre>
-<p>Next we need to add <code>LabelTextField</code> to declarations and <code>NativeScriptFormsModule</code> add to imports.</p>
+<p>Next we need to add <code>LabelTextField</code> to declarations and <code>NativeScriptFormsModule</code> to imports.</p>
 <p>Replace the current <code>@NgModule</code> with:</p>
 <pre><code class="lang-TypeScript">@NgModule({
     declarations: [AppComponent, FunLabel, LabelTextField],
@@ -2046,26 +2047,26 @@ import {NativeScriptFormsModule} from &quot;nativescript-angular/forms&quot;;
 </code></pre>
 <p>Finally let&#39;s add the few <code>LabelTextFields</code> to the UI.
 Add a couple of properties to the <code>AppComponent</code> class in <code>app.component.ts</code>: </p>
-<pre><code class="lang-TypeScript">    public name: string = &quot;annonymous&quot;;
-    public telephone: string =&quot;0123456789&quot;;
+<pre><code class="lang-TypeScript">public name: string = &quot;annonymous&quot;;
+public telephone: string =&quot;0123456789&quot;;
 </code></pre>
 <p>Open <code>app.components.html</code> and add the following code.
 Note that our compenent uses <code>LabelTxt</code> tag.</p>
-<pre><code class="lang-xml">    &lt;LabelTxt
-        label=&quot;Name&quot;
-        [text]=&quot;name&quot;&gt;
-    &lt;/LabelTxt&gt;
-    &lt;LabelTxt
-        label=&quot;Telephone&quot;
-        [text]=&quot;telephone&quot;&gt;
-    &lt;/LabelTxt&gt;
+<pre><code class="lang-XML">&lt;LabelTxt
+    label=&quot;Name&quot;
+    [text]=&quot;name&quot;&gt;
+&lt;/LabelTxt&gt;
+&lt;LabelTxt
+    label=&quot;Telephone&quot;
+    [text]=&quot;telephone&quot;&gt;
+&lt;/LabelTxt&gt;
 
-    &lt;FunLabel
-        [line]=&quot;name&quot;&gt;
-    &lt;/FunLabel&gt;
-    &lt;FunLabel
-        [line]=&quot;telephone&quot;&gt;
-    &lt;/FunLabel&gt;
+&lt;FunLabel
+    [line]=&quot;name&quot;&gt;
+&lt;/FunLabel&gt;
+&lt;FunLabel
+    [line]=&quot;telephone&quot;&gt;
+&lt;/FunLabel&gt;
 </code></pre>
 <p>Build the app and you should be able to see a bunch of Labels with TextFields next to them, together with the FunLabels, which display the same value. However if you edit any of the TextFields the FunLabels won&#39;t get updated.</p>
 <div class="exercise-end"></div>
@@ -2081,11 +2082,11 @@ Add the end of this exercise you will be able to use <code>LabelTextField</code>
 <pre><code class="lang-TypeScript">import { Component, Input, Inject, Optional } from &#39;@angular/core&#39;;
 import { NgControl, ControlValueAccessor } from &#39;@angular/forms&#39;;
 </code></pre>
-<p>Next we need to extend <code>LabelTextField</code> class so that it implements <code>ControlValueAccessor</code></p>
+<p>Next we need to extend <code>LabelTextField</code> class so that it implements <code>ControlValueAccessor</code>.</p>
 <pre><code class="lang-TypeScript">export class LabelTextField implements ControlValueAccessor {
 </code></pre>
 <blockquote>
-<p>At this point VisualStudio code will complain that <code>writeValue</code> (it is called when the bound property is changed outside of this component), <code>registerOnChange</code> (it is called at the beginning to provide an onChange function) and <code>registerOnTouched</code> (it is called at the beginning to provide onTouched function) functions are missing. Also in order to use <code>LabelTextField</code> with <code>[(ngModel)]</code> we need to set up a value accessor in the constructor.</p>
+<p>At this point Visual Studio Code will complain that <code>writeValue</code> (it is called when the bound property is changed outside of this component), <code>registerOnChange</code> (it is called at the beginning to provide an onChange function) and <code>registerOnTouched</code> (it is called at the beginning to provide onTouched function) functions are missing. Also in order to use <code>LabelTextField</code> with <code>[(ngModel)]</code> we need to set up a value accessor in the constructor.</p>
 </blockquote>
 <p>Update <code>LabelTextField</code> class to:</p>
 <pre><code class="lang-TypeScript">export class LabelTextField implements ControlValueAccessor {
@@ -2115,34 +2116,34 @@ import { NgControl, ControlValueAccessor } from &#39;@angular/forms&#39;;
     }
 }
 </code></pre>
-<p>At this point you should be able to update <code>LabelTxt</code> components in html to use <code>[(ngModel)]</code> instead of <code>[text]</code>, but still editing the <code>TextField</code> won&#39;t update the bound properties.
+<p>At this point you should be able to update <code>LabelText</code> components in html to use <code>[(ngModel)]</code> instead of <code>[text]</code>, but still editing the <code>TextField</code> won&#39;t update the bound properties.
 That is because we need to add change detection to the TextField -&gt; Text.</p>
 <p>We will do it in two steps.</p>
 <p>1) Add the following function to <code>LabelTextField</code> class, which will call <code>_changeFn</code> (ngModel&#39;s onChanged function provided through <code>registerOnChange</code> ).</p>
-<pre><code class="lang-TypeScript">    updateTextProperty(newText) {
-        if (this._changeFn) {
-            if (this.text + &quot;&quot; !== newText + &quot;&quot;) {
-                this._changeFn(newText);
-            }
+<pre><code class="lang-TypeScript">updateTextProperty(newText) {
+    if (this._changeFn) {
+        if (this.text + &quot;&quot; !== newText + &quot;&quot;) {
+            this._changeFn(newText);
         }
     }
+}
 </code></pre>
 <p>2) Add <code>textChange</code> handler to TextField in the <code>template</code>, so that every time the user types something in the <code>TextField</code> this will call <code>updateTextProperty</code> and ultimately update <code>ngModel</code>.</p>
-<pre><code class="lang-xml">        &lt;TextField #tf
-            [text]=&quot;text&quot;
-            (textChange)=&quot;updateTextProperty(tf.text)&quot;
-            width=&quot;60%&quot;&gt;
-        &lt;/TextField&gt;
+<pre><code class="lang-XML">&lt;TextField #tf
+    [text]=&quot;text&quot;
+    (textChange)=&quot;updateTextProperty(tf.text)&quot;
+    width=&quot;60%&quot;&gt;
+&lt;/TextField&gt;
 </code></pre>
 <p>Now let&#39;s just update <code>LabelTxt</code> in <code>app.component.html</code> to use <code>ngModel</code></p>
-<pre><code class="lang-xml">    &lt;LabelTxt
-        label=&quot;Name&quot;
-        [(ngModel)]=&quot;name&quot;&gt;
-    &lt;/LabelTxt&gt;
-    &lt;LabelTxt
-        label=&quot;Telephone&quot;
-        [(ngModel]=&quot;telephone&quot;&gt;
-    &lt;/LabelTxt&gt;
+<pre><code class="lang-XML">&lt;LabelTxt
+    label=&quot;Name&quot;
+    [(ngModel)]=&quot;name&quot;&gt;
+&lt;/LabelTxt&gt;
+&lt;LabelTxt
+    label=&quot;Telephone&quot;
+    [(ngModel]=&quot;telephone&quot;&gt;
+&lt;/LabelTxt&gt;
 </code></pre>
 <p>Build the app and enjoy.</p>
 <div class="exercise-end"></div>
@@ -2153,7 +2154,7 @@ That is because we need to add change detection to the TextField -&gt; Text.</p>
 </h4>
 
 <p>TextField has a <code>hint</code> property, which provides a hint to the user as to what they could type. Which you can you like this:</p>
-<pre><code class="lang-xml">&lt;TextField #tf
+<pre><code class="lang-XML">&lt;TextField #tf
     [text]=&quot;text&quot;
     (textChange)=&quot;updateTextProperty(tf.text)&quot;
     [hint]=&quot;label&quot;
@@ -2165,17 +2166,17 @@ For example if the <code>label</code> value is &quot;Email&quot; then the <code>
 <div class="solution-start"></div>
 
 <p>In order to solve this puzzle we need a property getter, which will return the transformed label value</p>
-<pre><code class="lang-TypeScript">    public get simpleHint() {
-        return this.label.toLowerCase() + &quot;...&quot;;
-    }
+<pre><code class="lang-TypeScript">public get simpleHint() {
+    return this.label.toLowerCase() + &quot;...&quot;;
+}
 </code></pre>
 <p>And then bind <code>hint</code> of the <code>TextField</code> to <code>simplehint</code></p>
-<pre><code class="lang-xml">        &lt;TextField #tf
-            [text]=&quot;text&quot;
-            (textChange)=&quot;updateTextProperty(tf.text)&quot;
-            [hint]=&quot;simplehint&quot;
-            width=&quot;60%&quot;&gt;
-        &lt;/TextField&gt;
+<pre><code class="lang-xml">&lt;TextField #tf
+    [text]=&quot;text&quot;
+    (textChange)=&quot;updateTextProperty(tf.text)&quot;
+    [hint]=&quot;simplehint&quot;
+    width=&quot;60%&quot;&gt;
+&lt;/TextField&gt;
 </code></pre>
 <div class="solution-end"></div>
 
