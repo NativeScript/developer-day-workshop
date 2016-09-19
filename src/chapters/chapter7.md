@@ -141,6 +141,8 @@ Stuck? Here are a few tips that might help you get this form up and running.
 
 <div class="exercise-end"></div>
 
+Here’s a full solution you can refer to if you’d like: https://gist.github.com/tjvantoll/5d16e7f81de3d73573c7cb79752721e3.
+
 ### Bonus challenges!
 
 Finish the challenge? Most excellent. But wait, there’s more! Here are some ways you can improve this form. See how many of these things you can finish in an hour.
