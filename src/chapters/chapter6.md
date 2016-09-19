@@ -15,10 +15,10 @@ In this workshop, we're going to work with the [http://pokeapi.co/](PokeAPI) to 
 Let's get up and running with the Advanced Seed. Please refer to the [https://github.com/NathanWalker/angular2-seed-advanced](Readme) to ensure that your environment is ready.
 
 ```
-> git clone --depth 1 https://github.com/NathanWalker/angular2-seed-advanced.git
-> cd angular2-seed-advanced
-> npm install
-> npm start
+git clone --depth 1 https://github.com/NathanWalker/angular2-seed-advanced.git
+cd angular2-seed-advanced
+npm install
+npm start
 ```
 Start the mobile workflow
 
@@ -33,13 +33,14 @@ Android:                      npm run start.android
 Android (livesync emulator):  npm run start.livesync.android
 Android (livesync device):    npm run start.livesync.android.device
 ```
+
 You should have a web site and either an iOS or Android simulator running. You can also run two simulators at once if you like. 
 
 > Note, on occasion your mobile livesyncing may fail when using this seed. On occasion, you may need to restart the process, so press Ctrl>C in your terminal and restart the `npm run start.livesync...` routine.
 
 ### Exploring the architecture
 
-Open the root folder of your app in your IDE of choice. Let's take a look at all the moving parts. Navigate to the `src` folder.
+Open the root folder of your app in your IDE of choice. Let's take a look at all the moving parts. Navigate to the `src/client` folder.
 
 `app/frameworks`: contains your shared application architecture code. 
 
@@ -107,11 +108,11 @@ Let's add a service to consume data brought in from the PokeAPI. We're going to 
 
 Add a new file to `src/client/app/frameworks/sample/services/` called `pokemon.service.ts` and paste in the following:
 
-```
-import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
-import {LogService} from '../../core/services/log.service';
-import {Observable} from 'rxjs/Rx';
+``` TypeScript
+import { Injectable } from '@angular/core';
+import { Http, Response } from '@angular/http';
+import { LogService } from '../../core/services/log.service';
+import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -159,18 +160,18 @@ providers: [
     PokemonService
   ],
 ```
-Add this service into the index.ts list of available services by adding this export to the bottom of `src/client/app/frameworks/sample/index.ts`:
+Add this service into the `index.ts` list of available services by adding this export to the bottom of `src/client/app/frameworks/sample/index.ts`:
 
-```
+``` TypeScript
 export * from './services/pokemon.service';
 ```
 
 Finally, you need to import this service into your frontend files, so that your home pages can leverage it. Navigate to `src/client/app/components/home/home.component.ts` and replace the content of this file with this:
 
-```
+``` TypeScript
 // libs
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {OnInit} from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { OnInit } from '@angular/core';
 
 // app
 import { BaseComponent } from '../../frameworks/core/index';
@@ -197,8 +198,6 @@ export class HomeComponent implements OnInit {
       });
   }
 }
-
-
 ```
 
 <div class="exercise-end"></div>
@@ -215,7 +214,7 @@ We are going to show a list of Pokemon, as returned by the service, on both web 
 
 Delete everything in `src/client/app/components/home/home.component.tns.html` and paste in the following code to add a ListView for the mobile app:
 
-```
+``` XML
 <StackLayout class="container-content">
     <GridLayout columns="*" rows="*">
         <ListView [items]="pokemon$ | async" row="1" height="300">
@@ -231,7 +230,7 @@ Delete everything in `src/client/app/components/home/home.component.tns.html` an
 
 Then, replace the code in `src/client/app/components/home/home.component.html` with the code below to create a simple list on native:
 
-```
+``` XML
 <ul *ngFor="let pokemon of pokemon$ | async">
     <li>{{ pokemon.name }}</li>
 </ul>
@@ -256,7 +255,7 @@ In the `src/client/app/components/home` folder, note the naming convention of th
 
 The listview looks a little crunched on mobile, so edit the  `src/client/app/components/home/home.comonent.tns.css`:
 
-```
+``` CSS
 .list-item {
   padding: 10;
   margin: 10;
@@ -284,8 +283,8 @@ Let's use a Loader plugin that will only be available for the mobile app.
 First, install the plugin in your NativeScript app: 
 
 ```
-> cd nativescript
-> tns plugin add nativescript-loading-indicator 
+cd nativescript
+tns plugin add nativescript-loading-indicator 
 ```
 
 >Note, you may need to rebuild the app to make the plugin install properly (`npm run start.ios/android`)
@@ -295,95 +294,93 @@ In `sample.module.ts`, make the following edits:
 
 At the top, under the block of imports for 'app', add this line:
 
-```
+``` TypeScript
 import { TOKENS_SHARED } from '../core/tokens';
 ```
 
 Then, edit the Providers array:
 
-```
+``` TypeScript
 providers: [
-    NameListService,
-    PokemonService,
-    TOKENS_SHARED
-  ],
+  NameListService,
+  PokemonService,
+  TOKENS_SHARED
+],
 ```
 
-Now, create a file in `src/app/frameworks/core` called tokens.ts and paste the following code in this file:
+Now, create a file in `src/app/frameworks/core` called `tokens.ts` and paste the following code in this file:
 
-```
-import {OpaqueToken} from '@angular/core';
+``` TypeScript
+import { OpaqueToken } from '@angular/core';
 
 export const LOADER: OpaqueToken = new OpaqueToken('LoadingIndicator');
 
 export const TOKENS_SHARED: Array<any> = [
   { provide: LOADER, useValue: {} }
 ];
-
-
 ```
 
 Then, edit `nativescript/app/native.module.ts` in a similar way to add a reference to tokens only available to the mobile app:
 
 At the bottom of the 'app' block of imports, import a native token file reference:
 
-```
+``` TypeScript
 import { TOKENS_NATIVE } from './tokens.native';
 ```
 
 Edit the import block at the bottom as well:
 
-```
+``` TypeScript
 CoreModule.forRoot([
-      TOKENS_NATIVE,
-      { provide: WindowService, useClass: WindowNative },
-      { provide: ConsoleService, useValue: console }
-    ]),
+    TOKENS_NATIVE,
+    { provide: WindowService, useClass: WindowNative },
+    { provide: ConsoleService, useValue: console }
+  ]),
 ```
 
 Now create a file in this folder called `tokens.native.ts`.
 
-```
-import {LOADER} from './app/frameworks/core/tokens';
+``` TypeScript
+import { LOADER } from './app/frameworks/core/tokens';
 import { LoadingIndicator } from 'nativescript-loading-indicator';
 
 export const TOKENS_NATIVE: Array<any> = [
   { provide: LOADER, useClass: LoadingIndicator}
 ];
-
 ```
 
 Similarly, edit the web module: `src/client/web.module.ts`, adding a reference to web tokens at the top, in the 'app' block of imports:
 
-```
+``` TypeScript
 import { TOKENS_WEB } from './tokens.web';
 ```
 
 Complete the integration by adding the tokens as a provider:
 
-```
+``` TypeScript
 CoreModule.forRoot([
-      TOKENS_WEB,
-      { provide: WindowService, useValue: window },
-      { provide: ConsoleService, useValue: console }
-    ]),
+    TOKENS_WEB,
+    { provide: WindowService, useValue: window },
+    { provide: ConsoleService, useValue: console }
+  ]),
 ```
 
 Add a file called `src/client/tokens.web.ts` with a blank array (you could populate this later with other types of tokens)
 
-```
+``` TypeScript
 export const TOKENS_WEB: Array<any> = [
   //empty for now
 ];
 ```
+
 Now you can reference the native tokens you built in your mobile code. Replace the current code in `src/client/app/component/home/home.component.ts` with the following:
 
-```
+``` TypeScript
 // libs
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {OnInit, Inject} from '@angular/core';
-import {LOADER} from '../../frameworks/core/tokens';
-import {Config} from '../../frameworks/core/utils/config';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { OnInit, Inject } from '@angular/core';
+import { LOADER } from '../../frameworks/core/tokens';
+import { Config } from '../../frameworks/core/utils/config';
 
 // app
 import { BaseComponent } from '../../frameworks/core/index';
@@ -417,8 +414,6 @@ export class HomeComponent implements OnInit {
       });
   }
 }
-
-
 ``` 
 
 Now you are able to view the loading indicator on mobile only; it is shielded from the web view. 
@@ -440,7 +435,7 @@ As a brief demo, we're going to look at how unit tests can be integrated into th
 
 Unit tests are associated to each folder; there are a few in the `src/cient/app/components/home` folder, so navigate there and paste the following into the `home.component.spec.ts` file:
 
-```
+``` TypeScript
 import {TestComponentBuilder, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
@@ -497,13 +492,11 @@ export function main() {
 class TestComponent {
 
 }
-
-
 ```
 
-then, in the same folder, paste this code into `home.component.e2e-spec.ts`:
+Then, in the same folder, paste this code into `home.component.e2e-spec.ts`:
 
-```
+``` TypeScript
 import {t} from '../../frameworks/test/index';
 
 declare var browser: any, element: any, by: any;
@@ -520,8 +513,6 @@ t.describe('Home', function () {
 
 
 });
-
-
 ```
 
 You should now be able to run a test to check whether the `<h1>` tag is correct by typing `npm test` into a terminal at the root of your project.

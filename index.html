@@ -2590,7 +2590,16 @@ t.describe(&#39;Home&#39;, function () {
 			<div class="chapter">
 				<h2 id="super-ultimate-challenge">SUPER ULTIMATE CHALLENGE</h2>
 <p>It’s the end of the day, therefore you’re more ready than ever for the SUPER MEGA ULTIMATE CHALLENGE. That’s right, get ready to test your NativeScript skills against the biggest and baddest data form that we can reaslistically tackle in an hour. Get pumped.</p>
-<p>Before we introduce the challenge, let’s get a few of the logistical things out of the way.</p>
+<h3 id="what-s-the-challenge-">What’s the challenge?</h3>
+<p>Your challenge, should you choose to accept it, is to build a form that collects four pieces of information from the user: a name, an email address, a date of birth, and whether they’d like to sign up for a newsletter. You’re welcome to design this form however you’d like, and you totally might want to use the <a href="https://docs.nativescript.org/ui/theme">new NativeScript theme</a>, but here’s one lackluster UI you can try to replicate:</p>
+<p><img src="images/ios-form.png" style="height: 450px; border: 0;">
+<img src="images/android-form.png" style="height: 450px; border: 0;"></p>
+<p>The form should send a POST request to the following endpoint:</p>
+<pre><code>https://api.everlive.com/v1/GWfRtXi1Lwt4jcqK/Accounts
+</code></pre><p>The body of the request should be a JSON stringified object that has the following four keys: <code>Name</code>, <code>Email</code>, <code>DOB</code>, and <code>Newsletter</code>. (Don’t worry about the specific formatting of the individual paramters; aka, send an date format you’d like for <code>DOB</code>, and any boolean format you’d like for <code>Newsletter</code>.)</p>
+<p>There’s a simple listing of all data that has come through hosted at <a href="https://jsfiddle.net/dLvz083w/">https://jsfiddle.net/dLvz083w/</a>. If you see your data on this list you’ve completed the challenge successfully.</p>
+<p>And if you finish, there are some super special <a href="#chapter7.3">bonus challenges</a> for you to tackle.</p>
+<h3 id="starting-up-the-challenge">Starting up the challenge</h3>
 <h4 class="exercise-start">
     <b>Exercise</b>: Start up a new app
 </h4>
@@ -2652,16 +2661,10 @@ export class AccountService {
   }
 }
 </code></pre>
-<p>And with that, you’re ready to get started.</p>
 <div class="exercise-end"></div>
 
-<p>Your challenge, should you choose to accept it, is to build a form that collects four pieces of information from the user: a name, an email address, a date of birth, and whether they’d like to sign up for a newsletter. You’re welcome to design this form however you’d like, and you totally might want to use the <a href="https://docs.nativescript.org/ui/theme">new NativeScript theme</a>, but here’s one lackluster UI you can try to replicate:</p>
-<p><img src="images/ios-form.png" style="height: 450px; border: 0;">
-<img src="images/android-form.png" style="height: 450px; border: 0;"></p>
-<p>The form should send a POST request to the following endpoint:</p>
-<pre><code>https://api.everlive.com/v1/GWfRtXi1Lwt4jcqK/Accounts
-</code></pre><p>The body of the request should be a JSON stringified object that has the following four keys: <code>Name</code>, <code>Email</code>, <code>DOB</code>, and <code>Newsletter</code>. (Don’t worry about the specific formatting of the individual paramters; aka, send an date format you’d like for <code>DOB</code>, and any boolean format you’d like for <code>Newsletter</code>.)</p>
-<p>There’s a simple listing of all data that has come through hosted at <a href="https://jsfiddle.net/dLvz083w/">https://jsfiddle.net/dLvz083w/</a>. If you see your data on this list you’ve completed the challenge successfully.</p>
+<p>And with that, you’re ready to get started.</p>
+<h3 id="tips-to-help-you-out">Tips to help you out</h3>
 <p>Below you’ll find a few tips if you find yourself getting stuck, and a few suggestions for how you improve this little app if you have some extra time. Towards the end of the hour we’ll share a full solution that you can refer to later.</p>
 <h4 class="exercise-start">
     <b>Exercise</b>: TIPS
@@ -2693,6 +2696,7 @@ export class AccountService {
 
 <div class="exercise-end"></div>
 
+<h3 id="bonus-challenges-">Bonus challenges!</h3>
 <p>Finish the challenge? Most excellent. But wait, there’s more! Here are some ways you can improve this form. See how many of these things you can finish in an hour.</p>
 <ul>
 <li>While saving the form disable all form fields so the user cannot interact with them. Hint: You can bind to the <code>isEnabled</code> property that all form fields have.</li>

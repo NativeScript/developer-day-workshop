@@ -2,7 +2,26 @@
 
 It’s the end of the day, therefore you’re more ready than ever for the SUPER MEGA ULTIMATE CHALLENGE. That’s right, get ready to test your NativeScript skills against the biggest and baddest data form that we can reaslistically tackle in an hour. Get pumped.
 
-Before we introduce the challenge, let’s get a few of the logistical things out of the way.
+### What’s the challenge?
+
+Your challenge, should you choose to accept it, is to build a form that collects four pieces of information from the user: a name, an email address, a date of birth, and whether they’d like to sign up for a newsletter. You’re welcome to design this form however you’d like, and you totally might want to use the [new NativeScript theme](https://docs.nativescript.org/ui/theme), but here’s one lackluster UI you can try to replicate:
+
+<img src="images/ios-form.png" style="height: 450px; border: 0;">
+<img src="images/android-form.png" style="height: 450px; border: 0;">
+
+The form should send a POST request to the following endpoint:
+
+```
+https://api.everlive.com/v1/GWfRtXi1Lwt4jcqK/Accounts
+```
+
+The body of the request should be a JSON stringified object that has the following four keys: `Name`, `Email`, `DOB`, and `Newsletter`. (Don’t worry about the specific formatting of the individual paramters; aka, send an date format you’d like for `DOB`, and any boolean format you’d like for `Newsletter`.)
+
+There’s a simple listing of all data that has come through hosted at <https://jsfiddle.net/dLvz083w/>. If you see your data on this list you’ve completed the challenge successfully.
+
+And if you finish, there are some super special [bonus challenges](#chapter7.3) for you to tackle.
+
+### Starting up the challenge
 
 <h4 class="exercise-start">
     <b>Exercise</b>: Start up a new app
@@ -79,24 +98,11 @@ export class AccountService {
 }
 ```
 
-And with that, you’re ready to get started.
-
 <div class="exercise-end"></div>
 
-Your challenge, should you choose to accept it, is to build a form that collects four pieces of information from the user: a name, an email address, a date of birth, and whether they’d like to sign up for a newsletter. You’re welcome to design this form however you’d like, and you totally might want to use the [new NativeScript theme](https://docs.nativescript.org/ui/theme), but here’s one lackluster UI you can try to replicate:
+And with that, you’re ready to get started.
 
-<img src="images/ios-form.png" style="height: 450px; border: 0;">
-<img src="images/android-form.png" style="height: 450px; border: 0;">
-
-The form should send a POST request to the following endpoint:
-
-```
-https://api.everlive.com/v1/GWfRtXi1Lwt4jcqK/Accounts
-```
-
-The body of the request should be a JSON stringified object that has the following four keys: `Name`, `Email`, `DOB`, and `Newsletter`. (Don’t worry about the specific formatting of the individual paramters; aka, send an date format you’d like for `DOB`, and any boolean format you’d like for `Newsletter`.)
-
-There’s a simple listing of all data that has come through hosted at <https://jsfiddle.net/dLvz083w/>. If you see your data on this list you’ve completed the challenge successfully.
+### Tips to help you out
 
 Below you’ll find a few tips if you find yourself getting stuck, and a few suggestions for how you improve this little app if you have some extra time. Towards the end of the hour we’ll share a full solution that you can refer to later.
 
@@ -134,6 +140,8 @@ Stuck? Here are a few tips that might help you get this form up and running.
 <div class="solution-end"></div>
 
 <div class="exercise-end"></div>
+
+### Bonus challenges!
 
 Finish the challenge? Most excellent. But wait, there’s more! Here are some ways you can improve this form. See how many of these things you can finish in an hour.
 
